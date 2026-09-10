@@ -1,4 +1,5 @@
 import { ChefHat, Plus } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 import { categoryNavItems, primaryNavItems } from './nav-items'
@@ -6,12 +7,15 @@ import { categoryNavItems, primaryNavItems } from './nav-items'
 function NavRow({
   path,
   icon: Icon,
-  label,
+  labelKey,
 }: {
   path: string
   icon: (typeof primaryNavItems)[number]['icon']
-  label: string
+  labelKey: string
 }) {
+  const { t } = useTranslation()
+  const label = t(labelKey)
+
   return (
     <NavLink
       to={path}
@@ -31,11 +35,13 @@ function NavRow({
 }
 
 function Sidebar() {
+  const { t } = useTranslation()
+
   return (
     <aside className="hidden shrink-0 flex-col border-r border-border bg-surface md:flex md:w-20 lg:w-64">
       <div className="flex items-center gap-2 px-4 py-5 lg:px-6">
         <ChefHat className="size-7 shrink-0 text-accent" />
-        <span className="hidden text-lg font-semibold lg:inline">Moji Recepti</span>
+        <span className="hidden text-lg font-semibold lg:inline">{t('app.name')}</span>
       </div>
 
       <nav className="flex flex-1 flex-col gap-1 overflow-y-auto px-3">
@@ -45,7 +51,7 @@ function Sidebar() {
 
         <div className="mt-6 hidden lg:block">
           <p className="px-3 pb-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
-            Kategorije
+            {t('nav.categories')}
           </p>
           <div className="flex flex-col gap-1">
             {categoryNavItems.map((item) => (
@@ -59,10 +65,10 @@ function Sidebar() {
         <NavLink
           to="/admin/recepti/novi"
           className="flex items-center justify-center gap-2 rounded-control bg-accent px-3 py-2 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent-hover"
-          title="Dodaj recept"
+          title={t('nav.addRecipe')}
         >
           <Plus className="size-4 shrink-0" />
-          <span className="hidden lg:inline">Dodaj recept</span>
+          <span className="hidden lg:inline">{t('nav.addRecipe')}</span>
         </NavLink>
       </div>
     </aside>

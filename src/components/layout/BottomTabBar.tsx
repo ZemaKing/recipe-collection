@@ -1,9 +1,11 @@
 import { Plus } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 import { bottomTabItems } from './nav-items'
 
 function BottomTabBar() {
+  const { t } = useTranslation()
   const [first, second, ...rest] = bottomTabItems
 
   return (
@@ -21,14 +23,14 @@ function BottomTabBar() {
           }
         >
           <item.icon className="size-5" />
-          {item.label}
+          {t(item.labelKey)}
         </NavLink>
       ))}
 
       <NavLink
         to="/admin/recepti/novi"
         className="-mt-6 flex size-12 shrink-0 items-center justify-center rounded-full bg-accent text-accent-foreground shadow-lg transition-colors hover:bg-accent-hover"
-        title="Dodaj recept"
+        title={t('nav.addRecipe')}
       >
         <Plus className="size-6" />
       </NavLink>
@@ -45,7 +47,7 @@ function BottomTabBar() {
           }
         >
           <item.icon className="size-5" />
-          {item.label}
+          {t(item.labelKey)}
         </NavLink>
       ))}
     </nav>

@@ -1,0 +1,53 @@
+{
+  "app": {
+    "name": "My Recipes"
+  },
+  "nav": {
+    "home": "Home",
+    "allRecipes": "All Recipes",
+    "categories": "Categories",
+    "favorites": "Favorites",
+    "recentlyAdded": "Recently Added",
+    "mealPlan": "Meal Plan",
+    "kitchenNotes": "Kitchen Notes",
+    "profile": "Profile",
+    "addRecipe": "Add Recipe"
+  },
+  "category": {
+    "breakfast": "Breakfast",
+    "soups": "Soups",
+    "mainDishes": "Main Dishes",
+    "salads": "Salads",
+    "sideDishes": "Side Dishes",
+    "desserts": "Desserts",
+    "pastries": "Pastries",
+    "drinks": "Drinks",
+    "other": "Other"
+  },
+  "topbar": {
+    "welcome": "Welcome back, Collector! 👋",
+    "subtitle": "Find the perfect recipe for every moment.",
+    "searchPlaceholder": "Search recipes, ingredients...",
+    "search": "Search",
+    "theme": "Theme"
+  },
+  "home": {
+    "recentRecipes": "Recent Recipes",
+    "recentRecipesDescription": "Your recipe collection will appear here once connected to the database."
+  },
+  "placeholder": {
+    "notImplemented": "This part of the app hasn't been implemented yet."
+  },
+  "pages": {
+    "allRecipes": "All Recipes",
+    "categories": "Categories",
+    "category": "Category",
+    "favorites": "Favorite Recipes",
+    "recentlyAdded": "Recently Added",
+    "mealPlan": "Meal Plan",
+    "kitchenNotes": "Kitchen Notes",
+    "profile": "Profile",
+    "addRecipe": "Add Recipe",
+    "notFound": "Page not found"
+  }
+}

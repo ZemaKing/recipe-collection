@@ -1,0 +1,53 @@
+{
+  "app": {
+    "name": "Moji Recepti"
+  },
+  "nav": {
+    "home": "Početna",
+    "allRecipes": "Svi recepti",
+    "categories": "Kategorije",
+    "favorites": "Omiljeni",
+    "recentlyAdded": "Nedavno dodati",
+    "mealPlan": "Plan obroka",
+    "kitchenNotes": "Kuhinjske beleške",
+    "profile": "Profil",
+    "addRecipe": "Dodaj recept"
+  },
+  "category": {
+    "breakfast": "Doručak",
+    "soups": "Supe i čorbe",
+    "mainDishes": "Glavna jela",
+    "salads": "Salate",
+    "sideDishes": "Prilozi",
+    "desserts": "Deserti",
+    "pastries": "Peciva",
+    "drinks": "Pića i napici",
+    "other": "Ostalo"
+  },
+  "topbar": {
+    "welcome": "Dobrodošao nazad, Kolekcionaru! 👋",
+    "subtitle": "Pronađi savršen recept za svaki trenutak.",
+    "searchPlaceholder": "Pretraži recepte, sastojke...",
+    "search": "Pretraga",
+    "theme": "Tema"
+  },
+  "home": {
+    "recentRecipes": "Nedavni recepti",
+    "recentRecipesDescription": "Zbirka recepata će se pojaviti ovde kada se poveže baza podataka."
+  },
+  "placeholder": {
+    "notImplemented": "Ovaj deo aplikacije još nije implementiran."
+  },
+  "pages": {
+    "allRecipes": "Svi recepti",
+    "categories": "Kategorije",
+    "category": "Kategorija",
+    "favorites": "Omiljeni recepti",
+    "recentlyAdded": "Nedavno dodati",
+    "mealPlan": "Plan obroka",
+    "kitchenNotes": "Kuhinjske beleške",
+    "profile": "Profil",
+    "addRecipe": "Dodaj recept",
+    "notFound": "Stranica nije pronađena"
+  }
+}
