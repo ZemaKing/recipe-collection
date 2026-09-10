@@ -4,12 +4,12 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 1 — Project Foundation
-MVP Status: Not Started
+Current Phase: Phase 2 — Design System & Application Shell
+MVP Status: In Progress
 
 ## MVP Progress
 
-- [ ] Phase 1 — Project Foundation
+- [x] Phase 1 — Project Foundation
 - [ ] Phase 2 — Design System & Application Shell
 - [ ] Phase 3 — Supabase Project Setup
 - [ ] Phase 4 — Core Database Schema & RLS
@@ -41,33 +41,33 @@ A running, deployable-shell Vite + React + TypeScript app with tooling in place.
 
 ### Tasks
 
-- [ ] Scaffold Vite + React + TypeScript project
-- [ ] Configure ESLint/Prettier
-- [ ] Create folder structure: `src/{components,pages,features,lib,locales,hooks}`
-- [ ] Set up React Router with a placeholder route
-- [ ] Configure absolute imports
+- [x] Scaffold Vite + React + TypeScript project
+- [x] Configure ESLint/Prettier
+- [x] Create folder structure: `src/{components,pages,features,lib,locales,hooks}`
+- [x] Set up React Router with a placeholder route
+- [x] Configure absolute imports
 
 ### Database / Supabase
 
-- [ ] N/A for this phase
+- [x] N/A for this phase
 
 ### UI / UX
 
-- [ ] Blank placeholder page renders
+- [x] Blank placeholder page renders
 
 ### Internationalization
 
-- [ ] N/A for this phase (folders only)
+- [x] N/A for this phase (folders only)
 
 ### Testing & Verification
 
-- [ ] `npm run build` passes
-- [ ] `npm run lint` passes
-- [ ] App boots locally (`npm run dev`)
+- [x] `npm run build` passes
+- [x] `npm run lint` passes
+- [x] App boots locally (`npm run dev`)
 
 ### Definition of Done
 
-- [ ] App builds, lints, and runs locally showing a placeholder page
+- [x] App builds, lints, and runs locally showing a placeholder page
 
 ### Out of Scope
 
@@ -75,7 +75,7 @@ Styling, Supabase, routes beyond a placeholder.
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 
