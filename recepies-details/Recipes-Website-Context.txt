@@ -1,0 +1,38 @@
+Recipes Website — Technical Notes
+
+Architecture
+• Supabase (Postgres) + Vercel
+• GitHub → Vercel automatic CI/CD deployment
+• Frontend connects to Supabase via @supabase/supabase-js
+
+Why Supabase instead of static JSON
+• Each new recipe in static JSON requires a git commit + redeploy
+• Static JSON is inconvenient for multi-device entry, especially adding recipes from a phone
+• Database-backed search/filtering avoids doing everything in the frontend over one large JSON file
+
+Supabase / Storage
+• Use Supabase database for recipe data
+• Use Supabase Storage for personal recipe/food photos
+
+Initial data model
+• recipes: name, category, preparation time, cooking time, servings, weight, rating
+• ingredients: recipe_id, name, quantity, unit
+• steps: recipe_id, step/order number, text
+• categories: recipe categories
+• favorites: can be represented as a table or column depending on the final design
+
+Authentication / write access
+• The website is essentially single-user for administration
+• Public read access can be allowed
+• Adding/editing/deleting recipes must be protected
+• Use Supabase RLS (Row Level Security)
+• Admin writes can be handled through an authenticated/password-protected admin route; do not expose privileged/service credentials in the frontend
+
+Deployment
+• Vercel hosts the frontend
+• GitHub is the source repository
+• Push to GitHub → automatic Vercel deployment
+
+Supabase project organization
+• Use a separate Supabase project for the Recipes website
+• Keeping projects separate makes RLS rules, schema management, resets and maintenance cleaner
