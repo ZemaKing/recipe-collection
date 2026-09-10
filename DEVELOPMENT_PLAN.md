@@ -180,35 +180,35 @@ All MVP tables exist with correct relationships and RLS.
 
 ### Tasks
 
-- [ ] Write SQL migrations for `categories`, `tags`, `recipes`, `recipe_ingredients`, `recipe_steps`, `recipe_tags`, `recipe_images`, `meal_plan_entries`, `kitchen_notes`
-- [ ] Add `updated_at` triggers on mutable tables
-- [ ] Check migrations into `supabase/migrations/`
+- [x] Write SQL migrations for `categories`, `tags`, `recipes`, `recipe_ingredients`, `recipe_steps`, `recipe_tags`, `recipe_images`, `meal_plan_entries`, `kitchen_notes`
+- [x] Add `updated_at` triggers on mutable tables
+- [x] Check migrations into `supabase/migrations/`
 
 ### Database / Supabase
 
-- [ ] All tables created in dev project
-- [ ] RLS enabled on every table
-- [ ] Public SELECT policy on every table
-- [ ] Authenticated-only INSERT/UPDATE/DELETE policy on every table
+- [x] All tables created in dev project
+- [x] RLS enabled on every table
+- [x] Public SELECT policy on every table
+- [x] Authenticated-only INSERT/UPDATE/DELETE policy on every table
 - [ ] Cascade delete verified: recipe → ingredients/steps/images
 - [ ] Set-null delete verified: recipe → meal_plan_entries/kitchen_notes
 
 ### UI / UX
 
-- [ ] N/A for this phase
+- [x] N/A for this phase
 
 ### Internationalization
 
-- [ ] Paired `_en`/`_sr` localization columns present per Section 3 schema design
+- [x] Paired `_en`/`_sr` localization columns present per Section 3 schema design
 
 ### Testing & Verification
 
-- [ ] Anonymous SELECT succeeds
-- [ ] Anonymous INSERT/UPDATE/DELETE is rejected
+- [x] Anonymous SELECT succeeds
+- [x] Anonymous INSERT/UPDATE/DELETE is rejected
 
 ### Definition of Done
 
-- [ ] All tables created; anonymous SELECT works; anonymous writes rejected
+- [x] All tables created; anonymous SELECT works; anonymous writes rejected
 
 ### Out of Scope
 
