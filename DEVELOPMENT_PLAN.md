@@ -4,13 +4,13 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 2 — Design System & Application Shell
+Current Phase: Phase 3 — Supabase Project Setup
 MVP Status: In Progress
 
 ## MVP Progress
 
 - [x] Phase 1 — Project Foundation
-- [ ] Phase 2 — Design System & Application Shell
+- [x] Phase 2 — Design System & Application Shell
 - [ ] Phase 3 — Supabase Project Setup
 - [ ] Phase 4 — Core Database Schema & RLS
 - [ ] Phase 5 — i18n Foundation
@@ -87,35 +87,35 @@ Reusable dark-theme design tokens and the sidebar/topbar/bottom-tab shell matchi
 
 ### Tasks
 
-- [ ] Configure Tailwind CSS with color/spacing/radius tokens from the mockup
-- [ ] Build `AppShell` with static sidebar nav (no data yet)
-- [ ] Build topbar with non-functional search input and avatar placeholder
-- [ ] Build mobile bottom tab bar
-- [ ] Wire Radix Dialog/DropdownMenu/Tabs with base styles
+- [x] Configure Tailwind CSS with color/spacing/radius tokens from the mockup
+- [x] Build `AppShell` with static sidebar nav (no data yet)
+- [x] Build topbar with non-functional search input and avatar placeholder
+- [x] Build mobile bottom tab bar
+- [x] Wire Radix Dialog/DropdownMenu/Tabs with base styles
 
 ### Database / Supabase
 
-- [ ] N/A for this phase
+- [x] N/A for this phase
 
 ### UI / UX
 
-- [ ] Desktop shell chrome matches mockup
-- [ ] Tablet shell chrome matches mockup
-- [ ] Mobile shell chrome (bottom tab bar) matches mockup
-- [ ] Sidebar collapse behavior on narrow desktop/tablet widths
+- [x] Desktop shell chrome matches mockup
+- [x] Tablet shell chrome matches mockup
+- [x] Mobile shell chrome (bottom tab bar) matches mockup
+- [x] Sidebar collapse behavior on narrow desktop/tablet widths
 
 ### Internationalization
 
-- [ ] N/A for this phase (hardcoded placeholder strings acceptable)
+- [x] N/A for this phase (hardcoded placeholder strings acceptable)
 
 ### Testing & Verification
 
-- [ ] Visual check against mockup at desktop/tablet/mobile breakpoints
+- [x] Visual check against mockup at desktop/tablet/mobile breakpoints
 
 ### Definition of Done
 
-- [ ] Shell renders correctly at desktop/tablet/mobile widths
-- [ ] Navigation links exist (stubs acceptable)
+- [x] Shell renders correctly at desktop/tablet/mobile widths
+- [x] Navigation links exist (stubs acceptable)
 
 ### Out of Scope
 
@@ -123,7 +123,7 @@ Real data, i18n text, auth-aware UI.
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 
