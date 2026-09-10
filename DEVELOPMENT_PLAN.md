@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 4 — Core Database Schema & RLS
+Current Phase: Phase 5 — i18n Foundation
 MVP Status: In Progress
 
 ## MVP Progress
@@ -12,7 +12,7 @@ MVP Status: In Progress
 - [x] Phase 1 — Project Foundation
 - [x] Phase 2 — Design System & Application Shell
 - [x] Phase 3 — Supabase Project Setup
-- [ ] Phase 4 — Core Database Schema & RLS
+- [x] Phase 4 — Core Database Schema & RLS
 - [ ] Phase 5 — i18n Foundation
 - [ ] Phase 6 — Seed / Sample Data
 - [ ] Phase 7 — Recipe Listing Dashboard (Home)
@@ -190,8 +190,8 @@ All MVP tables exist with correct relationships and RLS.
 - [x] RLS enabled on every table
 - [x] Public SELECT policy on every table
 - [x] Authenticated-only INSERT/UPDATE/DELETE policy on every table
-- [ ] Cascade delete verified: recipe → ingredients/steps/images
-- [ ] Set-null delete verified: recipe → meal_plan_entries/kitchen_notes
+- [x] Cascade delete verified: recipe → ingredients/steps/images
+- [x] Set-null delete verified: recipe → meal_plan_entries/kitchen_notes
 
 ### UI / UX
 
@@ -216,7 +216,7 @@ Auth user creation, seed data.
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 
