@@ -29,7 +29,12 @@
     "subtitle": "Pronađi savršen recept za svaki trenutak.",
     "searchPlaceholder": "Pretraži recepte, sastojke...",
     "search": "Pretraga",
-    "theme": "Tema"
+    "theme": "Tema",
+    "language": "Jezik"
+  },
+  "language": {
+    "sr": "Srpski",
+    "en": "English"
   },
   "home": {
     "recentRecipes": "Nedavni recepti",

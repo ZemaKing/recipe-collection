@@ -29,7 +29,12 @@
     "subtitle": "Find the perfect recipe for every moment.",
     "searchPlaceholder": "Search recipes, ingredients...",
     "search": "Search",
-    "theme": "Theme"
+    "theme": "Theme",
+    "language": "Language"
+  },
+  "language": {
+    "sr": "Srpski",
+    "en": "English"
   },
   "home": {
     "recentRecipes": "Recent Recipes",

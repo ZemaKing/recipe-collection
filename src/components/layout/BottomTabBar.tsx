@@ -1,11 +1,14 @@
 import { Plus } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
+import { useCurrentLang } from '@/hooks/useCurrentLang'
+import { buildLocalizedPath } from '@/lib/localizedPath'
 import { cn } from '@/lib/utils'
 import { bottomTabItems } from './nav-items'
 
 function BottomTabBar() {
   const { t } = useTranslation()
+  const lang = useCurrentLang()
   const [first, second, ...rest] = bottomTabItems
 
   return (
@@ -13,7 +16,7 @@ function BottomTabBar() {
       {[first, second].map((item) => (
         <NavLink
           key={item.path}
-          to={item.path}
+          to={buildLocalizedPath(lang, item.path)}
           end={item.path === '/'}
           className={({ isActive }) =>
             cn(
@@ -28,7 +31,7 @@ function BottomTabBar() {
       ))}
 
       <NavLink
-        to="/admin/recepti/novi"
+        to={buildLocalizedPath(lang, '/admin/recepti/novi')}
         className="-mt-6 flex size-12 shrink-0 items-center justify-center rounded-full bg-accent text-accent-foreground shadow-lg transition-colors hover:bg-accent-hover"
         title={t('nav.addRecipe')}
       >
@@ -38,7 +41,7 @@ function BottomTabBar() {
       {rest.map((item) => (
         <NavLink
           key={item.path}
-          to={item.path}
+          to={buildLocalizedPath(lang, item.path)}
           className={({ isActive }) =>
             cn(
               'flex flex-col items-center gap-1 rounded-control px-3 py-1 text-xs text-muted-foreground',

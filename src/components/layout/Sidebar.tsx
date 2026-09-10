@@ -1,6 +1,8 @@
 import { ChefHat, Plus } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
+import { useCurrentLang } from '@/hooks/useCurrentLang'
+import { buildLocalizedPath } from '@/lib/localizedPath'
 import { cn } from '@/lib/utils'
 import { categoryNavItems, primaryNavItems } from './nav-items'
 
@@ -14,11 +16,13 @@ function NavRow({
   labelKey: string
 }) {
   const { t } = useTranslation()
+  const lang = useCurrentLang()
   const label = t(labelKey)
+  const to = buildLocalizedPath(lang, path)
 
   return (
     <NavLink
-      to={path}
+      to={to}
       end={path === '/'}
       className={({ isActive }) =>
         cn(
@@ -36,6 +40,7 @@ function NavRow({
 
 function Sidebar() {
   const { t } = useTranslation()
+  const lang = useCurrentLang()
 
   return (
     <aside className="hidden shrink-0 flex-col border-r border-border bg-surface md:flex md:w-20 lg:w-64">
@@ -63,7 +68,7 @@ function Sidebar() {
 
       <div className="border-t border-border p-3">
         <NavLink
-          to="/admin/recepti/novi"
+          to={buildLocalizedPath(lang, '/admin/recepti/novi')}
           className="flex items-center justify-center gap-2 rounded-control bg-accent px-3 py-2 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent-hover"
           title={t('nav.addRecipe')}
         >

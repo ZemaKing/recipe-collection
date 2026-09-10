@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 5 — i18n Foundation
+Current Phase: Phase 6 — Seed / Sample Data
 MVP Status: In Progress
 
 ## MVP Progress
@@ -13,7 +13,7 @@ MVP Status: In Progress
 - [x] Phase 2 — Design System & Application Shell
 - [x] Phase 3 — Supabase Project Setup
 - [x] Phase 4 — Core Database Schema & RLS
-- [ ] Phase 5 — i18n Foundation
+- [x] Phase 5 — i18n Foundation
 - [ ] Phase 6 — Seed / Sample Data
 - [ ] Phase 7 — Recipe Listing Dashboard (Home)
 - [ ] Phase 8 — Categories & "All Recipes" Browsing
@@ -228,37 +228,37 @@ Working EN/SR UI language switching end-to-end.
 
 ### Tasks
 
-- [ ] Set up `react-i18next` + `i18next-browser-languagedetector`
-- [ ] Create `en`/`sr` namespace files for shell strings
-- [ ] Implement locale-prefixed routing (`/:lang/*`) with root redirect
-- [ ] Build `LanguageSwitcher` component
-- [ ] Persist language choice to `localStorage`
-- [ ] Sync `<html lang>` on language change
+- [x] Set up `react-i18next` + `i18next-browser-languagedetector`
+- [x] Create `en`/`sr` namespace files for shell strings
+- [x] Implement locale-prefixed routing (`/:lang/*`) with root redirect
+- [x] Build `LanguageSwitcher` component
+- [x] Persist language choice to `localStorage`
+- [x] Sync `<html lang>` on language change
 
 ### Database / Supabase
 
-- [ ] N/A for this phase
+- [x] N/A for this phase
 
 ### UI / UX
 
-- [ ] Shell strings from Phase 2 replaced with translated strings
-- [ ] Switcher added to topbar
+- [x] Shell strings from Phase 2 replaced with translated strings
+- [x] Switcher added to topbar
 
 ### Internationalization
 
-- [ ] Locale detection order implemented: URL → localStorage → browser → fallback `en`
-- [ ] Unknown `:lang` segment redirects to detected/fallback locale
-- [ ] Refresh on `/sr/...` deep link preserves language
+- [x] Locale detection order implemented: URL → localStorage → browser → fallback `sr` (Serbian is default/fallback; English second; detector list is extensible for future languages)
+- [x] Unknown `:lang` segment redirects to detected/fallback locale
+- [x] Refresh on `/sr/...` deep link preserves language
 
 ### Testing & Verification
 
-- [ ] Manual: switch languages and verify UI updates
-- [ ] Manual: refresh on both locale prefixes, verify persistence
+- [x] Manual: switch languages and verify UI updates
+- [x] Manual: refresh on both locale prefixes, verify persistence
 
 ### Definition of Done
 
-- [ ] Every shell string renders in the selected language
-- [ ] Switching updates URL, persists choice, and updates `<html lang>`
+- [x] Every shell string renders in the selected language
+- [x] Switching updates URL, persists choice, and updates `<html lang>`
 
 ### Out of Scope
 
@@ -266,7 +266,7 @@ Recipe/category content translation (no data yet).
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 

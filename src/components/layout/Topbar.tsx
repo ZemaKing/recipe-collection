@@ -1,5 +1,6 @@
 import { ChefHat, Search, SunMedium, User } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import LanguageSwitcher from './LanguageSwitcher'
 
 function Topbar() {
   const { t } = useTranslation()
@@ -42,6 +43,8 @@ function Topbar() {
         >
           <SunMedium className="size-4" />
         </button>
+
+        <LanguageSwitcher />
 
         <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-surface-elevated text-muted-foreground">
           <User className="size-4" />
