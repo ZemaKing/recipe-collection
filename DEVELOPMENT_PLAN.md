@@ -135,28 +135,28 @@ A connected, working Supabase client.
 
 ### Tasks
 
-- [ ] Create dedicated Supabase project (dev)
-- [ ] Configure `.env.local` with `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY`
-- [ ] Create `src/lib/supabaseClient.ts`
-- [ ] Implement a basic connectivity health-check query
+- [x] Create dedicated Supabase project (dev)
+- [x] Configure `.env.local` with `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY`
+- [x] Create `src/lib/supabaseClient.ts`
+- [x] Implement a basic connectivity health-check query
 
 ### Database / Supabase
 
-- [ ] Supabase project created
-- [ ] Anon key retrieved and stored only in env vars
+- [x] Supabase project created
+- [x] Anon key retrieved and stored only in env vars
 
 ### UI / UX
 
-- [ ] N/A for this phase
+- [x] N/A for this phase
 
 ### Internationalization
 
-- [ ] N/A for this phase
+- [x] N/A for this phase
 
 ### Testing & Verification
 
-- [ ] Manual: client successfully pings Supabase in dev
-- [ ] Missing/invalid env vars fail loudly in dev
+- [x] Manual: client successfully pings Supabase in dev
+- [x] Missing/invalid env vars fail loudly in dev
 
 ### Definition of Done
 
