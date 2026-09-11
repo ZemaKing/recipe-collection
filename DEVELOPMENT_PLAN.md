@@ -273,3 +273,46 @@ Reordering categories/tags (rely on alphabetical or creation order); bulk catego
 ### Phase Status
 
 - [ ] Phase Complete
+
+---
+
+## Phase 7 — "From Mom" Quick Filter (not scheduled)
+
+### Goal
+
+A special quick-filter tag for recipes passed down from the user's mother ("Mamin recept" / "From Mom"), styled in pink/red instead of the shared green used for the other quick filters (Za početnike, Bez glutena, Brzi recepti, Sezonski recepti, Vegetarijanski) added in the earlier quick-filters redesign.
+
+### Tasks
+
+- [ ] Add a `mamin-recept` tag row (name_en "From Mom", name_sr "Mamin recept") — via `supabase/seed.sql` if done before Phase 6 ships, or through the Phase 6 admin tag UI once it exists
+- [ ] Add an icon for it in `src/lib/tagIcons.ts` (e.g. `Heart`, distinct from the other tags' icons)
+- [ ] Give this one tag pink/red styling instead of the generic green `--color-tag` tokens — reuse the existing `--color-favorite` token (already pink/red, used for the favorite heart) rather than introducing a new color token
+- [ ] Update the tag-rendering logic in `Sidebar`'s `QuickFilters` and `AllRecipesPage`'s tag chips (both the mobile full-list and desktop active-list) to special-case this tag's color instead of applying the uniform `text-tag`/`bg-tag-soft`/`border-tag` classes used for every other tag
+
+### Database / Supabase
+
+- [ ] New `tags` row (no schema change — `tags` table already supports arbitrary rows)
+
+### UI / UX
+
+- [ ] Icon and label consistently pink/red everywhere this tag appears (sidebar icon-only tablet state, sidebar full label, mobile/desktop filter chips), matching the always-colored-icon pattern established for the other quick filters
+
+### Internationalization
+
+- [ ] name_en/name_sr on the tag row cover both languages, consistent with how other tags work (no locale-file changes needed)
+
+### Testing & Verification
+
+- [ ] Manual: filtering by "Mamin recept" works identically to other tags functionally, differing only in color
+
+### Definition of Done
+
+- [ ] "Mamin recept"/"From Mom" appears as a quick filter everywhere the other tags do, visually distinguished in pink/red
+
+### Out of Scope
+
+A dedicated "family recipes" browsing page beyond the standard tag filter; per-tag custom colors for tags other than this one.
+
+### Phase Status
+
+- [ ] Phase Complete
