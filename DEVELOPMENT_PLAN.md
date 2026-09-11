@@ -175,3 +175,46 @@ General Storage quota/cost monitoring.
 ### Phase Status
 
 - [ ] Phase Complete
+
+---
+
+## Phase 5 — Favorites Page (not scheduled)
+
+### Goal
+
+Give the `/omiljeni` nav destination (sidebar + bottom tab bar, linked since Phase 2/Phase 7) an actual page instead of the "hasn't been implemented yet" placeholder. Phase 17 wired up the favorite toggle itself (`is_favorite`, heart icon, `?favorite=1` filter on `/recepti`) but never built a dedicated listing page.
+
+### Tasks
+
+- [ ] Add a `useFavoriteRecipes` hook (favorites-only query), matching the existing one-hook-per-query-shape pattern
+- [ ] Build the `/omiljeni` page reusing the established `RecipeCard` grid + `EmptyState` pattern from `AllRecipesPage`/`CategoryRecipesPage`
+- [ ] Replace the `PlaceholderPage` route for `omiljeni` in `App.tsx` with the real page
+
+### Database / Supabase
+
+- [ ] N/A — reuses the existing `is_favorite` column and RLS policies
+
+### UI / UX
+
+- [ ] Empty state when the admin has no favorites yet
+- [ ] Grid matches the existing browse pages' responsive breakpoints
+
+### Internationalization
+
+- [ ] Page title/empty-state copy localized (EN/SR) — likely already present from the nav label and placeholder strings
+
+### Testing & Verification
+
+- [ ] Manual: favoriting/unfavoriting a recipe is reflected on `/omiljeni`
+
+### Definition of Done
+
+- [ ] `/omiljeni` shows the admin's favorited recipes in the standard grid, with a proper empty state, instead of the placeholder
+
+### Out of Scope
+
+Per-visitor (non-admin) favorites.
+
+### Phase Status
+
+- [ ] Phase Complete
