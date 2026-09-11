@@ -13,6 +13,7 @@ function recipe(overrides: Partial<SearchableRecipe>): SearchableRecipe {
     rating: 0,
     is_favorite: false,
     category: null,
+    image: null,
     created_at: '2024-01-01T00:00:00.000Z',
     ingredients: [],
     tagSlugs: [],

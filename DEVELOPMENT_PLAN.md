@@ -513,27 +513,27 @@ Real images served from Supabase Storage.
 
 ### Tasks
 
-- [ ] Create `recipe-images` bucket
-- [ ] Update seed data to reference real uploaded sample images
-- [ ] Wire `ImageGallery`/`RecipeCard` to Storage public URLs
+- [x] Create `recipe-images` bucket
+- [ ] Update seed data to reference real uploaded sample images — 2/14 uploaded (`gulas`, `raffaello-kuglice`); seed.sql already points every recipe at the right `seed/<slug>.jpg` path, remaining 12 just need the actual files uploaded
+- [x] Wire `ImageGallery`/`RecipeCard` to Storage public URLs
 
 ### Database / Supabase
 
-- [ ] Public-read bucket policy
-- [ ] Authenticated-write bucket policy
+- [x] Public-read bucket policy
+- [x] Authenticated-write bucket policy
 
 ### UI / UX
 
-- [ ] Loading state for images
-- [ ] Broken/missing image fallback graphic (not broken-image icon)
+- [x] Loading state for images
+- [x] Broken/missing image fallback graphic (not broken-image icon)
 
 ### Internationalization
 
-- [ ] `alt_en`/`alt_sr` used for image alt text per locale
+- [x] `alt_en`/`alt_sr` used for image alt text per locale
 
 ### Testing & Verification
 
-- [ ] Manual: intentionally broken image path shows fallback
+- [x] Manual: intentionally broken image path shows fallback
 
 ### Definition of Done
 

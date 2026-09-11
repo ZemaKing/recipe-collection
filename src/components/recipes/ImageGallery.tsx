@@ -1,16 +1,16 @@
-import { ImageOff } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
+import RecipeImage from '@/components/recipes/RecipeImage'
+import type { RecipeImageRef } from '@/types/recipe'
 
-// Storage isn't wired until Phase 11, so this always renders the
-// missing-image placeholder for now rather than a real gallery.
-function ImageGallery() {
-  const { t } = useTranslation()
+interface ImageGalleryProps {
+  image: RecipeImageRef | null
+  alt: string
+}
 
-  return (
-    <div className="flex aspect-video w-full items-center justify-center rounded-card bg-surface-elevated text-muted-foreground">
-      <ImageOff className="size-10" aria-label={t('recipeCard.noImage')} />
-    </div>
-  )
+// Only ever shows one image for now — none of the sample recipes have more
+// than one photo yet, so gallery navigation (arrows/counter) is deferred
+// until that's actually needed.
+function ImageGallery({ image, alt }: ImageGalleryProps) {
+  return <RecipeImage image={image} alt={alt} className="aspect-video w-full rounded-card" />
 }
 
 export default ImageGallery

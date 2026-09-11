@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
-import { RECIPE_SUMMARY_SELECT } from '@/lib/recipeQueries'
+import { mapRecipeSummaryRow, RECIPE_SUMMARY_SELECT, type RawImageRow } from '@/lib/recipeQueries'
 import type { RecipeSummary } from '@/types/recipe'
 
 interface CategoryInfo {
@@ -58,7 +58,10 @@ export function useRecipesByCategory(slug: string) {
       if (recipesError) {
         setError(recipesError.message)
       } else {
-        setRecipes((recipeRows ?? []) as unknown as RecipeSummary[])
+        const rows = (recipeRows ?? []) as unknown as (Omit<RecipeSummary, 'image'> & {
+          images: RawImageRow[]
+        })[]
+        setRecipes(rows.map(mapRecipeSummaryRow))
       }
       setIsLoading(false)
     }

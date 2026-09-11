@@ -23,6 +23,9 @@ function RecipeDetailHero({ recipe }: RecipeDetailHeroProps) {
   const categoryName = recipe.category
     ? pickLocalized(recipe.category.name_en, recipe.category.name_sr, lang)
     : null
+  const imageAlt = recipe.image
+    ? pickLocalized(recipe.image.alt_en ?? name, recipe.image.alt_sr, lang)
+    : t('recipeCard.noImage')
 
   async function handleShare() {
     const url = window.location.href
@@ -41,7 +44,7 @@ function RecipeDetailHero({ recipe }: RecipeDetailHeroProps) {
 
   return (
     <div className="flex flex-col gap-4">
-      <ImageGallery />
+      <ImageGallery image={recipe.image} alt={imageAlt} />
 
       <div className="flex flex-col gap-2">
         <div className="flex items-start justify-between gap-3">

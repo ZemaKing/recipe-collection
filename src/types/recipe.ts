@@ -1,3 +1,9 @@
+export interface RecipeImageRef {
+  storage_path: string
+  alt_en: string | null
+  alt_sr: string | null
+}
+
 export interface RecipeSummary {
   id: string
   slug: string
@@ -8,6 +14,7 @@ export interface RecipeSummary {
   rating: number
   is_favorite: boolean
   category: { slug: string; name_en: string; name_sr: string | null } | null
+  image: RecipeImageRef | null
 }
 
 // Superset used by the browse/search page: adds ingredient names (for search

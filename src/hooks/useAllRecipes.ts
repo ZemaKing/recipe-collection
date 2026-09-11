@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
-import { SEARCHABLE_RECIPE_SELECT } from '@/lib/recipeQueries'
+import { mapRecipeSummaryRow, SEARCHABLE_RECIPE_SELECT, type RawImageRow } from '@/lib/recipeQueries'
 import type { SearchableRecipe } from '@/types/recipe'
 
 interface RawTagRow {
@@ -26,11 +26,14 @@ export function useAllRecipes() {
       if (error) {
         setError(error.message)
       } else {
-        const rows = (data ?? []) as unknown as (SearchableRecipe & { recipe_tags: RawTagRow[] })[]
+        const rows = (data ?? []) as unknown as (Omit<SearchableRecipe, 'image'> & {
+          images: RawImageRow[]
+          recipe_tags: RawTagRow[]
+        })[]
         setRecipes(
-          rows.map(({ recipe_tags, ...recipe }) => ({
-            ...recipe,
-            tagSlugs: recipe_tags.map((row) => row.tags?.slug).filter((slug): slug is string => !!slug),
+          rows.map(({ recipe_tags, ...row }) => ({
+            ...mapRecipeSummaryRow(row),
+            tagSlugs: recipe_tags.map((tagRow) => tagRow.tags?.slug).filter((slug): slug is string => !!slug),
           })),
         )
       }

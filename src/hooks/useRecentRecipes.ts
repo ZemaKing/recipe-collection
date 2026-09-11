@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import type { QuickFilter } from '@/components/recipes/QuickFilterChips'
-import { RECIPE_SUMMARY_SELECT } from '@/lib/recipeQueries'
+import { mapRecipeSummaryRow, RECIPE_SUMMARY_SELECT, type RawImageRow } from '@/lib/recipeQueries'
 import type { RecipeSummary } from '@/types/recipe'
 
 export type { RecipeSummary as RecentRecipe } from '@/types/recipe'
@@ -38,7 +38,8 @@ export function useRecentRecipes(filter: QuickFilter) {
       if (error) {
         setError(error.message)
       } else {
-        setRecipes((data ?? []) as unknown as RecipeSummary[])
+        const rows = (data ?? []) as unknown as (Omit<RecipeSummary, 'image'> & { images: RawImageRow[] })[]
+        setRecipes(rows.map(mapRecipeSummaryRow))
       }
       setIsLoading(false)
     }

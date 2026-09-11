@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
+import { pickPrimaryImage } from '@/lib/recipeQueries'
 import { supabase } from '@/lib/supabaseClient'
+import type { RecipeImageRef } from '@/types/recipe'
 
 export type Difficulty = 'easy' | 'medium' | 'hard'
 
@@ -39,6 +41,7 @@ export interface RecipeDetail {
   rating: number
   is_favorite: boolean
   category: { slug: string; name_en: string; name_sr: string | null } | null
+  image: RecipeImageRef | null
   ingredients: RecipeIngredient[]
   steps: RecipeStep[]
 }
@@ -48,6 +51,7 @@ const RECIPE_DETAIL_SELECT = `
   prep_notes_en, prep_notes_sr, tips_en, tips_sr,
   prep_time_minutes, cook_time_minutes, servings, weight_grams, difficulty, rating, is_favorite,
   category:categories(slug, name_en, name_sr),
+  images:recipe_images(storage_path, alt_en, alt_sr, is_primary),
   ingredients:recipe_ingredients(id, order_index, name_en, name_sr, quantity, unit_en, unit_sr),
   steps:recipe_steps(id, step_number, text_en, text_sr)
 `
@@ -80,7 +84,10 @@ export function useRecipeBySlug(slug: string) {
       } else if (!data) {
         setNotFound(true)
       } else {
-        setRecipe(data as unknown as RecipeDetail)
+        const { images, ...rest } = data as unknown as RecipeDetail & {
+          images: { storage_path: string; alt_en: string | null; alt_sr: string | null; is_primary: boolean }[]
+        }
+        setRecipe({ ...rest, image: pickPrimaryImage(images) })
       }
       setIsLoading(false)
     }

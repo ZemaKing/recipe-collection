@@ -28,7 +28,7 @@ function RecipeDetailPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <RecipeDetailHero recipe={recipe} />
+      <RecipeDetailHero key={recipe.slug} recipe={recipe} />
       <RecipeMeta recipe={recipe} />
 
       <div className="flex flex-col gap-6 lg:flex-row lg:items-start">

@@ -1,6 +1,7 @@
-import { Clock, ImageOff } from 'lucide-react'
+import { Clock } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import RecipeImage from '@/components/recipes/RecipeImage'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
 import { formatDuration } from '@/lib/format'
 import { pickLocalized } from '@/lib/localizedField'
@@ -22,15 +23,20 @@ function RecipeCard({ recipe }: RecipeCardProps) {
   const duration = formatDuration(
     (recipe.prep_time_minutes ?? 0) + (recipe.cook_time_minutes ?? 0) || null,
   )
+  const imageAlt = recipe.image
+    ? pickLocalized(recipe.image.alt_en ?? name, recipe.image.alt_sr, lang)
+    : t('recipeCard.noImage')
 
   return (
     <Link
       to={buildLocalizedPath(lang, `/recepti/${recipe.slug}`)}
       className="flex w-full flex-col gap-2 rounded-card border border-border bg-surface p-2 transition-colors hover:border-accent/50"
     >
-      <div className="flex aspect-square items-center justify-center rounded-[calc(var(--radius-card)-0.5rem)] bg-surface-elevated text-muted-foreground">
-        <ImageOff className="size-6" aria-label={t('recipeCard.noImage')} />
-      </div>
+      <RecipeImage
+        image={recipe.image}
+        alt={imageAlt}
+        className="aspect-square w-full rounded-[calc(var(--radius-card)-0.5rem)]"
+      />
       <div className="flex flex-col gap-0.5 px-1 pb-1">
         <p className="truncate text-sm font-semibold text-foreground">{name}</p>
         {categoryName && <p className="truncate text-xs text-muted-foreground">{categoryName}</p>}
