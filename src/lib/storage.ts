@@ -76,3 +76,19 @@ export async function deleteRecipeImageFile(storagePath: string): Promise<void> 
   const { error } = await supabase.storage.from(RECIPE_IMAGES_BUCKET).remove([storagePath])
   if (error) throw error
 }
+
+// Removes every object under a recipe's image folder (uploadRecipeImage keys
+// objects by `${recipeId}/...`). Lists directly from Storage rather than the
+// recipe_images table so it also cleans up files left behind by a failed
+// upload that never got a DB row.
+export async function deleteRecipeImageFolder(recipeId: string): Promise<void> {
+  const { data: files, error: listError } = await supabase.storage
+    .from(RECIPE_IMAGES_BUCKET)
+    .list(recipeId)
+  if (listError) throw listError
+  if (!files || files.length === 0) return
+
+  const paths = files.map((file) => `${recipeId}/${file.name}`)
+  const { error } = await supabase.storage.from(RECIPE_IMAGES_BUCKET).remove(paths)
+  if (error) throw error
+}

@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 16 — Recipe Delete & Admin List Management
+Current Phase: Phase 17 — Favorites (writable)
 MVP Status: In Progress
 
 ## MVP Progress
@@ -24,7 +24,7 @@ MVP Status: In Progress
 - [x] Phase 13 — Admin Shell
 - [x] Phase 14 — Recipe Create/Edit Form
 - [x] Phase 15 — Image Upload/Replace/Delete
-- [ ] Phase 16 — Recipe Delete & Admin List Management
+- [x] Phase 16 — Recipe Delete & Admin List Management
 - [ ] Phase 17 — Favorites (writable)
 - [ ] Phase 18 — Meal Planning
 - [ ] Phase 19 — Kitchen Notes
@@ -742,32 +742,32 @@ Safe recipe deletion and a manageable admin list.
 
 ### Tasks
 
-- [ ] Build delete action with confirmation dialog
-- [ ] Implement cascading DB delete + Storage object cleanup
-- [ ] Add admin list search/sort/pagination for 100+ recipes
+- [x] Build delete action with confirmation dialog
+- [x] Implement cascading DB delete + Storage object cleanup
+- [x] Add admin list search/sort/pagination for 100+ recipes
 
 ### Database / Supabase
 
-- [ ] Delete mutation
-- [ ] Storage bulk delete for the recipe's folder
+- [x] Delete mutation
+- [x] Storage bulk delete for the recipe's folder
 
 ### UI / UX
 
-- [ ] Confirmation dialog
-- [ ] Admin list toolbar controls
+- [x] Confirmation dialog
+- [x] Admin list toolbar controls
 
 ### Internationalization
 
-- [ ] Confirmation copy localized
+- [x] Confirmation copy localized
 
 ### Testing & Verification
 
-- [ ] Manual: delete verifies DB cascade + Storage cleanup + meal-plan/notes references survive as null
-- [ ] Double-submit protection verified
+- [x] Manual: delete verifies DB cascade + Storage cleanup + meal-plan/notes references survive as null
+- [x] Double-submit protection verified
 
 ### Definition of Done
 
-- [ ] Admin can safely delete a recipe with confirmation; no orphaned Storage files remain; dependent meal-plan/notes rows survive with reference cleared
+- [x] Admin can safely delete a recipe with confirmation; no orphaned Storage files remain; dependent meal-plan/notes rows survive with reference cleared
 
 ### Out of Scope
 
@@ -775,7 +775,7 @@ Bulk delete.
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 

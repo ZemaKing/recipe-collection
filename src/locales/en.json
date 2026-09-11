@@ -160,6 +160,22 @@
       "mealPlan": "Meal Plan",
       "notes": "Notes"
     },
+    "recipesList": {
+      "searchPlaceholder": "Search recipes...",
+      "sortName": "Name",
+      "sortRating": "Rating",
+      "sortRecent": "Recently added",
+      "noResults": "No recipes match your search.",
+      "delete": "Delete",
+      "deleteTitle": "Delete recipe?",
+      "deleteDescription": "This will permanently delete \"{{name}}\" and its images. This cannot be undone.",
+      "cancel": "Cancel",
+      "confirmDelete": "Delete",
+      "deleting": "Deleting...",
+      "previous": "Previous",
+      "next": "Next",
+      "pageOf": "Page {{page}} of {{pageCount}}"
+    },
     "recipeForm": {
       "basics": "Basics",
       "nameEn": "Name (EN)",
