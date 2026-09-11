@@ -29,7 +29,8 @@
     "subtitle": "Pronađi savršen recept za svaki trenutak.",
     "searchPlaceholder": "Pretraži recepte, sastojke...",
     "search": "Pretraga",
-    "theme": "Tema",
+    "switchToLight": "Prebaci na svetlu temu",
+    "switchToDark": "Prebaci na tamnu temu",
     "language": "Jezik"
   },
   "language": {

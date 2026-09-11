@@ -29,7 +29,8 @@
     "subtitle": "Find the perfect recipe for every moment.",
     "searchPlaceholder": "Search recipes, ingredients...",
     "search": "Search",
-    "theme": "Theme",
+    "switchToLight": "Switch to light theme",
+    "switchToDark": "Switch to dark theme",
     "language": "Language"
   },
   "language": {

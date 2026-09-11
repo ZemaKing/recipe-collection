@@ -1144,10 +1144,54 @@ Full unit-test coverage of every component.
 
 Backlog only — not part of MVP or Post-MVP polish. Promote items here to a new phase if the user decides to pursue them:
 
-- [ ] Light theme toggle
+- [ ] Light theme toggle — promoted to Phase 26
 - [ ] Printable recipe view
 - [ ] Public shareable recipe links with rich previews
 - [ ] Nutrition info fields
 - [ ] Ingredient master-catalog with autocomplete
 - [ ] Postgres full-text search (if collection grows large)
 - [ ] Automated Storage orphan-sweep job
+
+---
+
+## Phase 26 — Light Theme Toggle
+
+### Goal
+
+A working light/dark theme toggle without changing the app's dark-first visual identity.
+
+### Tasks
+
+- [x] Define light theme color tokens alongside the existing dark tokens
+- [x] Build theme persistence (localStorage) with FOUC-safe initial class application
+- [x] Wire the existing topbar theme button (public + admin) to toggle/persist theme
+
+### Database / Supabase
+
+- [x] N/A for this phase
+
+### UI / UX
+
+- [x] Contrast/readability verified across major screens in light theme (cards, buttons, badges, favorite/accent colors)
+- [x] Toggle icon reflects current/target theme
+
+### Internationalization
+
+- [x] Toggle button labels localized (EN/SR)
+
+### Testing & Verification
+
+- [x] Manual: toggle persists across reload and across route navigation (public ↔ admin)
+- [x] Manual: no flash of incorrect theme on initial load
+
+### Definition of Done
+
+- [x] User can switch between dark and light themes from both the public and admin topbar; the choice persists across reloads; both themes are readable/consistent app-wide
+
+### Out of Scope
+
+System-preference auto-detection, per-component custom theming beyond the shared token set.
+
+### Phase Status
+
+- [x] Phase Complete

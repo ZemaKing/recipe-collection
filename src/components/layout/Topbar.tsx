@@ -1,4 +1,4 @@
-import { ChefHat, Search, SunMedium, User } from 'lucide-react'
+import { ChefHat, Search, User } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
@@ -6,6 +6,7 @@ import { useCurrentLang } from '@/hooks/useCurrentLang'
 import { buildLocalizedPath, stripLangPrefix } from '@/lib/localizedPath'
 import { QUERY_PARAM } from '@/lib/recipeSearchParams'
 import LanguageSwitcher from './LanguageSwitcher'
+import ThemeToggleButton from './ThemeToggleButton'
 
 function Topbar() {
   const { t } = useTranslation()
@@ -60,13 +61,7 @@ function Topbar() {
           <Search className="size-4" />
         </button>
 
-        <button
-          type="button"
-          className="flex size-9 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:text-foreground"
-          title={t('topbar.theme')}
-        >
-          <SunMedium className="size-4" />
-        </button>
+        <ThemeToggleButton />
 
         <LanguageSwitcher />
 

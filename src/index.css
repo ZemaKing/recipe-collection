@@ -28,6 +28,29 @@
     color-scheme: dark;
   }
 
+  /* Light theme overrides — same token names, so every existing bg-/text-
+     utility repaints automatically when `.light` is toggled on <html>. */
+  .light {
+    color-scheme: light;
+
+    --color-background: #f7f5f1;
+    --color-surface: #ffffff;
+    --color-surface-hover: #f0ede6;
+    --color-surface-elevated: #faf8f4;
+    --color-border: #e2ddd0;
+    --color-border-subtle: #ece8de;
+
+    --color-foreground: #211d16;
+    --color-muted-foreground: #6b6459;
+
+    --color-accent: #b45309;
+    --color-accent-hover: #d97706;
+    --color-accent-foreground: #fffaf0;
+    --color-accent-soft: #fdecc8;
+
+    --color-favorite: #e11d48;
+  }
+
   body {
     @apply bg-background text-foreground antialiased;
     margin: 0;

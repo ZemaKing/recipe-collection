@@ -5,6 +5,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
 import { buildLocalizedPath } from '@/lib/localizedPath'
 import LanguageSwitcher from './LanguageSwitcher'
+import ThemeToggleButton from './ThemeToggleButton'
 
 function AdminTopbar() {
   const { t } = useTranslation()
@@ -27,6 +28,7 @@ function AdminTopbar() {
       <h1 className="hidden text-lg font-semibold md:block">{t('admin.shellName')}</h1>
 
       <div className="ml-auto flex items-center gap-3">
+        <ThemeToggleButton />
         <LanguageSwitcher />
 
         {session?.user.email && (
