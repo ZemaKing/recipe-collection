@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 9 — Search & Filtering (incl. quick-filter tags)
+Current Phase: Phase 10 — Recipe Detail Page
 MVP Status: In Progress
 
 ## MVP Progress
@@ -17,7 +17,7 @@ MVP Status: In Progress
 - [x] Phase 6 — Seed / Sample Data
 - [x] Phase 7 — Recipe Listing Dashboard (Home)
 - [x] Phase 8 — Categories & "All Recipes" Browsing
-- [ ] Phase 9 — Search & Filtering (incl. quick-filter tags)
+- [x] Phase 9 — Search & Filtering (incl. quick-filter tags)
 - [ ] Phase 10 — Recipe Detail Page
 - [ ] Phase 11 — Storage & Image Display
 - [ ] Phase 12 — Authentication
@@ -419,32 +419,32 @@ Functional search bar, category/favorite filters, and tag-based quick filters.
 
 ### Tasks
 
-- [ ] Implement client-side search (name EN/SR + ingredient names)
-- [ ] Implement tag chips (Brzi recepti/Za početnike/Vegetarijanski/Bez glutena/Sezonski recepti) via `recipe_tags`
-- [ ] Implement sort control (rating/time/recently added)
-- [ ] Wire topbar `SearchBar` and sidebar "Brzi filteri" panel
+- [x] Implement client-side search (name EN/SR + ingredient names)
+- [x] Implement tag chips (Brzi recepti/Za početnike/Vegetarijanski/Bez glutena/Sezonski recepti) via `recipe_tags`
+- [x] Implement sort control (rating/time/recently added)
+- [x] Wire topbar `SearchBar` and sidebar "Brzi filteri" panel
 
 ### Database / Supabase
 
-- [ ] `useTags` hook
-- [ ] Tag-filtered recipe query
+- [x] `useTags` hook
+- [x] Tag-filtered recipe query
 
 ### UI / UX
 
-- [ ] No-results state with clear-filters action
+- [x] No-results state with clear-filters action
 
 ### Internationalization
 
-- [ ] Tag labels localized
-- [ ] Search matches across both `name_en`/`name_sr`
+- [x] Tag labels localized
+- [x] Search matches across both `name_en`/`name_sr`
 
 ### Testing & Verification
 
-- [ ] Unit test: client-side filter/search function (name/ingredient match, tag logic)
+- [x] Unit test: client-side filter/search function (name/ingredient match, tag logic)
 
 ### Definition of Done
 
-- [ ] Search, category filter, favorite filter, quick filters, and sort all function correctly together in both languages
+- [x] Search, category filter, favorite filter, quick filters, and sort all function correctly together in both languages
 
 ### Out of Scope
 
@@ -452,7 +452,7 @@ Server-side full-text search.
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 

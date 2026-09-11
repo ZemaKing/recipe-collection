@@ -9,3 +9,12 @@ export interface RecipeSummary {
   is_favorite: boolean
   category: { slug: string; name_en: string; name_sr: string | null } | null
 }
+
+// Superset used by the browse/search page: adds ingredient names (for search
+// matching) and tag slugs (for quick-filter chips), plus created_at for the
+// "recently added" sort.
+export interface SearchableRecipe extends RecipeSummary {
+  created_at: string
+  ingredients: { name_en: string; name_sr: string | null }[]
+  tagSlugs: string[]
+}

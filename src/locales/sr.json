@@ -89,5 +89,21 @@
     "notFoundDescription": "Ova kategorija ne postoji ili je možda uklonjena.",
     "emptyTitle": "Još nema recepata u ovoj kategoriji",
     "emptyDescription": "Recepti dodati u ovu kategoriju pojaviće se ovde."
+  },
+  "browse": {
+    "categoryAll": "Sve kategorije",
+    "favoritesOnly": "Samo omiljeni",
+    "quickFilters": "Brzi filteri",
+    "clearFilters": "Ukloni filtere",
+    "sort": {
+      "label": "Sortiraj po",
+      "recent": "Nedavno dodati",
+      "rating": "Oceni",
+      "time": "Ukupnom vremenu"
+    },
+    "noResults": {
+      "title": "Nema recepata koji odgovaraju filterima",
+      "description": "Pokušajte da izmenite pretragu ili uklonite filtere."
+    }
   }
 }

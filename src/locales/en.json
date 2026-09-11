@@ -87,5 +87,21 @@
     "notFoundDescription": "This category doesn't exist or may have been removed.",
     "emptyTitle": "No recipes in this category yet",
     "emptyDescription": "Recipes added to this category will show up here."
+  },
+  "browse": {
+    "categoryAll": "All categories",
+    "favoritesOnly": "Favorites only",
+    "quickFilters": "Quick Filters",
+    "clearFilters": "Clear filters",
+    "sort": {
+      "label": "Sort by",
+      "recent": "Recently added",
+      "rating": "Rating",
+      "time": "Total time"
+    },
+    "noResults": {
+      "title": "No recipes match your filters",
+      "description": "Try adjusting your search or clearing filters."
+    }
   }
 }

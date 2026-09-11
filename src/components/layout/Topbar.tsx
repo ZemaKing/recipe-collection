@@ -1,9 +1,30 @@
 import { ChefHat, Search, SunMedium, User } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { useCurrentLang } from '@/hooks/useCurrentLang'
+import { buildLocalizedPath, stripLangPrefix } from '@/lib/localizedPath'
+import { QUERY_PARAM } from '@/lib/recipeSearchParams'
 import LanguageSwitcher from './LanguageSwitcher'
 
 function Topbar() {
   const { t } = useTranslation()
+  const lang = useCurrentLang()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const onRecipesPage = stripLangPrefix(location.pathname) === '/recepti'
+  const query = onRecipesPage ? (searchParams.get(QUERY_PARAM) ?? '') : ''
+
+  function handleQueryChange(value: string) {
+    if (onRecipesPage) {
+      const next = new URLSearchParams(searchParams)
+      if (value) next.set(QUERY_PARAM, value)
+      else next.delete(QUERY_PARAM)
+      setSearchParams(next, { replace: true })
+    } else if (value) {
+      navigate(`${buildLocalizedPath(lang, '/recepti')}?${QUERY_PARAM}=${encodeURIComponent(value)}`)
+    }
+  }
 
   return (
     <header className="flex items-center gap-4 border-b border-border bg-surface px-4 py-3 md:px-6">
@@ -23,8 +44,9 @@ function Topbar() {
           <input
             type="search"
             placeholder={t('topbar.searchPlaceholder')}
-            disabled
-            className="w-full rounded-control border border-border bg-surface-elevated py-2 pr-3 pl-9 text-sm text-foreground placeholder:text-muted-foreground disabled:cursor-not-allowed"
+            value={query}
+            onChange={(event) => handleQueryChange(event.target.value)}
+            className="w-full rounded-control border border-border bg-surface-elevated py-2 pr-3 pl-9 text-sm text-foreground placeholder:text-muted-foreground"
           />
         </label>
 

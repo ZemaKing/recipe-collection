@@ -1,8 +1,11 @@
 import { ChefHat, Plus } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
-import { buildLocalizedPath } from '@/lib/localizedPath'
+import { useTags } from '@/hooks/useTags'
+import { pickLocalized } from '@/lib/localizedField'
+import { buildLocalizedPath, stripLangPrefix } from '@/lib/localizedPath'
+import { parseTagsParam, toggleTagInParams } from '@/lib/recipeSearchParams'
 import { cn } from '@/lib/utils'
 import { categoryNavItems, primaryNavItems } from './nav-items'
 
@@ -38,6 +41,54 @@ function NavRow({
   )
 }
 
+function QuickFilters() {
+  const { t } = useTranslation()
+  const lang = useCurrentLang()
+  const { tags } = useTags()
+  const location = useLocation()
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const onRecipesPage = stripLangPrefix(location.pathname) === '/recepti'
+  const activeTags = onRecipesPage ? parseTagsParam(searchParams) : []
+
+  if (tags.length === 0) return null
+
+  function handleToggle(tagSlug: string) {
+    if (onRecipesPage) {
+      const next = toggleTagInParams(searchParams, tagSlug)
+      navigate({ pathname: buildLocalizedPath(lang, '/recepti'), search: next.toString() })
+    } else {
+      navigate(`${buildLocalizedPath(lang, '/recepti')}?tags=${tagSlug}`)
+    }
+  }
+
+  return (
+    <div className="mt-6 hidden lg:block">
+      <p className="px-3 pb-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+        {t('browse.quickFilters')}
+      </p>
+      <div className="flex flex-col gap-1">
+        {tags.map((tag) => {
+          const active = activeTags.includes(tag.slug)
+          return (
+            <button
+              key={tag.id}
+              type="button"
+              onClick={() => handleToggle(tag.slug)}
+              className={cn(
+                'rounded-control px-3 py-2 text-left text-sm font-medium text-muted-foreground transition-colors hover:bg-surface-hover hover:text-foreground',
+                active && 'bg-accent-soft text-accent hover:bg-accent-soft hover:text-accent',
+              )}
+            >
+              {pickLocalized(tag.name_en, tag.name_sr, lang)}
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 function Sidebar() {
   const { t } = useTranslation()
   const lang = useCurrentLang()
@@ -64,6 +115,8 @@ function Sidebar() {
             ))}
           </div>
         </div>
+
+        <QuickFilters />
       </nav>
 
       <div className="border-t border-border p-3">

@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
-import { RECIPE_SUMMARY_SELECT } from '@/lib/recipeQueries'
-import type { RecipeSummary } from '@/types/recipe'
+import { SEARCHABLE_RECIPE_SELECT } from '@/lib/recipeQueries'
+import type { SearchableRecipe } from '@/types/recipe'
+
+interface RawTagRow {
+  tags: { slug: string } | null
+}
 
 export function useAllRecipes() {
-  const [recipes, setRecipes] = useState<RecipeSummary[]>([])
+  const [recipes, setRecipes] = useState<SearchableRecipe[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -15,14 +19,20 @@ export function useAllRecipes() {
       setIsLoading(true)
       const { data, error } = await supabase
         .from('recipes')
-        .select(RECIPE_SUMMARY_SELECT)
+        .select(SEARCHABLE_RECIPE_SELECT)
         .order('created_at', { ascending: false })
 
       if (cancelled) return
       if (error) {
         setError(error.message)
       } else {
-        setRecipes((data ?? []) as unknown as RecipeSummary[])
+        const rows = (data ?? []) as unknown as (SearchableRecipe & { recipe_tags: RawTagRow[] })[]
+        setRecipes(
+          rows.map(({ recipe_tags, ...recipe }) => ({
+            ...recipe,
+            tagSlugs: recipe_tags.map((row) => row.tags?.slug).filter((slug): slug is string => !!slug),
+          })),
+        )
       }
       setIsLoading(false)
     }
