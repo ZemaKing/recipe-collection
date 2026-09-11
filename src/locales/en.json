@@ -113,6 +113,7 @@
     "removeFavorite": "Remove from favorites",
     "share": "Share recipe",
     "shareCopied": "Link copied!",
+    "print": "Print",
     "meta": {
       "prepTime": "Prep time",
       "cookTime": "Cook time",

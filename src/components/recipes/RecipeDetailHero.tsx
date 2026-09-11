@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Share2, Star } from 'lucide-react'
+import { Printer, Share2, Star } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import FavoriteButton from '@/components/recipes/FavoriteButton'
 import ImageGallery from '@/components/recipes/ImageGallery'
@@ -76,6 +76,15 @@ function RecipeDetailHero({ recipe, onToggleFavorite }: RecipeDetailHeroProps) {
           >
             <Share2 className="size-4" />
             {shared ? t('recipeDetail.shareCopied') : t('recipeDetail.share')}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground"
+          >
+            <Printer className="size-4" />
+            {t('recipeDetail.print')}
           </button>
         </div>
       </div>

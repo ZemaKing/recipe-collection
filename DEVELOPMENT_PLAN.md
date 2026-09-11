@@ -1098,7 +1098,7 @@ CDN/edge-caching strategy beyond Vercel defaults.
 Backlog only — not part of MVP or Post-MVP polish. Promote items here to a new phase if the user decides to pursue them:
 
 - [x] Light theme toggle — promoted to Phase 26
-- [ ] Printable recipe view
+- [x] Printable recipe view — promoted to Phase 27
 - [ ] Public shareable recipe links with rich previews
 - [ ] Nutrition info fields
 - [ ] Ingredient master-catalog with autocomplete
@@ -1144,6 +1144,48 @@ A working light/dark theme toggle without changing the app's dark-first visual i
 ### Out of Scope
 
 System-preference auto-detection, per-component custom theming beyond the shared token set.
+
+### Phase Status
+
+- [x] Phase Complete
+
+---
+
+## Phase 27 — Printable Recipe View
+
+### Goal
+
+Let a visitor print a clean, ink-friendly version of a recipe without the app chrome.
+
+### Tasks
+
+- [x] Add a Print button to the recipe detail page (next to Share) that triggers `window.print()`
+- [x] Add a `@media print` stylesheet that hides nav/sidebar/topbar/buttons and forces print-safe (light, high-contrast) colors regardless of the active theme
+- [x] Avoid awkward page breaks inside ingredient/step list items
+
+### Database / Supabase
+
+- [x] N/A for this phase
+
+### UI / UX
+
+- [x] Printed output shows title, meta, ingredients (at current scaled servings), steps, and tips only
+
+### Internationalization
+
+- [x] Print button label localized (EN/SR)
+
+### Testing & Verification
+
+- [x] Manual: browser print preview on a recipe with a long ingredient/step list, both themes
+
+### Definition of Done
+
+- [x] Printing a recipe produces a readable, chrome-free page in both light and dark app themes
+
+### Out of Scope
+
+Per-recipe print layout customization, PDF export, printing multiple recipes at once.
 
 ### Phase Status
 
