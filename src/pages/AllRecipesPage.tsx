@@ -5,6 +5,7 @@ import { useSearchParams } from 'react-router-dom'
 import RecipeCard from '@/components/recipes/RecipeCard'
 import EmptyState from '@/components/ui/EmptyState'
 import { useAllRecipes } from '@/hooks/useAllRecipes'
+import { useAuth } from '@/hooks/useAuth'
 import { useCategories } from '@/hooks/useCategories'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
 import { useTags } from '@/hooks/useTags'
@@ -23,7 +24,8 @@ import {
 function AllRecipesPage() {
   const { t } = useTranslation()
   const lang = useCurrentLang()
-  const { recipes, isLoading } = useAllRecipes()
+  const { session } = useAuth()
+  const { recipes, isLoading, toggleFavorite } = useAllRecipes()
   const { categories } = useCategories()
   const { tags } = useTags()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -143,7 +145,11 @@ function AllRecipesPage() {
       {visibleRecipes.length > 0 && (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {visibleRecipes.map((recipe) => (
-            <RecipeCard key={recipe.id} recipe={recipe} />
+            <RecipeCard
+              key={recipe.id}
+              recipe={recipe}
+              onToggleFavorite={session ? () => void toggleFavorite(recipe.id) : undefined}
+            />
           ))}
         </div>
       )}

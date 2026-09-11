@@ -7,12 +7,14 @@ import RecipeMeta from '@/components/recipes/RecipeMeta'
 import StepList from '@/components/recipes/StepList'
 import TipsPanel from '@/components/recipes/TipsPanel'
 import EmptyState from '@/components/ui/EmptyState'
+import { useAuth } from '@/hooks/useAuth'
 import { useRecipeBySlug } from '@/hooks/useRecipeBySlug'
 
 function RecipeDetailPage() {
   const { t } = useTranslation()
   const { slug = '' } = useParams<{ slug: string }>()
-  const { recipe, isLoading, notFound } = useRecipeBySlug(slug)
+  const { session } = useAuth()
+  const { recipe, isLoading, notFound, toggleFavorite } = useRecipeBySlug(slug)
 
   if (!isLoading && notFound) {
     return (
@@ -28,7 +30,11 @@ function RecipeDetailPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <RecipeDetailHero key={recipe.slug} recipe={recipe} />
+      <RecipeDetailHero
+        key={recipe.slug}
+        recipe={recipe}
+        onToggleFavorite={session ? () => void toggleFavorite() : undefined}
+      />
       <RecipeMeta recipe={recipe} />
 
       <div className="flex flex-col gap-6 lg:flex-row lg:items-start">

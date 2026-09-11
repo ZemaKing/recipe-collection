@@ -98,5 +98,16 @@ export function useRecipeBySlug(slug: string) {
     }
   }, [slug])
 
-  return { recipe, isLoading, notFound, error }
+  async function toggleFavorite() {
+    if (!recipe) return
+    const nextValue = !recipe.is_favorite
+    setRecipe({ ...recipe, is_favorite: nextValue })
+
+    const { error } = await supabase.from('recipes').update({ is_favorite: nextValue }).eq('id', recipe.id)
+    if (error) {
+      setRecipe((prev) => (prev ? { ...prev, is_favorite: !nextValue } : prev))
+    }
+  }
+
+  return { recipe, isLoading, notFound, error, toggleFavorite }
 }

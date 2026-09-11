@@ -6,6 +6,7 @@ import EmptyState from '@/components/ui/EmptyState'
 import QuickFilterChips, { type QuickFilter } from '@/components/recipes/QuickFilterChips'
 import RecipeCard from '@/components/recipes/RecipeCard'
 import StatsWidget from '@/components/recipes/StatsWidget'
+import { useAuth } from '@/hooks/useAuth'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
 import { useRecentRecipes } from '@/hooks/useRecentRecipes'
 import { useRecipeStats } from '@/hooks/useRecipeStats'
@@ -14,8 +15,9 @@ import { buildLocalizedPath } from '@/lib/localizedPath'
 function HomePage() {
   const { t } = useTranslation()
   const lang = useCurrentLang()
+  const { session } = useAuth()
   const [filter, setFilter] = useState<QuickFilter>('all')
-  const { recipes: visibleRecipes, isLoading } = useRecentRecipes(filter)
+  const { recipes: visibleRecipes, isLoading, toggleFavorite } = useRecentRecipes(filter)
   const { stats } = useRecipeStats()
 
   return (
@@ -51,7 +53,10 @@ function HomePage() {
             <div className="flex gap-3 overflow-x-auto pb-2">
               {visibleRecipes.map((recipe) => (
                 <div key={recipe.id} className="w-40 shrink-0 sm:w-44">
-                  <RecipeCard recipe={recipe} />
+                  <RecipeCard
+                    recipe={recipe}
+                    onToggleFavorite={session ? () => void toggleFavorite(recipe.id) : undefined}
+                  />
                 </div>
               ))}
             </div>

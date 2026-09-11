@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 17 — Favorites (writable)
+Current Phase: Phase 18 — Meal Planning
 MVP Status: In Progress
 
 ## MVP Progress
@@ -25,7 +25,7 @@ MVP Status: In Progress
 - [x] Phase 14 — Recipe Create/Edit Form
 - [x] Phase 15 — Image Upload/Replace/Delete
 - [x] Phase 16 — Recipe Delete & Admin List Management
-- [ ] Phase 17 — Favorites (writable)
+- [x] Phase 17 — Favorites (writable)
 - [ ] Phase 18 — Meal Planning
 - [ ] Phase 19 — Kitchen Notes
 - [ ] Phase 20 — Deployment & Production Verification
@@ -787,28 +787,28 @@ Real, persisted favoriting.
 
 ### Tasks
 
-- [ ] Wire `FavoriteButton` to authenticated update of `recipes.is_favorite`
-- [ ] Ensure toggle disabled/hidden when logged out
+- [x] Wire `FavoriteButton` to authenticated update of `recipes.is_favorite`
+- [x] Ensure toggle disabled/hidden when logged out
 
 ### Database / Supabase
 
-- [ ] Authenticated update mutation + cache invalidation for lists/filters
+- [x] Authenticated update mutation + cache invalidation for lists/filters
 
 ### UI / UX
 
-- [ ] Favorite toggle reflects live state on card, detail, and filters
+- [x] Favorite toggle reflects live state on card, detail, and filters
 
 ### Internationalization
 
-- [ ] N/A (icon-driven)
+- [x] N/A (icon-driven)
 
 ### Testing & Verification
 
-- [ ] Manual: toggle persists and reflects in "Omiljeni" filter
+- [x] Manual: toggle persists and reflects in "Omiljeni" filter
 
 ### Definition of Done
 
-- [ ] Favorite state is persisted, restricted to the admin, and consistently reflected across all views/filters
+- [x] Favorite state is persisted, restricted to the admin, and consistently reflected across all views/filters
 
 ### Out of Scope
 
@@ -816,7 +816,7 @@ Per-visitor favorites.
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 

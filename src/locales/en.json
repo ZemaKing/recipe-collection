@@ -109,6 +109,8 @@
     "notFoundDescription": "This recipe doesn't exist or may have been removed.",
     "favorited": "Favorited",
     "notFavorited": "Not favorited",
+    "addFavorite": "Add to favorites",
+    "removeFavorite": "Remove from favorites",
     "share": "Share recipe",
     "shareCopied": "Link copied!",
     "meta": {

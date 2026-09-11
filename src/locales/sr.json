@@ -111,6 +111,8 @@
     "notFoundDescription": "Ovaj recept ne postoji ili je možda uklonjen.",
     "favorited": "U omiljenim",
     "notFavorited": "Nije u omiljenim",
+    "addFavorite": "Dodaj u omiljene",
+    "removeFavorite": "Ukloni iz omiljenih",
     "share": "Podeli recept",
     "shareCopied": "Link kopiran!",
     "meta": {

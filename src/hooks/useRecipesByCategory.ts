@@ -72,5 +72,18 @@ export function useRecipesByCategory(slug: string) {
     }
   }, [slug])
 
-  return { category, recipes, isLoading, notFound, error }
+  async function toggleFavorite(recipeId: string) {
+    const current = recipes.find((recipe) => recipe.id === recipeId)
+    if (!current) return
+    const nextValue = !current.is_favorite
+
+    setRecipes((prev) => prev.map((r) => (r.id === recipeId ? { ...r, is_favorite: nextValue } : r)))
+
+    const { error } = await supabase.from('recipes').update({ is_favorite: nextValue }).eq('id', recipeId)
+    if (error) {
+      setRecipes((prev) => prev.map((r) => (r.id === recipeId ? { ...r, is_favorite: current.is_favorite } : r)))
+    }
+  }
+
+  return { category, recipes, isLoading, notFound, error, toggleFavorite }
 }

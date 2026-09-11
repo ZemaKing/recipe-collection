@@ -1,17 +1,18 @@
 import { useState } from 'react'
-import { Heart, Share2, Star } from 'lucide-react'
+import { Share2, Star } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import FavoriteButton from '@/components/recipes/FavoriteButton'
 import ImageGallery from '@/components/recipes/ImageGallery'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
 import type { RecipeDetail } from '@/hooks/useRecipeBySlug'
 import { pickLocalized } from '@/lib/localizedField'
-import { cn } from '@/lib/utils'
 
 interface RecipeDetailHeroProps {
   recipe: RecipeDetail
+  onToggleFavorite?: () => void
 }
 
-function RecipeDetailHero({ recipe }: RecipeDetailHeroProps) {
+function RecipeDetailHero({ recipe, onToggleFavorite }: RecipeDetailHeroProps) {
   const { t } = useTranslation()
   const lang = useCurrentLang()
   const [shared, setShared] = useState(false)
@@ -57,10 +58,7 @@ function RecipeDetailHero({ recipe }: RecipeDetailHeroProps) {
             <h1 className="mt-2 text-2xl font-semibold text-foreground">{name}</h1>
           </div>
 
-          <Heart
-            className={cn('size-6 shrink-0', recipe.is_favorite ? 'fill-favorite text-favorite' : 'text-muted-foreground')}
-            aria-label={recipe.is_favorite ? t('recipeDetail.favorited') : t('recipeDetail.notFavorited')}
-          />
+          <FavoriteButton isFavorite={recipe.is_favorite} onToggle={onToggleFavorite} className="shrink-0" />
         </div>
 
         {description && <p className="text-sm text-muted-foreground">{description}</p>}
