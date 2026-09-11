@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 11 — Storage & Image Display
+Current Phase: Phase 12 — Authentication
 MVP Status: In Progress
 
 ## MVP Progress
@@ -19,7 +19,7 @@ MVP Status: In Progress
 - [x] Phase 8 — Categories & "All Recipes" Browsing
 - [x] Phase 9 — Search & Filtering (incl. quick-filter tags)
 - [x] Phase 10 — Recipe Detail Page
-- [ ] Phase 11 — Storage & Image Display
+- [x] Phase 11 — Storage & Image Display
 - [ ] Phase 12 — Authentication
 - [ ] Phase 13 — Admin Shell
 - [ ] Phase 14 — Recipe Create/Edit Form
@@ -514,7 +514,7 @@ Real images served from Supabase Storage.
 ### Tasks
 
 - [x] Create `recipe-images` bucket
-- [ ] Update seed data to reference real uploaded sample images — 2/14 uploaded (`gulas`, `raffaello-kuglice`); seed.sql already points every recipe at the right `seed/<slug>.jpg` path, remaining 12 just need the actual files uploaded
+- [x] Update seed data to reference real uploaded sample images — all 14/14 uploaded
 - [x] Wire `ImageGallery`/`RecipeCard` to Storage public URLs
 
 ### Database / Supabase
@@ -537,7 +537,7 @@ Real images served from Supabase Storage.
 
 ### Definition of Done
 
-- [ ] All sample recipes display real images from Storage with correct alt text per locale
+- [x] All sample recipes display real images from Storage with correct alt text per locale
 
 ### Out of Scope
 
@@ -545,7 +545,7 @@ Upload/replace/delete UI.
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 
