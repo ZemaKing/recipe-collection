@@ -20,6 +20,7 @@ import {
   parseTagsParam,
   toggleTagInParams,
 } from '@/lib/recipeSearchParams'
+import { cn } from '@/lib/utils'
 
 function AllRecipesPage() {
   const { t } = useTranslation()
@@ -58,7 +59,7 @@ function AllRecipesPage() {
     setSearchParams(next)
   }
 
-  function removeTag(tagSlug: string) {
+  function toggleTag(tagSlug: string) {
     setSearchParams(toggleTagInParams(searchParams, tagSlug))
   }
 
@@ -107,18 +108,22 @@ function AllRecipesPage() {
           {t('browse.favoritesOnly')}
         </button>
 
-        {activeTags.map((tagSlug) => {
-          const tag = tags.find((item) => item.slug === tagSlug)
-          if (!tag) return null
+        {tags.map((tag) => {
+          const active = activeTags.includes(tag.slug)
           return (
             <button
-              key={tagSlug}
+              key={tag.id}
               type="button"
-              onClick={() => removeTag(tagSlug)}
-              className="flex items-center gap-1 rounded-pill border border-accent bg-accent-soft px-3 py-2 text-sm font-medium text-accent"
+              onClick={() => toggleTag(tag.slug)}
+              className={cn(
+                'flex items-center gap-1 rounded-pill border px-3 py-2 text-sm font-medium transition-colors',
+                active
+                  ? 'border-accent bg-accent-soft text-accent'
+                  : 'border-border text-muted-foreground hover:text-foreground',
+              )}
             >
               {pickLocalized(tag.name_en, tag.name_sr, lang)}
-              <X className="size-3.5" />
+              {active && <X className="size-3.5" />}
             </button>
           )
         })}
