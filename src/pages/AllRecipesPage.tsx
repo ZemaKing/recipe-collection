@@ -20,6 +20,7 @@ import {
   parseTagsParam,
   toggleTagInParams,
 } from '@/lib/recipeSearchParams'
+import { getTagIcon } from '@/lib/tagIcons'
 import { cn } from '@/lib/utils'
 
 function AllRecipesPage() {
@@ -113,6 +114,7 @@ function AllRecipesPage() {
             there's otherwise no way to add a tag filter on mobile. */}
         <div className="contents md:hidden">
           {tags.map((tag) => {
+            const Icon = getTagIcon(tag.slug)
             const active = activeTags.includes(tag.slug)
             return (
               <button
@@ -120,12 +122,13 @@ function AllRecipesPage() {
                 type="button"
                 onClick={() => toggleTag(tag.slug)}
                 className={cn(
-                  'flex items-center gap-1 rounded-pill border px-3 py-2 text-sm font-medium transition-colors',
+                  'flex items-center gap-1.5 rounded-pill border px-3 py-2 text-sm font-medium transition-colors',
                   active
-                    ? 'border-accent bg-accent-soft text-accent'
+                    ? 'border-tag bg-tag-soft text-tag'
                     : 'border-border text-muted-foreground hover:text-foreground',
                 )}
               >
+                <Icon className="size-3.5 text-tag" />
                 {pickLocalized(tag.name_en, tag.name_sr, lang)}
                 {active && <X className="size-3.5" />}
               </button>
@@ -139,13 +142,15 @@ function AllRecipesPage() {
           {activeTags.map((tagSlug) => {
             const tag = tags.find((item) => item.slug === tagSlug)
             if (!tag) return null
+            const Icon = getTagIcon(tag.slug)
             return (
               <button
                 key={tagSlug}
                 type="button"
                 onClick={() => toggleTag(tagSlug)}
-                className="flex items-center gap-1 rounded-pill border border-accent bg-accent-soft px-3 py-2 text-sm font-medium text-accent"
+                className="flex items-center gap-1.5 rounded-pill border border-tag bg-tag-soft px-3 py-2 text-sm font-medium text-tag"
               >
+                <Icon className="size-3.5" />
                 {pickLocalized(tag.name_en, tag.name_sr, lang)}
                 <X className="size-3.5" />
               </button>

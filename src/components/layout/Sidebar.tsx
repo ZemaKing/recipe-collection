@@ -6,6 +6,7 @@ import { useTags } from '@/hooks/useTags'
 import { pickLocalized } from '@/lib/localizedField'
 import { buildLocalizedPath, stripLangPrefix } from '@/lib/localizedPath'
 import { parseTagsParam, toggleTagInParams } from '@/lib/recipeSearchParams'
+import { getTagIcon } from '@/lib/tagIcons'
 import { cn } from '@/lib/utils'
 import NavRow from './NavRow'
 import { categoryNavItems, primaryNavItems } from './nav-items'
@@ -32,24 +33,30 @@ function QuickFilters() {
   }
 
   return (
-    <div className="mt-6 hidden lg:block">
-      <p className="px-3 pb-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+    <div className="mt-6 hidden md:block">
+      <p className="hidden px-3 pb-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase lg:block">
         {t('browse.quickFilters')}
       </p>
       <div className="flex flex-col gap-1">
         {tags.map((tag) => {
+          const Icon = getTagIcon(tag.slug)
           const active = activeTags.includes(tag.slug)
+          const label = pickLocalized(tag.name_en, tag.name_sr, lang)
           return (
             <button
               key={tag.id}
               type="button"
               onClick={() => handleToggle(tag.slug)}
+              title={label}
               className={cn(
-                'rounded-control px-3 py-2 text-left text-sm font-medium text-muted-foreground transition-colors hover:bg-surface-hover hover:text-foreground',
-                active && 'bg-accent-soft text-accent hover:bg-accent-soft hover:text-accent',
+                'flex items-center gap-3 rounded-control px-3 py-2 text-left text-sm font-medium transition-colors md:justify-center lg:justify-start',
+                active
+                  ? 'bg-tag-soft text-tag'
+                  : 'text-muted-foreground hover:bg-surface-hover hover:text-foreground',
               )}
             >
-              {pickLocalized(tag.name_en, tag.name_sr, lang)}
+              <Icon className="size-5 shrink-0 text-tag" />
+              <span className="hidden lg:inline">{label}</span>
             </button>
           )
         })}

@@ -18,6 +18,11 @@
 
   --color-favorite: #f43f5e;
 
+  --color-tag: #8fe86f;
+  --color-tag-hover: #a6f08c;
+  --color-tag-foreground: #10230a;
+  --color-tag-soft: #1b2a13;
+
   --radius-card: 1rem;
   --radius-control: 0.75rem;
   --radius-pill: 999px;
@@ -49,6 +54,11 @@
     --color-accent-soft: #fdecc8;
 
     --color-favorite: #e11d48;
+
+    --color-tag: #336819;
+    --color-tag-hover: #3f7d1f;
+    --color-tag-foreground: #f2fbe9;
+    --color-tag-soft: #e2f3d3;
   }
 
   body {
@@ -82,6 +92,11 @@
       --color-accent-soft: #ffffff;
 
       --color-favorite: #b91c1c;
+
+      --color-tag: #3f7d1f;
+      --color-tag-hover: #3f7d1f;
+      --color-tag-foreground: #ffffff;
+      --color-tag-soft: #ffffff;
     }
 
     aside,
