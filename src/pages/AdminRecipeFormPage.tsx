@@ -1,6 +1,7 @@
 import { FileX } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
+import ImageManager from '@/components/admin/ImageManager'
 import RecipeForm from '@/components/admin/RecipeForm'
 import EmptyState from '@/components/ui/EmptyState'
 import { useAdminRecipe } from '@/hooks/useAdminRecipe'
@@ -57,7 +58,13 @@ function AdminRecipeFormPage() {
 
   async function handleSubmit(values: RecipeFormValues) {
     const savedId = await save(mode === 'edit' && recipe ? recipe.id : null, values)
-    if (savedId) {
+    if (!savedId) return
+
+    if (mode === 'create') {
+      // Images require an existing recipe_id, so hop straight to the edit
+      // page for the new recipe instead of the list.
+      navigate(buildLocalizedPath(lang, `/admin/recepti/${values.slug}/izmeni`))
+    } else {
       navigate(buildLocalizedPath(lang, '/admin/recepti'))
     }
   }
@@ -76,6 +83,13 @@ function AdminRecipeFormPage() {
         submitError={error}
         onSubmit={(values) => void handleSubmit(values)}
       />
+
+      {mode === 'edit' && recipe && (
+        <section className="flex flex-col gap-3">
+          <h2 className="text-sm font-semibold text-foreground">{t('admin.recipeForm.images')}</h2>
+          <ImageManager recipeId={recipe.id} />
+        </section>
+      )}
     </div>
   )
 }

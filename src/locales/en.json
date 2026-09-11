@@ -188,7 +188,23 @@
       "createSubmit": "Create recipe",
       "editSubmit": "Save changes",
       "editTitle": "Edit recipe",
-      "formHasErrors": "Please fix the highlighted fields below before saving."
+      "formHasErrors": "Please fix the highlighted fields below before saving.",
+      "images": "Images",
+      "addImage": "Add image",
+      "replaceImage": "Replace",
+      "altEn": "Alt text (EN)",
+      "altSr": "Alt text (SR)",
+      "primary": "Primary",
+      "setPrimary": "Set as primary",
+      "loadingImages": "Loading images...",
+      "noImages": "No images yet.",
+      "retryUpload": "Retry",
+      "imageErrors": {
+        "invalidType": "Only JPEG, PNG, or WebP images are allowed.",
+        "tooLarge": "Image must be 5MB or smaller.",
+        "uploadFailed": "Upload failed. Please try again.",
+        "actionFailed": "Something went wrong. Please try again."
+      }
     }
   },
   "errors": {

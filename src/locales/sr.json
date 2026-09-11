@@ -191,7 +191,23 @@
       "createSubmit": "Kreiraj recept",
       "editSubmit": "Sačuvaj izmene",
       "editTitle": "Izmeni recept",
-      "formHasErrors": "Ispravite označena polja pre čuvanja."
+      "formHasErrors": "Ispravite označena polja pre čuvanja.",
+      "images": "Slike",
+      "addImage": "Dodaj sliku",
+      "replaceImage": "Zameni",
+      "altEn": "Alt tekst (EN)",
+      "altSr": "Alt tekst (SR)",
+      "primary": "Glavna",
+      "setPrimary": "Postavi kao glavnu",
+      "loadingImages": "Učitavanje slika...",
+      "noImages": "Još uvek nema slika.",
+      "retryUpload": "Pokušaj ponovo",
+      "imageErrors": {
+        "invalidType": "Dozvoljene su samo JPEG, PNG ili WebP slike.",
+        "tooLarge": "Slika mora biti do 5MB.",
+        "uploadFailed": "Otpremanje nije uspelo. Pokušajte ponovo.",
+        "actionFailed": "Nešto je pošlo naopako. Pokušajte ponovo."
+      }
     }
   },
   "errors": {

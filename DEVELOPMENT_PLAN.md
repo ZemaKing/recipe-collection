@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 15 — Image Upload/Replace/Delete
+Current Phase: Phase 16 — Recipe Delete & Admin List Management
 MVP Status: In Progress
 
 ## MVP Progress
@@ -23,7 +23,7 @@ MVP Status: In Progress
 - [x] Phase 12 — Authentication
 - [x] Phase 13 — Admin Shell
 - [x] Phase 14 — Recipe Create/Edit Form
-- [ ] Phase 15 — Image Upload/Replace/Delete
+- [x] Phase 15 — Image Upload/Replace/Delete
 - [ ] Phase 16 — Recipe Delete & Admin List Management
 - [ ] Phase 17 — Favorites (writable)
 - [ ] Phase 18 — Meal Planning
@@ -692,37 +692,37 @@ Admin can manage recipe images.
 
 ### Tasks
 
-- [ ] Build `ImageUploader` (file picker, client-side validation + resize)
-- [ ] Implement upload → Storage + `recipe_images` insert
-- [ ] Implement replace (delete old + upload new)
-- [ ] Implement delete (Storage + row)
-- [ ] Implement reorder/set-primary
+- [x] Build `ImageManager` (file picker, client-side validation + resize) — component named `ImageManager` rather than `ImageUploader` since it also owns alt-text/reorder/primary/replace/delete, not just the upload affordance
+- [x] Implement upload → Storage + `recipe_images` insert
+- [x] Implement replace (delete old + upload new)
+- [x] Implement delete (Storage + row)
+- [x] Implement reorder/set-primary
 
 ### Database / Supabase
 
-- [ ] `recipe_images` CRUD wired
-- [ ] Authenticated Storage write policies exercised
+- [x] `recipe_images` CRUD wired
+- [x] Authenticated Storage write policies exercised — verified manually against a live logged-in session
 
 ### UI / UX
 
-- [ ] Image management panel inside `RecipeForm`
-- [ ] Oversized/wrong-type file rejected client-side with clear message
-- [ ] Upload failure retry affordance
-- [ ] Deleting primary image auto-promotes another or falls back to placeholder
+- [x] Image management panel inside `RecipeForm` — rendered in `AdminRecipeFormPage` below the form (edit mode only, since images require an existing `recipe_id`; create mode now redirects straight to the edit page after saving)
+- [x] Oversized/wrong-type file rejected client-side with clear message
+- [x] Upload failure retry affordance
+- [x] Deleting primary image auto-promotes another or falls back to placeholder
 
 ### Internationalization
 
-- [ ] Alt-text EN/SR fields per image
-- [ ] Upload error messages localized
+- [x] Alt-text EN/SR fields per image
+- [x] Upload error messages localized
 
 ### Testing & Verification
 
-- [ ] Manual: upload/replace/delete/reorder
-- [ ] Verify Storage object actually removed on delete (no orphan)
+- [x] Manual: upload/replace/delete/reorder
+- [x] Verify Storage object actually removed on delete (no orphan)
 
 ### Definition of Done
 
-- [ ] Admin can add, replace, delete, and reorder images for a recipe; public detail page reflects changes immediately
+- [x] Admin can add, replace, delete, and reorder images for a recipe; public detail page reflects changes immediately
 
 ### Out of Scope
 
@@ -730,7 +730,7 @@ Automated orphan-sweep tooling.
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 
