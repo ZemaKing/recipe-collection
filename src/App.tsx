@@ -8,7 +8,7 @@ import AppShell from '@/components/layout/AppShell'
 import { defaultLanguage, isSupportedLanguage } from '@/lib/i18n'
 import { stripLangPrefix } from '@/lib/localizedPath'
 import AdminMealPlanPage from '@/pages/AdminMealPlanPage'
-import AdminPlaceholderPage from '@/pages/AdminPlaceholderPage'
+import AdminNotesPage from '@/pages/AdminNotesPage'
 import AdminRecipeFormPage from '@/pages/AdminRecipeFormPage'
 import AdminRecipesPage from '@/pages/AdminRecipesPage'
 import AllRecipesPage from '@/pages/AllRecipesPage'
@@ -86,10 +86,7 @@ function App() {
                 <Route path="admin/recepti/novi" element={<AdminRecipeFormPage />} />
                 <Route path="admin/recepti/:slug/izmeni" element={<AdminRecipeFormPage />} />
                 <Route path="admin/plan-obroka" element={<AdminMealPlanPage />} />
-                <Route
-                  path="admin/beleske"
-                  element={<AdminPlaceholderPage title={t('admin.nav.notes')} />}
-                />
+                <Route path="admin/beleske" element={<AdminNotesPage />} />
               </Route>
             </Route>
           </Route>

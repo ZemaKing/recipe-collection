@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 19 — Kitchen Notes
+Current Phase: Phase 20 — Deployment & Production Verification
 MVP Status: In Progress
 
 ## MVP Progress
@@ -27,7 +27,7 @@ MVP Status: In Progress
 - [x] Phase 16 — Recipe Delete & Admin List Management
 - [x] Phase 17 — Favorites (writable)
 - [x] Phase 18 — Meal Planning
-- [ ] Phase 19 — Kitchen Notes
+- [x] Phase 19 — Kitchen Notes
 - [ ] Phase 20 — Deployment & Production Verification
 - [ ] MVP Complete
 
@@ -874,33 +874,33 @@ The "Kuhinjske beleške" feature.
 
 ### Tasks
 
-- [ ] Build `NoteCard` and notes list
-- [ ] Build `NoteForm` (create/edit)
-- [ ] Implement delete
-- [ ] Implement pin/unpin
+- [x] Build `NoteCard` and notes list
+- [x] Build `NoteForm` (create/edit)
+- [x] Implement delete
+- [x] Implement pin/unpin
 
 ### Database / Supabase
 
-- [ ] `kitchen_notes` CRUD (authenticated only, admin-only feature)
+- [x] `kitchen_notes` CRUD (authenticated only, admin-only feature)
 
 ### UI / UX
 
-- [ ] `NotesPage` visual language consistent with dashboard
-- [ ] Long note bodies truncated in list view, full in detail/edit
+- [x] `NotesPage` visual language consistent with dashboard
+- [x] Long note bodies truncated in list view, full in detail/edit
 
 ### Internationalization
 
-- [ ] Title/body EN+SR fields in editor
-- [ ] Note cards show current-locale content with fallback
+- [x] Title/body EN+SR fields in editor
+- [x] Note cards show current-locale content with fallback
 
 ### Testing & Verification
 
-- [ ] Manual: CRUD + pin ordering check
-- [ ] Manual: deleting a linked recipe leaves note intact with link cleared
+- [x] Manual: CRUD + pin ordering check
+- [x] Manual: deleting a linked recipe leaves note intact with link cleared
 
 ### Definition of Done
 
-- [ ] Admin can create, edit, pin, and delete notes, optionally linked to a recipe, in both languages
+- [x] Admin can create, edit, pin, and delete notes, optionally linked to a recipe, in both languages
 
 ### Out of Scope
 
@@ -908,7 +908,7 @@ Public visibility of notes.
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 

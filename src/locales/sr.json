@@ -152,10 +152,7 @@
     "submitting": "Prijavljivanje...",
     "error": "Pogrešan email ili lozinka.",
     "loggedInAs": "Prijavljeni ste kao {{email}}",
-    "signOut": "Odjavi se",
-    "rlsTest": "Testiraj autentifikovani upis",
-    "rlsPass": "Autentifikovani upis je uspeo.",
-    "rlsFail": "Autentifikovani upis nije uspeo."
+    "signOut": "Odjavi se"
   },
   "admin": {
     "shellName": "Administracija",
@@ -252,6 +249,31 @@
         "saving": "Čuvanje...",
         "remove": "Ukloni"
       }
+    },
+    "notes": {
+      "addNote": "Dodaj belešku",
+      "emptyTitle": "Još nema beleški",
+      "emptyDescription": "Kuhinjske beleške koje dodate pojaviće se ovde.",
+      "pin": "Zakači belešku",
+      "unpin": "Otkači belešku",
+      "edit": "Izmeni",
+      "delete": "Obriši",
+      "createTitle": "Dodaj belešku",
+      "editTitle": "Izmeni belešku",
+      "titleEn": "Naslov (EN)",
+      "titleSr": "Naslov (SR)",
+      "bodyEn": "Sadržaj (EN)",
+      "bodySr": "Sadržaj (SR)",
+      "titleRequired": "Naslov na engleskom je obavezan.",
+      "linkedRecipe": "Povezan recept (opciono)",
+      "noLinkedRecipe": "Nijedan",
+      "cancel": "Otkaži",
+      "save": "Sačuvaj",
+      "saving": "Čuvanje...",
+      "deleteTitle": "Obrisati belešku?",
+      "deleteDescription": "Ovo će trajno obrisati belešku \"{{title}}\". Ova radnja se ne može poništiti.",
+      "confirmDelete": "Obriši",
+      "deleting": "Brisanje..."
     }
   },
   "errors": {

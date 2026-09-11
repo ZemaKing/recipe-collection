@@ -149,10 +149,7 @@
     "submitting": "Signing in...",
     "error": "Invalid email or password.",
     "loggedInAs": "Logged in as {{email}}",
-    "signOut": "Sign out",
-    "rlsTest": "Test authenticated write",
-    "rlsPass": "Authenticated write succeeded.",
-    "rlsFail": "Authenticated write failed."
+    "signOut": "Sign out"
   },
   "admin": {
     "shellName": "Admin",
@@ -249,6 +246,31 @@
         "saving": "Saving...",
         "remove": "Remove"
       }
+    },
+    "notes": {
+      "addNote": "Add note",
+      "emptyTitle": "No notes yet",
+      "emptyDescription": "Kitchen notes you add will show up here.",
+      "pin": "Pin note",
+      "unpin": "Unpin note",
+      "edit": "Edit",
+      "delete": "Delete",
+      "createTitle": "Add note",
+      "editTitle": "Edit note",
+      "titleEn": "Title (EN)",
+      "titleSr": "Title (SR)",
+      "bodyEn": "Body (EN)",
+      "bodySr": "Body (SR)",
+      "titleRequired": "English title is required.",
+      "linkedRecipe": "Linked recipe (optional)",
+      "noLinkedRecipe": "None",
+      "cancel": "Cancel",
+      "save": "Save",
+      "saving": "Saving...",
+      "deleteTitle": "Delete note?",
+      "deleteDescription": "This will permanently delete \"{{title}}\". This cannot be undone.",
+      "confirmDelete": "Delete",
+      "deleting": "Deleting..."
     }
   },
   "errors": {
