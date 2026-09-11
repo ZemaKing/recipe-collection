@@ -63,10 +63,12 @@ function Sidebar() {
   const lang = useCurrentLang()
 
   return (
-    <aside className="hidden shrink-0 flex-col border-r border-border bg-surface md:flex md:w-20 lg:w-64">
-      <div className="flex items-center gap-2 px-4 py-5 lg:px-6">
-        <ChefHat className="size-7 shrink-0 text-accent" />
-        <span className="hidden text-lg font-semibold lg:inline">{t('app.name')}</span>
+    <aside className="hidden min-h-0 shrink-0 flex-col border-r border-border bg-surface md:flex md:w-20 lg:w-64">
+      <div className="px-3 py-5">
+        <div className="flex items-center gap-2 px-3 md:justify-center lg:justify-start">
+          <ChefHat className="size-7 shrink-0 text-accent" />
+          <span className="hidden text-lg font-semibold lg:inline">{t('app.name')}</span>
+        </div>
       </div>
 
       <nav className="flex flex-1 flex-col gap-1 overflow-y-auto px-3">

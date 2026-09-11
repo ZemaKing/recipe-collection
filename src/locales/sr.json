@@ -25,10 +25,9 @@
     "other": "Ostalo"
   },
   "topbar": {
-    "welcome": "Dobrodošao nazad, Kolekcionaru! 👋",
-    "subtitle": "Pronađi savršen recept za svaki trenutak.",
     "searchPlaceholder": "Pretraži recepte, sastojke...",
     "search": "Pretraga",
+    "closeSearch": "Zatvori pretragu",
     "switchToLight": "Prebaci na svetlu temu",
     "switchToDark": "Prebaci na tamnu temu",
     "language": "Jezik"
