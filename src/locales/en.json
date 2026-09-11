@@ -38,7 +38,20 @@
   },
   "home": {
     "recentRecipes": "Recent Recipes",
-    "recentRecipesDescription": "Your recipe collection will appear here once connected to the database."
+    "filters": {
+      "topRated": "Top Rated"
+    },
+    "stats": {
+      "title": "My Collection",
+      "recipes": "Recipes"
+    },
+    "empty": {
+      "title": "No recipes yet",
+      "description": "Your recipe collection will appear here once you add some recipes."
+    }
+  },
+  "recipeCard": {
+    "noImage": "No image"
   },
   "placeholder": {
     "notImplemented": "This part of the app hasn't been implemented yet."

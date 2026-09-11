@@ -38,7 +38,20 @@
   },
   "home": {
     "recentRecipes": "Nedavni recepti",
-    "recentRecipesDescription": "Zbirka recepata će se pojaviti ovde kada se poveže baza podataka."
+    "filters": {
+      "topRated": "Visoko ocenjeni"
+    },
+    "stats": {
+      "title": "Moja zbirka",
+      "recipes": "Recepti"
+    },
+    "empty": {
+      "title": "Još nema recepata",
+      "description": "Vaša zbirka recepata pojaviće se ovde kada dodate neke recepte."
+    }
+  },
+  "recipeCard": {
+    "noImage": "Nema slike"
   },
   "placeholder": {
     "notImplemented": "Ovaj deo aplikacije još nije implementiran."

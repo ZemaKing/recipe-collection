@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 7 — Recipe Listing Dashboard (Home)
+Current Phase: Phase 8 — Categories & "All Recipes" Browsing
 MVP Status: In Progress
 
 ## MVP Progress
@@ -15,7 +15,7 @@ MVP Status: In Progress
 - [x] Phase 4 — Core Database Schema & RLS
 - [x] Phase 5 — i18n Foundation
 - [x] Phase 6 — Seed / Sample Data
-- [ ] Phase 7 — Recipe Listing Dashboard (Home)
+- [x] Phase 7 — Recipe Listing Dashboard (Home)
 - [ ] Phase 8 — Categories & "All Recipes" Browsing
 - [ ] Phase 9 — Search & Filtering (incl. quick-filter tags)
 - [ ] Phase 10 — Recipe Detail Page
@@ -324,36 +324,36 @@ The Home page from the mockup, backed by real seeded data.
 
 ### Tasks
 
-- [ ] Build `HomePage` with greeting header
-- [ ] Build recent-recipes row/carousel
-- [ ] Build stats widget (counts via query)
-- [ ] Wire quick-filter chips (Svi/Omiljeni/Nedavno dodati/Visoko ocenjeni)
+- [x] Build `HomePage` with greeting header
+- [x] Build recent-recipes row/carousel
+- [x] Build stats widget (counts via query)
+- [x] Wire quick-filter chips (Svi/Omiljeni/Nedavno dodati/Visoko ocenjeni)
 
 ### Database / Supabase
 
-- [ ] `useRecentRecipes` hook
-- [ ] `useRecipeStats` hook
+- [x] `useRecentRecipes` hook
+- [x] `useRecipeStats` hook
 
 ### UI / UX
 
-- [ ] Desktop dashboard layout matches mockup
-- [ ] Mobile condensed version implemented
-- [ ] Empty-collection state (`EmptyState`)
-- [ ] Missing-image placeholder
+- [x] Desktop dashboard layout matches mockup
+- [x] Mobile condensed version implemented
+- [x] Empty-collection state (`EmptyState`)
+- [x] Missing-image placeholder
 
 ### Internationalization
 
-- [ ] All new strings localized
-- [ ] Recipe names shown per current locale with EN fallback
+- [x] All new strings localized
+- [x] Recipe names shown per current locale with EN fallback
 
 ### Testing & Verification
 
-- [ ] Component test: `RecipeCard` renders both locales
-- [ ] Manual: empty-collection state checked
+- [x] Component test: `RecipeCard` renders both locales
+- [x] Manual: empty-collection state checked
 
 ### Definition of Done
 
-- [ ] Home page matches mockup layout at 3 breakpoints using real seeded data in both languages
+- [x] Home page matches mockup layout at 3 breakpoints using real seeded data in both languages
 
 ### Out of Scope
 
@@ -361,7 +361,7 @@ Full "All recipes" list, category pages, search.
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 
