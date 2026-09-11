@@ -4,88 +4,56 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: None active — Phases 1–4 are unscheduled backlog ideas
+Current Phase: None active — Phases 1–6 are unscheduled backlog ideas
 MVP Status: Complete
 
 ---
 
-## Phase 1 — Nutrition Info Fields (not scheduled)
+## Phase 1 — Ingredient Master-Catalog & Auto-Calculated Nutrition (not scheduled)
 
 ### Goal
 
-Let recipes optionally carry basic nutrition info, shown only when present.
+A proper ingredient catalog (bilingual names, Latin name, category, a short educational fact, per-100g nutrition, image) that backs an autocomplete in the recipe ingredient editor, and drives automatic per-recipe/per-serving nutrition display on the recipe detail page — without requiring every existing free-text ingredient to be migrated up front. Supersedes the earlier "manual nutrition entry" idea: nutrition is calculated from linked ingredients rather than typed in per recipe.
 
 ### Tasks
 
-- [ ] Migration: add nullable nutrition columns to `recipes` (e.g. calories, protein_g, carbs_g, fat_g — per serving)
-- [ ] Add nutrition fields to the admin `RecipeForm`
-- [ ] Display nutrition on `RecipeDetailPage` / `RecipeMeta`, hidden entirely when a recipe has no nutrition data
+- [ ] Migration: new `ingredient_categories` table (slug/name_en/name_sr), seeded with the 10 categories from the reference library (dairy, vegetables, misc/additives, fish-and-meat, sweets, oils-and-fats, vitamins-and-minerals, fruit, herbs-and-spices, grains)
+- [ ] Migration: new `ingredients` table — name_en/name_sr, `latin_name` (single column, language-neutral), `regional_names` (free text), `fact_en`/`fact_sr` (short 1-2 sentence educational blurb, not full prose), `default_unit_en`/`default_unit_sr`, per-100g nutrition (`calories_kcal`, `protein_g`, `fat_g`, `carbs_g`, `fiber_g`), `micronutrients` jsonb (`{ "vitamin_b12": { "amount": 0.5, "unit": "µg" } }`), `unit_conversions` jsonb (`{ "kašika": 15, "čaša": 250 }` grams-per-unit), image fields (`image_storage_path`, `image_alt_en`, `image_alt_sr`)
+- [ ] Migration: add nullable `recipe_ingredients.ingredient_id` FK (`on delete set null`) — keeps every existing free-text row valid; only catalog-linked rows contribute to nutrition
+- [ ] `IngredientEditor`: autocomplete the name_en input against the catalog; selecting a suggestion sets `ingredient_id` and prefills name_sr/default unit; typing a non-match leaves `ingredient_id` null (free text, backward compatible) with an inline "add to catalog" affordance
+- [ ] Extend `recipeFormSchema.ts`'s `ingredientSchema` with an optional `ingredient_id`, reusing the existing `optionalText`/`optionalNonNegativeNumber` validation idioms
+- [ ] New `AdminIngredientsPage` (e.g. `/admin/sastojci`) — search/category-filter/pagination, mirroring `AdminRecipesPage`'s existing pattern
+- [ ] Ingredient create/edit form: all catalog fields above, with micronutrients and unit_conversions as repeatable key/value rows (reuse the add/remove/reorder row-array pattern from `IngredientEditor.tsx`/`StepEditor.tsx`), plus image upload reusing `ImageManager.tsx` + `src/lib/storage.ts` (new Storage path prefix, e.g. `ingredient-images/`)
+- [ ] New `src/lib/nutrition.ts`: pure functions computing recipe-total and per-serving nutrition from catalog-linked ingredients — grams-based (direct for g/kg units, via `unit_conversions` lookup otherwise; skip an ingredient from the total if no conversion exists rather than guessing), reusing the servings-scaling logic already in `src/lib/servings.ts`
+- [ ] New `NutritionPanel` component rendered near `RecipeMeta` on `RecipeDetailPage` — hidden entirely if zero ingredients are catalog-linked; shows a "based on N of M ingredients" disclaimer when the calculation is partial
 
 ### Database / Supabase
 
-- [ ] New migration file adding nullable nutrition columns (no RLS changes — covered by existing recipes policies)
-
-### UI / UX
-
-- [ ] Nutrition block only renders when at least one value is set; no placeholder/zero values shown
-
-### Internationalization
-
-- [ ] Nutrition field labels localized (EN/SR)
-
-### Testing & Verification
-
-- [ ] Manual: create/edit a recipe with and without nutrition data, confirm detail page reflects both cases
-
-### Definition of Done
-
-- [ ] Admin can optionally set per-serving nutrition info; it displays on the public detail page only when present
-
-### Out of Scope
-
-Automatic nutrition calculation from ingredients, per-ingredient nutrition database.
-
-### Phase Status
-
-- [ ] Phase Complete
-
----
-
-## Phase 2 — Ingredient Master-Catalog with Autocomplete (not scheduled)
-
-### Goal
-
-Reduce duplicate/inconsistent ingredient naming by backing the admin ingredient editor with a canonical catalog.
-
-### Tasks
-
-- [ ] Migration: new `ingredient_catalog` table (name_en, name_sr, default unit) + RLS (public read, admin write)
-- [ ] `IngredientEditor`: autocomplete the name inputs against the catalog; selecting a suggestion fills name_en/name_sr (and unit, if empty)
-- [ ] Allow adding a new catalog entry inline when typing an ingredient not yet in the catalog
-
-### Database / Supabase
-
-- [ ] New `ingredient_catalog` table + RLS policies mirroring the `categories`/`tags` read-open/write-admin pattern
+- [ ] `ingredient_categories` + `ingredients` tables, RLS mirroring the `categories`/`tags` public-select/authenticated-write pattern
+- [ ] `recipe_ingredients.ingredient_id` nullable FK, `on delete set null`
 
 ### UI / UX
 
 - [ ] Autocomplete suggestions list is keyboard-navigable and dismissible
+- [ ] Nutrition panel only renders when at least one ingredient is catalog-linked; recalculates reactively when the servings scaler changes
 
 ### Internationalization
 
-- [ ] Catalog entries carry both name_en/name_sr like other bilingual fields
+- [ ] Catalog entries carry name_en/name_sr, fact_en/fact_sr, default_unit_en/sr like other bilingual fields; `latin_name`/`regional_names` are single (language-neutral / regional-Serbian) columns, not bilingual pairs
 
 ### Testing & Verification
 
-- [ ] Manual: typing a known ingredient name shows matching suggestions; picking one fills the row correctly
+- [ ] Unit tests for the nutrition calculation util (grams conversion, per-serving math, partial-ingredient disclaimer threshold)
+- [ ] Manual: typing a known ingredient name shows matching suggestions; picking one fills the row and links `ingredient_id`
+- [ ] Manual: nutrition panel updates correctly when the servings scaler changes
 
 ### Definition of Done
 
-- [ ] Admin ingredient name inputs autocomplete from a shared catalog instead of being freeform every time
+- [ ] Admin ingredient name inputs autocomplete from a shared catalog; recipes with catalog-linked ingredients show correct per-recipe/per-serving nutrition on the public detail page
 
 ### Out of Scope
 
-Backfilling/linking existing `recipe_ingredients` rows to catalog entries; ingredient-level nutrition.
+Full-prose encyclopedia content or public ingredient detail pages (only the short `fact_en`/`fact_sr` blurb is shown); automatic unit conversion for units without an explicit `unit_conversions` entry; backfilling every existing recipe's free-text ingredients to catalog links (linking happens organically as recipes are edited); the bulk import of the user's ~200-item reference library and ongoing manual catalog entry are both deferred to when that content is actually provided — not part of this phase's build.
 
 ### Phase Status
 
@@ -93,7 +61,7 @@ Backfilling/linking existing `recipe_ingredients` rows to catalog entries; ingre
 
 ---
 
-## Phase 3 — Postgres Full-Text Search (not scheduled)
+## Phase 2 — Postgres Full-Text Search (not scheduled)
 
 ### Goal
 
@@ -136,7 +104,7 @@ Stemming/relevance ranking beyond Postgres's `'simple'` config, typo-tolerant/fu
 
 ---
 
-## Phase 4 — Automated Storage Orphan-Sweep Job (not scheduled)
+## Phase 3 — Automated Storage Orphan-Sweep Job (not scheduled)
 
 ### Goal
 
@@ -178,7 +146,7 @@ General Storage quota/cost monitoring.
 
 ---
 
-## Phase 5 — Favorites Page (not scheduled)
+## Phase 4 — Favorites Page (not scheduled)
 
 ### Goal
 
@@ -221,7 +189,7 @@ Per-visitor (non-admin) favorites.
 
 ---
 
-## Phase 6 — Recently Added Page (not scheduled)
+## Phase 5 — Recently Added Page (not scheduled)
 
 ### Goal
 
@@ -256,6 +224,51 @@ Give the `/nedavno-dodati` nav destination (sidebar + Home's quick filter) an ac
 ### Out of Scope
 
 Configurable time-window filtering (e.g. "added this week").
+
+### Phase Status
+
+- [ ] Phase Complete
+
+---
+
+## Phase 6 — Admin Category & Tag Management (not scheduled)
+
+### Goal
+
+Let the admin create/edit/delete recipe categories and tags from the UI instead of hand-written SQL migrations, and eliminate the current hardcoded duplication — a new category today requires editing `supabase/seed.sql`, `src/lib/categoryIcons.ts`, `src/components/layout/nav-items.ts`, and both locale files. Closes the missing "Predjela" (Appetizers) category gap as a concrete first deliverable.
+
+### Tasks
+
+- [ ] Build `AdminCategoriesPage` + `AdminTagsPage` (or one combined admin screen), reusing the closest existing CRUD-dialog pattern in the codebase: `NoteFormDialog.tsx` + `DeleteNoteDialog.tsx` (create/edit dialog + confirm-delete dialog pair)
+- [ ] Category delete must handle the existing `recipes.category_id ... on delete restrict` FK — surface a clear "reassign recipes first" error rather than a raw Postgres error
+- [ ] Replace the hardcoded `categoryNavItems` (`nav-items.ts`) and `categoryIconBySlug` (`categoryIcons.ts`) with sidebar/bottom-tab rendering driven live from `useCategories()`, falling back to the existing `MoreHorizontal` icon for categories without a hand-picked one (or add an optional `icon_name` column the admin picks from a fixed palette — decide at implementation time)
+- [ ] Once categories render dynamically from `name_en`/`name_sr`, remove the now-unnecessary static `category.*` locale-file entries
+- [ ] Add "Appetizers" / "Predjela" as an actual seeded category (`predjela`) — deliverable independently and immediately, even before the full CRUD UI ships
+
+### Database / Supabase
+
+- [ ] No schema migration needed for the CRUD itself — `categories`/`tags` RLS already allows authenticated write
+
+### UI / UX
+
+- [ ] Clear, non-technical error message when attempting to delete a category still assigned to recipes
+
+### Internationalization
+
+- [ ] Category/tag names entered via the admin form are bilingual (name_en/name_sr), consistent with existing fields
+
+### Testing & Verification
+
+- [ ] Manual: create, edit, and delete a category and a tag; confirm the public sidebar/nav reflects changes without a code deploy
+- [ ] Manual: attempt to delete a category with recipes assigned, confirm the clear error message
+
+### Definition of Done
+
+- [ ] Admin can fully manage categories and tags (including adding "Predjela") from the UI; adding a category no longer requires editing code
+
+### Out of Scope
+
+Reordering categories/tags (rely on alphabetical or creation order); bulk category merge/rename-with-recipe-reassignment tooling.
 
 ### Phase Status
 
