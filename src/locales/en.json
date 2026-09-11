@@ -223,6 +223,32 @@
         "uploadFailed": "Upload failed. Please try again.",
         "actionFailed": "Something went wrong. Please try again."
       }
+    },
+    "mealPlan": {
+      "previousWeek": "Previous week",
+      "nextWeek": "Next week",
+      "today": "Today",
+      "recipeRemoved": "Recipe removed",
+      "slots": {
+        "breakfast": "Breakfast",
+        "lunch": "Lunch",
+        "dinner": "Dinner",
+        "snack": "Snack"
+      },
+      "dialog": {
+        "createTitle": "Assign recipe",
+        "editTitle": "Edit meal plan entry",
+        "recipeLabel": "Recipe",
+        "recipePlaceholder": "Select a recipe...",
+        "noteLabel": "Note (optional)",
+        "notePlaceholder": "e.g. double the recipe",
+        "overwriteWarning": "This slot already has a recipe assigned. Saving will replace it.",
+        "cancel": "Cancel",
+        "save": "Save",
+        "confirmOverwrite": "Replace",
+        "saving": "Saving...",
+        "remove": "Remove"
+      }
     }
   },
   "errors": {

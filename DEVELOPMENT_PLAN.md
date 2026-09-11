@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 18 — Meal Planning
+Current Phase: Phase 19 — Kitchen Notes
 MVP Status: In Progress
 
 ## MVP Progress
@@ -26,7 +26,7 @@ MVP Status: In Progress
 - [x] Phase 15 — Image Upload/Replace/Delete
 - [x] Phase 16 — Recipe Delete & Admin List Management
 - [x] Phase 17 — Favorites (writable)
-- [ ] Phase 18 — Meal Planning
+- [x] Phase 18 — Meal Planning
 - [ ] Phase 19 — Kitchen Notes
 - [ ] Phase 20 — Deployment & Production Verification
 - [ ] MVP Complete
@@ -828,33 +828,33 @@ The "Plan obroka" feature.
 
 ### Tasks
 
-- [ ] Build `MealPlanCalendar` (weekly view)
-- [ ] Build `MealPlanEntryForm` (assign recipe to date/slot, optional note)
-- [ ] Implement remove/change entry
+- [x] Build `MealPlanCalendar` (weekly view)
+- [x] Build `MealPlanEntryForm` (assign recipe to date/slot, optional note)
+- [x] Implement remove/change entry
 
 ### Database / Supabase
 
-- [ ] `meal_plan_entries` CRUD (authenticated only, no public view)
+- [x] `meal_plan_entries` CRUD (authenticated only, no public view)
 
 ### UI / UX
 
-- [ ] `MealPlanPage` visual language consistent with dashboard (cards, dark theme, amber accents)
-- [ ] Overwrite confirmation when assigning an already-filled slot
-- [ ] "Recipe removed" state shown when a planned recipe is deleted
+- [x] `MealPlanPage` visual language consistent with dashboard (cards, dark theme, amber accents)
+- [x] Overwrite confirmation when assigning an already-filled slot
+- [x] "Recipe removed" state shown when a planned recipe is deleted
 
 ### Internationalization
 
-- [ ] Slot names (breakfast/lunch/dinner/snack) localized
-- [ ] Calendar labels localized
+- [x] Slot names (breakfast/lunch/dinner/snack) localized
+- [x] Calendar labels localized
 
 ### Testing & Verification
 
-- [ ] Manual: assign/change/remove across a week
-- [ ] Manual: verify set-null behavior after deleting a planned recipe
+- [x] Manual: assign/change/remove across a week
+- [x] Manual: verify set-null behavior after deleting a planned recipe
 
 ### Definition of Done
 
-- [ ] Admin can plan meals across a week, view/edit/remove entries, in both languages
+- [x] Admin can plan meals across a week, view/edit/remove entries, in both languages
 
 ### Out of Scope
 
@@ -862,7 +862,7 @@ Grocery-list generation, recurring plans.
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 

@@ -226,6 +226,32 @@
         "uploadFailed": "Otpremanje nije uspelo. Pokušajte ponovo.",
         "actionFailed": "Nešto je pošlo naopako. Pokušajte ponovo."
       }
+    },
+    "mealPlan": {
+      "previousWeek": "Prethodna nedelja",
+      "nextWeek": "Sledeća nedelja",
+      "today": "Danas",
+      "recipeRemoved": "Recept je uklonjen",
+      "slots": {
+        "breakfast": "Doručak",
+        "lunch": "Ručak",
+        "dinner": "Večera",
+        "snack": "Užina"
+      },
+      "dialog": {
+        "createTitle": "Dodeli recept",
+        "editTitle": "Izmeni stavku plana obroka",
+        "recipeLabel": "Recept",
+        "recipePlaceholder": "Izaberite recept...",
+        "noteLabel": "Napomena (opciono)",
+        "notePlaceholder": "npr. udvostruči recept",
+        "overwriteWarning": "Ovaj termin već ima dodeljen recept. Čuvanjem ćete ga zameniti.",
+        "cancel": "Otkaži",
+        "save": "Sačuvaj",
+        "confirmOverwrite": "Zameni",
+        "saving": "Čuvanje...",
+        "remove": "Ukloni"
+      }
     }
   },
   "errors": {
