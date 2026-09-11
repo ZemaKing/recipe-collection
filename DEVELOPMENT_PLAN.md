@@ -316,3 +316,89 @@ A dedicated "family recipes" browsing page beyond the standard tag filter; per-t
 ### Phase Status
 
 - [ ] Phase Complete
+
+---
+
+## Phase 8 — Category → Subcategory → Tags Restructure (not scheduled)
+
+### Goal
+
+Move from a flat Category + cross-cutting Tags model to three levels: **Category → Subcategory → Tags**. Categories/subcategories represent the actual type of food; tags stay exactly as they are today (Za početnike, Bez glutena, Brzi recepti, Sezonski recepti, Vegetarijanski — confirmed the only 5 tags that exist) for characteristics that cut across multiple categories.
+
+**Research findings**: zero recipes currently use the "Ostalo" category (confirmed against `seed.sql`, which doubles as production content per Phase 20) — retiring it needs no recipe reassignment. Adding "Predjela" and building category/tag admin CRUD is already planned in **Phase 6**; this phase coordinates with it rather than duplicating that work (subcategory admin CRUD ships alongside Phase 6's screen, not as a 4th admin surface).
+
+**Subcategory list status — working draft, pending the user's revised list.** The list below already excludes cross-cutting entries that behave like tags rather than dish types (dropped per explicit decision): ~~Zdrav doručak~~ (a quality), ~~Jela iz rerne~~ (a cooking method), ~~Zimske salate~~ (seasonal — duplicates the existing "Sezonski recepti" tag). Known unresolved overlaps in what remains (flag for the user's revision, not blocking): "Namazi" appears under Doručak/Predjela/Prilozi; "Pite" means savory (Peciva) vs. sweet (Deserti); "Čorbe" duplicates its own parent category name and overlaps with "Mesne čorbe"/"Riblje čorbe"; "Glavna jela" and "Predjela" mix protein-type/carb-base/format axes that aren't mutually exclusive (e.g. a chicken stew matches multiple subcategories at once).
+
+Working draft (9 categories, pending revision):
+- **Doručak**: Jaja i omleti, Sendviči i tost, Kaše, Palačinke i uštipci, Namazi
+- **Predjela**: Hladna predjela, Topla predjela, Kanapei i zalogaji, Namazi i dipovi, Predjela sa mesom, Predjela sa povrćem
+- **Supe i čorbe**: Bistre supe, Krem supe / potaži, Čorbe, Mesne čorbe, Riblje čorbe, Povrtne supe
+- **Glavna jela**: Piletina, Svinjetina, Junetina, Mleveno meso, Riba i morski plodovi, Testenine, Pirinač i rižoto, Jela od povrća, Variva
+- **Salate**: Sveže salate, Obrok salate, Salate sa mesom, Salate sa testeninom, Krompir salate
+- **Prilozi**: Krompir, Pirinač, Povrće, Testenina, Sosovi, Prelivi, Namazi
+- **Peciva**: Hleb, Pogače, Kiflice, Pite i burek, Pizza, Slana peciva, Slatka peciva, Testa
+- **Deserti**: Torte, Kolači, Sitni kolači, Pite, Kremasti deserti, Puding i mus, Sladoled, Voćni deserti
+- **Pića i napici**: Limunade, Sokovi, Smoothie, Kafa, Čaj, Topli napici, Kokteli, Bezalkoholni kokteli
+
+### Tasks
+
+**MUST HAVE**
+- [ ] Migration: new `subcategories` table (`id`, `category_id references categories(id) on delete restrict`, `slug`, `name_en`, `name_sr`, timestamps) + RLS mirroring the exact `{table}_public_select`/`{table}_authenticated_write` pattern used everywhere else
+- [ ] Migration: nullable `recipes.subcategory_id references subcategories(id) on delete set null` — nullable because none of the 14 existing recipes have one yet and there's no way to auto-infer it from free text; admin backfills manually over time
+- [ ] Seed the finalized subcategory list once the user provides their revision; exclude "ostalo" from the active category set (dormant row, no recipes reference it)
+- [ ] `recipeQueries.ts`: add `subcategory:subcategories(slug, name_en, name_sr)` to `RECIPE_SUMMARY_SELECT`, mirroring the existing `category:categories(...)` embed exactly
+- [ ] `types/recipe.ts`: add `subcategory: { slug, name_en, name_sr } | null` to `RecipeSummary`, mirroring the existing `category` field shape
+- [ ] `recipeFormSchema.ts`/`recipeFormState.ts`/`useAdminRecipe.ts`'s `AdminRecipeDetail`: add `subcategory_id`, required for new/edited recipes (same `z.string().trim().min(1, ...)` pattern as `category_id`), plus validation that the chosen subcategory actually belongs to the chosen category
+- [ ] New `useSubcategories()` hook mirroring `useCategories()` (fetch all ~50-60 rows once; trivially small dataset, no per-category queries needed)
+- [ ] `RecipeForm.tsx`: subcategory `<select>` dependent on the category `<select>` — disabled/empty until a category is chosen, resets when category changes (new interaction pattern in this codebase, self-contained)
+- [ ] `App.tsx`: new nested route `kategorije/:slug/:subcategorySlug`; `CategoryRecipesPage.tsx` gains subcategory-drill-down handling (it currently reads zero search params) and a subcategory filter-chip row reusing the existing tag-chip pill pattern
+- [ ] `useRecipesByCategory.ts`: accept an optional subcategory slug and filter accordingly
+- [ ] `AllRecipesPage.tsx`/`recipeFilter.ts`/`recipeSearchParams.ts`: add `subcategory` as an ad-hoc single-value query param (matching how `category`/`favorite` already work on this page, not the multi-value `tags` pattern), dependent select next to the category select
+
+**NICE TO HAVE**
+- [ ] Resolve the flagged naming overlaps ("Namazi" x3, "Pite" ambiguity, redundant "Čorbe") once the user's revised list lands
+- [ ] Subcategory counts on `CategoriesPage`/category cards (mirrors the existing `recipes(count)` embed pattern in `useCategories.ts`)
+
+**OPTIONAL FUTURE IMPROVEMENTS**
+- [ ] Nested/expandable subcategory tree in the sidebar (deferred in favor of the simpler chip-row-on-category-page approach, to avoid a deep/cluttered nav on a personal app)
+- [ ] Bulk recipe reassignment tooling for backfilling subcategories on the 14 pre-existing recipes
+
+### Database / Supabase
+
+- [ ] `subcategories` table + RLS; `recipes.subcategory_id` nullable FK, `on delete set null`
+
+### UI / UX
+
+- [ ] Clicking a category shows all its recipes (unchanged); clicking a subcategory chip narrows further via the nested route — no separate "loading" state regression
+- [ ] Subcategory chip row and admin dependent-select both responsive at existing breakpoints (reuses already-established patterns, no new responsive work)
+
+### Internationalization
+
+- [ ] Subcategory names are bilingual (name_en/name_sr) database columns, consistent with categories/tags — no locale-file additions needed
+
+### Testing & Verification
+
+- [ ] Manual: category page subcategory chips filter correctly; clearing the subcategory returns to the full category view
+- [ ] Manual: admin form's subcategory select correctly resets/repopulates when category changes
+- [ ] Manual: a recipe with no subcategory (all 14 existing ones, until backfilled) still renders correctly everywhere
+
+### Definition of Done
+
+- [ ] Admin can assign a category + subcategory (+ optional tags) to any recipe; public browsing supports drilling into a category's subcategories and filtering `/recepti` by subcategory; existing recipes/tags are unaffected until reassigned
+
+### Out of Scope
+
+Automated backfill/inference of subcategories for existing recipes; a nested sidebar subcategory tree; per-recipe multiple subcategories (exactly one, like category); reordering categories/subcategories.
+
+### Final architecture
+
+```
+Recipe
+├── Category (1)
+├── Subcategory (1, optional until assigned)
+└── Tags (0..N)
+```
+
+### Phase Status
+
+- [ ] Phase Complete
