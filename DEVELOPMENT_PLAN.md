@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 23 — Performance Pass
+Current Phase: Phase 24 — Testing Hardening
 MVP Status: Complete
 
 ## MVP Progress
@@ -1056,32 +1056,32 @@ Practical performance tuning.
 
 ### Tasks
 
-- [ ] Verify image lazy-loading
-- [ ] Verify Supabase queries select only needed columns
-- [ ] Audit TanStack Query cache keys to eliminate duplicate requests
-- [ ] Code-split admin routes from public routes
-- [ ] Bundle-size check
+- [x] Verify image lazy-loading
+- [x] Verify Supabase queries select only needed columns
+- [x] Audit cache keys to eliminate duplicate requests (no TanStack Query in this codebase — deduped the hand-rolled `useTags` hook instead)
+- [x] Code-split admin routes from public routes
+- [x] Bundle-size check
 
 ### Database / Supabase
 
-- [ ] N/A for this phase
+- [x] N/A for this phase
 
 ### UI / UX
 
-- [ ] N/A for this phase
+- [x] N/A for this phase
 
 ### Internationalization
 
-- [ ] N/A for this phase
+- [x] N/A for this phase
 
 ### Testing & Verification
 
-- [ ] Lighthouse/basic bundle check shows no obvious regressions
-- [ ] Confirm admin bundle not loaded for public visitors
+- [x] Lighthouse/basic bundle check shows no obvious regressions
+- [x] Confirm admin bundle not loaded for public visitors
 
 ### Definition of Done
 
-- [ ] No obvious performance regressions; admin bundle excluded from public bundle
+- [x] No obvious performance regressions; admin bundle excluded from public bundle
 
 ### Out of Scope
 
@@ -1089,7 +1089,7 @@ CDN/edge-caching strategy beyond Vercel defaults.
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 

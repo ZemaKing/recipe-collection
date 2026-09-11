@@ -1,16 +1,11 @@
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { BrowserRouter, Navigate, Outlet, Route, Routes, useLocation, useParams } from 'react-router-dom'
 import { AuthProvider } from '@/components/auth/AuthProvider'
 import ProtectedRoute from '@/components/auth/ProtectedRoute'
-import AdminShell from '@/components/layout/AdminShell'
 import AppShell from '@/components/layout/AppShell'
 import { defaultLanguage, isSupportedLanguage } from '@/lib/i18n'
 import { stripLangPrefix } from '@/lib/localizedPath'
-import AdminMealPlanPage from '@/pages/AdminMealPlanPage'
-import AdminNotesPage from '@/pages/AdminNotesPage'
-import AdminRecipeFormPage from '@/pages/AdminRecipeFormPage'
-import AdminRecipesPage from '@/pages/AdminRecipesPage'
 import AllRecipesPage from '@/pages/AllRecipesPage'
 import CategoriesPage from '@/pages/CategoriesPage'
 import CategoryRecipesPage from '@/pages/CategoryRecipesPage'
@@ -18,6 +13,14 @@ import HomePage from '@/pages/HomePage'
 import LoginPage from '@/pages/LoginPage'
 import PlaceholderPage from '@/pages/PlaceholderPage'
 import RecipeDetailPage from '@/pages/RecipeDetailPage'
+
+// Admin routes are only reached by an authenticated admin, so keep them out
+// of the bundle every public visitor downloads.
+const AdminShell = lazy(() => import('@/components/layout/AdminShell'))
+const AdminMealPlanPage = lazy(() => import('@/pages/AdminMealPlanPage'))
+const AdminNotesPage = lazy(() => import('@/pages/AdminNotesPage'))
+const AdminRecipeFormPage = lazy(() => import('@/pages/AdminRecipeFormPage'))
+const AdminRecipesPage = lazy(() => import('@/pages/AdminRecipesPage'))
 
 function RootRedirect() {
   const { i18n } = useTranslation()
@@ -81,7 +84,13 @@ function App() {
             </Route>
 
             <Route element={<ProtectedRoute />}>
-              <Route element={<AdminShell />}>
+              <Route
+                element={
+                  <Suspense fallback={null}>
+                    <AdminShell />
+                  </Suspense>
+                }
+              >
                 <Route path="admin/recepti" element={<AdminRecipesPage />} />
                 <Route path="admin/recepti/novi" element={<AdminRecipeFormPage />} />
                 <Route path="admin/recepti/:slug/izmeni" element={<AdminRecipeFormPage />} />

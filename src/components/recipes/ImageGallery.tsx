@@ -10,7 +10,9 @@ interface ImageGalleryProps {
 // than one photo yet, so gallery navigation (arrows/counter) is deferred
 // until that's actually needed.
 function ImageGallery({ image, alt }: ImageGalleryProps) {
-  return <RecipeImage image={image} alt={alt} className="aspect-video w-full rounded-card" />
+  return (
+    <RecipeImage image={image} alt={alt} className="aspect-video w-full rounded-card" loading="eager" />
+  )
 }
 
 export default ImageGallery

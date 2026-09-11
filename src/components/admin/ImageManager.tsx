@@ -124,7 +124,13 @@ function ImageManager({ recipeId }: ImageManagerProps) {
           className="flex flex-col gap-3 rounded-card border border-border bg-surface p-3 sm:flex-row"
         >
           <div className="relative aspect-video w-full shrink-0 overflow-hidden rounded-control bg-surface-elevated sm:w-40">
-            <img src={getRecipeImageUrl(image.storage_path)} alt="" className="size-full object-cover" />
+            <img
+              src={getRecipeImageUrl(image.storage_path)}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              className="size-full object-cover"
+            />
             {image.is_primary && (
               <span className="absolute left-1.5 top-1.5 flex items-center gap-1 rounded-pill bg-accent px-1.5 py-0.5 text-[10px] font-semibold text-accent-foreground">
                 <Star className="size-3" />
