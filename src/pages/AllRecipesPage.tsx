@@ -108,25 +108,50 @@ function AllRecipesPage() {
           {t('browse.favoritesOnly')}
         </button>
 
-        {tags.map((tag) => {
-          const active = activeTags.includes(tag.slug)
-          return (
-            <button
-              key={tag.id}
-              type="button"
-              onClick={() => toggleTag(tag.slug)}
-              className={cn(
-                'flex items-center gap-1 rounded-pill border px-3 py-2 text-sm font-medium transition-colors',
-                active
-                  ? 'border-accent bg-accent-soft text-accent'
-                  : 'border-border text-muted-foreground hover:text-foreground',
-              )}
-            >
-              {pickLocalized(tag.name_en, tag.name_sr, lang)}
-              {active && <X className="size-3.5" />}
-            </button>
-          )
-        })}
+        {/* Mobile only: the sidebar's tag list (the only other way to add a
+            tag filter) is hidden below lg, so show every tag here since
+            there's otherwise no way to add a tag filter on mobile. */}
+        <div className="contents md:hidden">
+          {tags.map((tag) => {
+            const active = activeTags.includes(tag.slug)
+            return (
+              <button
+                key={tag.id}
+                type="button"
+                onClick={() => toggleTag(tag.slug)}
+                className={cn(
+                  'flex items-center gap-1 rounded-pill border px-3 py-2 text-sm font-medium transition-colors',
+                  active
+                    ? 'border-accent bg-accent-soft text-accent'
+                    : 'border-border text-muted-foreground hover:text-foreground',
+                )}
+              >
+                {pickLocalized(tag.name_en, tag.name_sr, lang)}
+                {active && <X className="size-3.5" />}
+              </button>
+            )
+          })}
+        </div>
+
+        {/* Desktop/tablet: only show already-active tags as removable chips;
+            adding a tag filter is done via the sidebar's quick-filter list. */}
+        <div className="hidden md:contents">
+          {activeTags.map((tagSlug) => {
+            const tag = tags.find((item) => item.slug === tagSlug)
+            if (!tag) return null
+            return (
+              <button
+                key={tagSlug}
+                type="button"
+                onClick={() => toggleTag(tagSlug)}
+                className="flex items-center gap-1 rounded-pill border border-accent bg-accent-soft px-3 py-2 text-sm font-medium text-accent"
+              >
+                {pickLocalized(tag.name_en, tag.name_sr, lang)}
+                <X className="size-3.5" />
+              </button>
+            )
+          })}
+        </div>
 
         {hasActiveFilters && (
           <button
