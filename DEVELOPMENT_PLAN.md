@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 21 — Responsive Refinement Pass
+Current Phase: Phase 22 — Accessibility Pass
 MVP Status: Complete
 
 ## MVP Progress
@@ -967,29 +967,29 @@ Systematic breakpoint review beyond the per-phase spot checks.
 
 ### Tasks
 
-- [ ] Audit every MVP screen at desktop/tablet/mobile breakpoints
-- [ ] Fix spacing/overflow/touch-target issues
-- [ ] Verify Serbian text doesn't break layouts anywhere
+- [x] Audit every MVP screen at desktop/tablet/mobile breakpoints
+- [x] Fix spacing/overflow/touch-target issues
+- [x] Verify Serbian text doesn't break layouts anywhere
 
 ### Database / Supabase
 
-- [ ] N/A for this phase
+- [x] N/A for this phase
 
 ### UI / UX
 
-- [ ] Full breakpoint checklist pass across all MVP screens
+- [x] Full breakpoint checklist pass across all MVP screens
 
 ### Internationalization
 
-- [ ] Layout verified in both languages at all breakpoints
+- [x] Layout verified in both languages at all breakpoints
 
 ### Testing & Verification
 
-- [ ] Manual full-app breakpoint review
+- [x] Manual full-app breakpoint review
 
 ### Definition of Done
 
-- [ ] All MVP screens pass a full desktop/tablet/mobile review checklist in both languages
+- [x] All MVP screens pass a full desktop/tablet/mobile review checklist in both languages
 
 ### Out of Scope
 
@@ -997,7 +997,7 @@ New features.
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 

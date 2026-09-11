@@ -50,14 +50,13 @@ function HomePage() {
           )}
 
           {visibleRecipes.length > 0 && (
-            <div className="flex gap-3 overflow-x-auto pb-2">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
               {visibleRecipes.map((recipe) => (
-                <div key={recipe.id} className="w-40 shrink-0 sm:w-44">
-                  <RecipeCard
-                    recipe={recipe}
-                    onToggleFavorite={session ? () => void toggleFavorite(recipe.id) : undefined}
-                  />
-                </div>
+                <RecipeCard
+                  key={recipe.id}
+                  recipe={recipe}
+                  onToggleFavorite={session ? () => void toggleFavorite(recipe.id) : undefined}
+                />
               ))}
             </div>
           )}
