@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 10 — Recipe Detail Page
+Current Phase: Phase 11 — Storage & Image Display
 MVP Status: In Progress
 
 ## MVP Progress
@@ -18,7 +18,7 @@ MVP Status: In Progress
 - [x] Phase 7 — Recipe Listing Dashboard (Home)
 - [x] Phase 8 — Categories & "All Recipes" Browsing
 - [x] Phase 9 — Search & Filtering (incl. quick-filter tags)
-- [ ] Phase 10 — Recipe Detail Page
+- [x] Phase 10 — Recipe Detail Page
 - [ ] Phase 11 — Storage & Image Display
 - [ ] Phase 12 — Authentication
 - [ ] Phase 13 — Admin Shell
@@ -464,36 +464,36 @@ The full recipe detail experience from the mockup.
 
 ### Tasks
 
-- [ ] Build `RecipeDetailHero` (image gallery, title, category, rating, favorite, share)
-- [ ] Build `RecipeMeta` (time/servings/weight/difficulty)
-- [ ] Build `IngredientList` with servings scaler + checkboxes
-- [ ] Build `StepList`
-- [ ] Build `TipsPanel` (Prep/Tips tabs)
+- [x] Build `RecipeDetailHero` (image gallery, title, category, rating, favorite, share)
+- [x] Build `RecipeMeta` (time/servings/weight/difficulty)
+- [x] Build `IngredientList` with servings scaler + checkboxes
+- [x] Build `StepList`
+- [x] Build `TipsPanel` — corrected against the mockup mid-phase: it's an always-visible "Saveti" block (tips only), not a Prep/Tips tab pair. The mockup's mobile "Priprema" tab turned out to just be the numbered step list, not the `prep_notes` field, so `prep_notes` isn't surfaced in the UI (column kept in schema, unused for now).
 
 ### Database / Supabase
 
-- [ ] `useRecipeBySlug` hook selecting only needed columns/relations
+- [x] `useRecipeBySlug` hook selecting only needed columns/relations
 
 ### UI / UX
 
-- [ ] Desktop layout matches mockup
-- [ ] Mobile condensed layout matches mockup mobile frames
-- [ ] Missing-image placeholder
-- [ ] Recipe-not-found state
+- [x] Desktop layout matches mockup
+- [x] Mobile condensed layout matches mockup mobile frames
+- [x] Missing-image placeholder
+- [x] Recipe-not-found state
 
 ### Internationalization
 
-- [ ] All recipe fields rendered per locale with EN fallback
-- [ ] "Not translated" indicator reserved for admin only (not shown publicly)
+- [x] All recipe fields rendered per locale with EN fallback
+- [x] "Not translated" indicator reserved for admin only (not shown publicly)
 
 ### Testing & Verification
 
-- [ ] Component test: servings-scaling math
-- [ ] Manual: missing-image and not-found states
+- [x] Component test: servings-scaling math
+- [x] Manual: missing-image and not-found states
 
 ### Definition of Done
 
-- [ ] Detail page fully matches mockup content/layout in both languages across breakpoints
+- [x] Detail page fully matches mockup content/layout in both languages across breakpoints
 
 ### Out of Scope
 
@@ -501,7 +501,7 @@ Favorite persistence (until auth exists), rating submission, editing.
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 

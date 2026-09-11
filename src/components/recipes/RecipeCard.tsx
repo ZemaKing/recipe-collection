@@ -1,8 +1,10 @@
 import { Clock, ImageOff } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
 import { formatDuration } from '@/lib/format'
 import { pickLocalized } from '@/lib/localizedField'
+import { buildLocalizedPath } from '@/lib/localizedPath'
 import type { RecipeSummary } from '@/types/recipe'
 
 interface RecipeCardProps {
@@ -22,7 +24,10 @@ function RecipeCard({ recipe }: RecipeCardProps) {
   )
 
   return (
-    <div className="flex w-full flex-col gap-2 rounded-card border border-border bg-surface p-2">
+    <Link
+      to={buildLocalizedPath(lang, `/recepti/${recipe.slug}`)}
+      className="flex w-full flex-col gap-2 rounded-card border border-border bg-surface p-2 transition-colors hover:border-accent/50"
+    >
       <div className="flex aspect-square items-center justify-center rounded-[calc(var(--radius-card)-0.5rem)] bg-surface-elevated text-muted-foreground">
         <ImageOff className="size-6" aria-label={t('recipeCard.noImage')} />
       </div>
@@ -36,7 +41,7 @@ function RecipeCard({ recipe }: RecipeCardProps) {
           </p>
         )}
       </div>
-    </div>
+    </Link>
   )
 }
 

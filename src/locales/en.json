@@ -103,5 +103,39 @@
       "title": "No recipes match your filters",
       "description": "Try adjusting your search or clearing filters."
     }
+  },
+  "recipeDetail": {
+    "notFoundTitle": "Recipe not found",
+    "notFoundDescription": "This recipe doesn't exist or may have been removed.",
+    "favorited": "Favorited",
+    "notFavorited": "Not favorited",
+    "share": "Share recipe",
+    "shareCopied": "Link copied!",
+    "meta": {
+      "prepTime": "Prep time",
+      "cookTime": "Cook time",
+      "totalTime": "Total time",
+      "servings": "Servings",
+      "weight": "Weight",
+      "difficulty": "Difficulty"
+    },
+    "difficulty": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    },
+    "ingredients": {
+      "title": "Ingredients",
+      "servings_one": "{{count}} serving",
+      "servings_other": "{{count}} servings",
+      "decrease": "Decrease servings",
+      "increase": "Increase servings"
+    },
+    "steps": {
+      "title": "Preparation"
+    },
+    "tips": {
+      "tips": "Tips"
+    }
   }
 }

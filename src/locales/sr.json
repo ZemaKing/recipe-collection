@@ -105,5 +105,40 @@
       "title": "Nema recepata koji odgovaraju filterima",
       "description": "Pokušajte da izmenite pretragu ili uklonite filtere."
     }
+  },
+  "recipeDetail": {
+    "notFoundTitle": "Recept nije pronađen",
+    "notFoundDescription": "Ovaj recept ne postoji ili je možda uklonjen.",
+    "favorited": "U omiljenim",
+    "notFavorited": "Nije u omiljenim",
+    "share": "Podeli recept",
+    "shareCopied": "Link kopiran!",
+    "meta": {
+      "prepTime": "Vreme pripreme",
+      "cookTime": "Vreme kuvanja",
+      "totalTime": "Ukupno vreme",
+      "servings": "Porcije",
+      "weight": "Težina",
+      "difficulty": "Težina pripreme"
+    },
+    "difficulty": {
+      "easy": "Lako",
+      "medium": "Srednje",
+      "hard": "Teško"
+    },
+    "ingredients": {
+      "title": "Sastojci",
+      "servings_one": "{{count}} porcija",
+      "servings_few": "{{count}} porcije",
+      "servings_other": "{{count}} porcija",
+      "decrease": "Smanji broj porcija",
+      "increase": "Povećaj broj porcija"
+    },
+    "steps": {
+      "title": "Priprema"
+    },
+    "tips": {
+      "tips": "Saveti"
+    }
   }
 }

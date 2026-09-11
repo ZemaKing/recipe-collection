@@ -9,6 +9,7 @@ import CategoriesPage from '@/pages/CategoriesPage'
 import CategoryRecipesPage from '@/pages/CategoryRecipesPage'
 import HomePage from '@/pages/HomePage'
 import PlaceholderPage from '@/pages/PlaceholderPage'
+import RecipeDetailPage from '@/pages/RecipeDetailPage'
 
 function RootRedirect() {
   const { i18n } = useTranslation()
@@ -55,6 +56,7 @@ function App() {
           <Route element={<AppShell />}>
             <Route index element={<HomePage />} />
             <Route path="recepti" element={<AllRecipesPage />} />
+            <Route path="recepti/:slug" element={<RecipeDetailPage />} />
             <Route path="kategorije" element={<CategoriesPage />} />
             <Route path="kategorije/:slug" element={<CategoryRecipesPage />} />
             <Route path="omiljeni" element={<PlaceholderPage title={t('pages.favorites')} />} />
