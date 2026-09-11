@@ -7,39 +7,8 @@ import { pickLocalized } from '@/lib/localizedField'
 import { buildLocalizedPath, stripLangPrefix } from '@/lib/localizedPath'
 import { parseTagsParam, toggleTagInParams } from '@/lib/recipeSearchParams'
 import { cn } from '@/lib/utils'
+import NavRow from './NavRow'
 import { categoryNavItems, primaryNavItems } from './nav-items'
-
-function NavRow({
-  path,
-  icon: Icon,
-  labelKey,
-}: {
-  path: string
-  icon: (typeof primaryNavItems)[number]['icon']
-  labelKey: string
-}) {
-  const { t } = useTranslation()
-  const lang = useCurrentLang()
-  const label = t(labelKey)
-  const to = buildLocalizedPath(lang, path)
-
-  return (
-    <NavLink
-      to={to}
-      end={path === '/'}
-      className={({ isActive }) =>
-        cn(
-          'flex items-center gap-3 rounded-control px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-surface-hover hover:text-foreground md:justify-center lg:justify-start',
-          isActive && 'bg-accent-soft text-accent hover:bg-accent-soft hover:text-accent',
-        )
-      }
-      title={label}
-    >
-      <Icon className="size-5 shrink-0" />
-      <span className="hidden lg:inline">{label}</span>
-    </NavLink>
-  )
-}
 
 function QuickFilters() {
   const { t } = useTranslation()

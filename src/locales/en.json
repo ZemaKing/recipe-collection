@@ -151,5 +151,14 @@
     "rlsTest": "Test authenticated write",
     "rlsPass": "Authenticated write succeeded.",
     "rlsFail": "Authenticated write failed."
+  },
+  "admin": {
+    "shellName": "Admin",
+    "backToSite": "Back to site",
+    "nav": {
+      "recipes": "Recipes",
+      "mealPlan": "Meal Plan",
+      "notes": "Notes"
+    }
   }
 }

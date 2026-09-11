@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 13 — Admin Shell
+Current Phase: Phase 14 — Recipe Create/Edit Form
 MVP Status: In Progress
 
 ## MVP Progress
@@ -21,7 +21,7 @@ MVP Status: In Progress
 - [x] Phase 10 — Recipe Detail Page
 - [x] Phase 11 — Storage & Image Display
 - [x] Phase 12 — Authentication
-- [ ] Phase 13 — Admin Shell
+- [x] Phase 13 — Admin Shell
 - [ ] Phase 14 — Recipe Create/Edit Form
 - [ ] Phase 15 — Image Upload/Replace/Delete
 - [ ] Phase 16 — Recipe Delete & Admin List Management
@@ -602,29 +602,29 @@ Authenticated admin layout and navigation.
 
 ### Tasks
 
-- [ ] Build `AdminLayout` (nav to Recipes/Meal Plan/Notes)
-- [ ] Implement logout action
-- [ ] Show real logged-in avatar/name in admin topbar
+- [x] Build `AdminLayout` (nav to Recipes/Meal Plan/Notes)
+- [x] Implement logout action
+- [x] Show real logged-in avatar/name in admin topbar
 
 ### Database / Supabase
 
-- [ ] Read current session/user for greeting
+- [x] Read current session/user for greeting
 
 ### UI / UX
 
-- [ ] Admin shell chrome matches app visual language
+- [x] Admin shell chrome matches app visual language
 
 ### Internationalization
 
-- [ ] Admin nav strings localized
+- [x] Admin nav strings localized
 
 ### Testing & Verification
 
-- [ ] Manual: admin shell only renders when authenticated
+- [x] Manual: admin shell only renders when authenticated
 
 ### Definition of Done
 
-- [ ] Logged-in admin sees a distinct admin shell with working navigation and logout
+- [x] Logged-in admin sees a distinct admin shell with working navigation and logout
 
 ### Out of Scope
 
@@ -632,7 +632,7 @@ CRUD forms.
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 

@@ -71,7 +71,7 @@ function Topbar() {
         <LanguageSwitcher />
 
         <Link
-          to={buildLocalizedPath(lang, session ? '/admin/recepti/novi' : '/prijava')}
+          to={buildLocalizedPath(lang, session ? '/admin/recepti' : '/prijava')}
           title={session ? t('login.loggedInAs', { email: session.user.email }) : t('login.title')}
           className="flex size-9 shrink-0 items-center justify-center rounded-full bg-surface-elevated text-muted-foreground transition-colors hover:text-foreground"
         >

@@ -154,5 +154,14 @@
     "rlsTest": "Testiraj autentifikovani upis",
     "rlsPass": "Autentifikovani upis je uspeo.",
     "rlsFail": "Autentifikovani upis nije uspeo."
+  },
+  "admin": {
+    "shellName": "Administracija",
+    "backToSite": "Nazad na sajt",
+    "nav": {
+      "recipes": "Recepti",
+      "mealPlan": "Plan obroka",
+      "notes": "Beleške"
+    }
   }
 }

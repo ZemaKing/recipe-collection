@@ -57,3 +57,9 @@ export const bottomTabItems: NavItem[] = [
   { labelKey: 'nav.favorites', path: '/omiljeni', icon: Heart },
   { labelKey: 'nav.profile', path: '/profil', icon: User },
 ]
+
+export const adminNavItems: NavItem[] = [
+  { labelKey: 'admin.nav.recipes', path: '/admin/recepti', icon: BookOpen },
+  { labelKey: 'admin.nav.mealPlan', path: '/admin/plan-obroka', icon: CalendarDays },
+  { labelKey: 'admin.nav.notes', path: '/admin/beleske', icon: NotebookPen },
+]

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { BrowserRouter, Navigate, Outlet, Route, Routes, useLocation, useParams } from 'react-router-dom'
 import { AuthProvider } from '@/components/auth/AuthProvider'
 import ProtectedRoute from '@/components/auth/ProtectedRoute'
+import AdminShell from '@/components/layout/AdminShell'
 import AppShell from '@/components/layout/AppShell'
 import { defaultLanguage, isSupportedLanguage } from '@/lib/i18n'
 import { stripLangPrefix } from '@/lib/localizedPath'
@@ -73,13 +74,28 @@ function App() {
               <Route path="beleske" element={<PlaceholderPage title={t('pages.kitchenNotes')} />} />
               <Route path="profil" element={<PlaceholderPage title={t('pages.profile')} />} />
               <Route path="prijava" element={<LoginPage />} />
-              <Route element={<ProtectedRoute />}>
+              <Route path="*" element={<PlaceholderPage title={t('pages.notFound')} />} />
+            </Route>
+
+            <Route element={<ProtectedRoute />}>
+              <Route element={<AdminShell />}>
+                <Route
+                  path="admin/recepti"
+                  element={<AdminPlaceholderPage title={t('admin.nav.recipes')} />}
+                />
                 <Route
                   path="admin/recepti/novi"
                   element={<AdminPlaceholderPage title={t('pages.addRecipe')} />}
                 />
+                <Route
+                  path="admin/plan-obroka"
+                  element={<AdminPlaceholderPage title={t('admin.nav.mealPlan')} />}
+                />
+                <Route
+                  path="admin/beleske"
+                  element={<AdminPlaceholderPage title={t('admin.nav.notes')} />}
+                />
               </Route>
-              <Route path="*" element={<PlaceholderPage title={t('pages.notFound')} />} />
             </Route>
           </Route>
         </Routes>
