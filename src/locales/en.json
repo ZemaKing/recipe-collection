@@ -68,5 +68,24 @@
     "profile": "Profile",
     "addRecipe": "Add Recipe",
     "notFound": "Page not found"
+  },
+  "common": {
+    "recipeCount_one": "{{count}} recipe",
+    "recipeCount_other": "{{count}} recipes",
+    "categoryCount_one": "{{count}} category",
+    "categoryCount_other": "{{count}} categories"
+  },
+  "categoriesPage": {
+    "title": "Categories",
+    "emptyCategoryTitle": "No recipes in this category yet"
+  },
+  "allRecipesPage": {
+    "title": "All Recipes"
+  },
+  "categoryDetailPage": {
+    "notFoundTitle": "Category not found",
+    "notFoundDescription": "This category doesn't exist or may have been removed.",
+    "emptyTitle": "No recipes in this category yet",
+    "emptyDescription": "Recipes added to this category will show up here."
   }
 }

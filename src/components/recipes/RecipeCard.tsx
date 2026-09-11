@@ -1,12 +1,12 @@
 import { Clock, ImageOff } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
-import type { RecentRecipe } from '@/hooks/useRecentRecipes'
 import { formatDuration } from '@/lib/format'
 import { pickLocalized } from '@/lib/localizedField'
+import type { RecipeSummary } from '@/types/recipe'
 
 interface RecipeCardProps {
-  recipe: RecentRecipe
+  recipe: RecipeSummary
 }
 
 function RecipeCard({ recipe }: RecipeCardProps) {
@@ -22,7 +22,7 @@ function RecipeCard({ recipe }: RecipeCardProps) {
   )
 
   return (
-    <div className="flex w-40 shrink-0 flex-col gap-2 rounded-card border border-border bg-surface p-2 sm:w-44">
+    <div className="flex w-full flex-col gap-2 rounded-card border border-border bg-surface p-2">
       <div className="flex aspect-square items-center justify-center rounded-[calc(var(--radius-card)-0.5rem)] bg-surface-elevated text-muted-foreground">
         <ImageOff className="size-6" aria-label={t('recipeCard.noImage')} />
       </div>

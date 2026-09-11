@@ -3,9 +3,9 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import i18n from '@/lib/i18n'
 import RecipeCard from './RecipeCard'
-import type { RecentRecipe } from '@/hooks/useRecentRecipes'
+import type { RecipeSummary } from '@/types/recipe'
 
-const baseRecipe: RecentRecipe = {
+const baseRecipe: RecipeSummary = {
   id: '1',
   slug: 'gulas',
   name_en: 'Beef Goulash',
@@ -17,7 +17,7 @@ const baseRecipe: RecentRecipe = {
   category: { slug: 'glavna-jela', name_en: 'Main Dishes', name_sr: 'Glavna jela' },
 }
 
-function renderWithLang(recipe: RecentRecipe, lang: string) {
+function renderWithLang(recipe: RecipeSummary, lang: string) {
   return render(
     <MemoryRouter initialEntries={[`/${lang}`]}>
       <Routes>
@@ -45,7 +45,7 @@ describe('RecipeCard', () => {
   })
 
   it('falls back to English when the Serbian translation is missing', () => {
-    const recipe: RecentRecipe = { ...baseRecipe, name_sr: null }
+    const recipe: RecipeSummary = { ...baseRecipe, name_sr: null }
     renderWithLang(recipe, 'sr')
     expect(screen.getByText('Beef Goulash')).toBeInTheDocument()
   })

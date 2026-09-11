@@ -4,6 +4,9 @@ import { BrowserRouter, Navigate, Outlet, Route, Routes, useLocation, useParams 
 import AppShell from '@/components/layout/AppShell'
 import { defaultLanguage, isSupportedLanguage } from '@/lib/i18n'
 import { stripLangPrefix } from '@/lib/localizedPath'
+import AllRecipesPage from '@/pages/AllRecipesPage'
+import CategoriesPage from '@/pages/CategoriesPage'
+import CategoryRecipesPage from '@/pages/CategoryRecipesPage'
 import HomePage from '@/pages/HomePage'
 import PlaceholderPage from '@/pages/PlaceholderPage'
 
@@ -51,12 +54,9 @@ function App() {
         <Route path=":lang" element={<LocaleGate />}>
           <Route element={<AppShell />}>
             <Route index element={<HomePage />} />
-            <Route path="recepti" element={<PlaceholderPage title={t('pages.allRecipes')} />} />
-            <Route path="kategorije" element={<PlaceholderPage title={t('pages.categories')} />} />
-            <Route
-              path="kategorije/:slug"
-              element={<PlaceholderPage title={t('pages.category')} />}
-            />
+            <Route path="recepti" element={<AllRecipesPage />} />
+            <Route path="kategorije" element={<CategoriesPage />} />
+            <Route path="kategorije/:slug" element={<CategoryRecipesPage />} />
             <Route path="omiljeni" element={<PlaceholderPage title={t('pages.favorites')} />} />
             <Route
               path="nedavno-dodati"

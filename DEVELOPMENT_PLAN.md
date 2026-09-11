@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 8 — Categories & "All Recipes" Browsing
+Current Phase: Phase 9 — Search & Filtering (incl. quick-filter tags)
 MVP Status: In Progress
 
 ## MVP Progress
@@ -16,7 +16,7 @@ MVP Status: In Progress
 - [x] Phase 5 — i18n Foundation
 - [x] Phase 6 — Seed / Sample Data
 - [x] Phase 7 — Recipe Listing Dashboard (Home)
-- [ ] Phase 8 — Categories & "All Recipes" Browsing
+- [x] Phase 8 — Categories & "All Recipes" Browsing
 - [ ] Phase 9 — Search & Filtering (incl. quick-filter tags)
 - [ ] Phase 10 — Recipe Detail Page
 - [ ] Phase 11 — Storage & Image Display
@@ -373,33 +373,33 @@ Category grid page and full recipe listing page from the mockup.
 
 ### Tasks
 
-- [ ] Build `CategoriesPage` (grid with counts)
-- [ ] Build `AllRecipesPage` (full grid)
-- [ ] Build `CategoryCard`
+- [x] Build `CategoriesPage` (grid with counts)
+- [x] Build `AllRecipesPage` (full grid)
+- [x] Build `CategoryCard`
 
 ### Database / Supabase
 
-- [ ] `useCategories` hook
-- [ ] `useRecipesByCategory` hook with count aggregation
+- [x] `useCategories` hook
+- [x] `useRecipesByCategory` hook with count aggregation
 
 ### UI / UX
 
-- [ ] Category grid matches mockup at 3 breakpoints
-- [ ] All-recipes grid matches mockup at 3 breakpoints
-- [ ] Category with zero recipes handled
-- [ ] Long Serbian category names don't break layout
+- [x] Category grid matches mockup at 3 breakpoints
+- [x] All-recipes grid matches mockup at 3 breakpoints
+- [x] Category with zero recipes handled
+- [x] Long Serbian category names don't break layout
 
 ### Internationalization
 
-- [ ] Category names localized
+- [x] Category names localized
 
 ### Testing & Verification
 
-- [ ] Component test: category count accuracy
+- [x] Component test: category count accuracy
 
 ### Definition of Done
 
-- [ ] Both pages match mockup, correct counts, correct in both languages
+- [x] Both pages match mockup, correct counts, correct in both languages
 
 ### Out of Scope
 
@@ -407,7 +407,7 @@ Search, tag filters.
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 

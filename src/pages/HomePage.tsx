@@ -50,7 +50,9 @@ function HomePage() {
           {visibleRecipes.length > 0 && (
             <div className="flex gap-3 overflow-x-auto pb-2">
               {visibleRecipes.map((recipe) => (
-                <RecipeCard key={recipe.id} recipe={recipe} />
+                <div key={recipe.id} className="w-40 shrink-0 sm:w-44">
+                  <RecipeCard recipe={recipe} />
+                </div>
               ))}
             </div>
           )}

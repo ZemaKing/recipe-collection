@@ -68,5 +68,26 @@
     "profile": "Profil",
     "addRecipe": "Dodaj recept",
     "notFound": "Stranica nije pronađena"
+  },
+  "common": {
+    "recipeCount_one": "{{count}} recept",
+    "recipeCount_few": "{{count}} recepta",
+    "recipeCount_other": "{{count}} recepata",
+    "categoryCount_one": "{{count}} kategorija",
+    "categoryCount_few": "{{count}} kategorije",
+    "categoryCount_other": "{{count}} kategorija"
+  },
+  "categoriesPage": {
+    "title": "Kategorije",
+    "emptyCategoryTitle": "Još nema recepata u ovoj kategoriji"
+  },
+  "allRecipesPage": {
+    "title": "Svi recepti"
+  },
+  "categoryDetailPage": {
+    "notFoundTitle": "Kategorija nije pronađena",
+    "notFoundDescription": "Ova kategorija ne postoji ili je možda uklonjena.",
+    "emptyTitle": "Još nema recepata u ovoj kategoriji",
+    "emptyDescription": "Recepti dodati u ovu kategoriju pojaviće se ovde."
   }
 }

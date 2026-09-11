@@ -1,18 +1,10 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import type { QuickFilter } from '@/components/recipes/QuickFilterChips'
+import { RECIPE_SUMMARY_SELECT } from '@/lib/recipeQueries'
+import type { RecipeSummary } from '@/types/recipe'
 
-export interface RecentRecipe {
-  id: string
-  slug: string
-  name_en: string
-  name_sr: string | null
-  prep_time_minutes: number | null
-  cook_time_minutes: number | null
-  rating: number
-  is_favorite: boolean
-  category: { slug: string; name_en: string; name_sr: string | null } | null
-}
+export type { RecipeSummary as RecentRecipe } from '@/types/recipe'
 
 const RECENT_LIMIT = 8
 
@@ -20,7 +12,7 @@ const RECENT_LIMIT = 8
 // set client-side, otherwise e.g. a favorite outside the 8 most recent
 // recipes would silently disappear from the "Omiljeni" chip.
 export function useRecentRecipes(filter: QuickFilter) {
-  const [recipes, setRecipes] = useState<RecentRecipe[]>([])
+  const [recipes, setRecipes] = useState<RecipeSummary[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -29,12 +21,7 @@ export function useRecentRecipes(filter: QuickFilter) {
 
     async function load() {
       setIsLoading(true)
-      let query = supabase
-        .from('recipes')
-        .select(
-          'id, slug, name_en, name_sr, prep_time_minutes, cook_time_minutes, rating, is_favorite, category:categories(slug, name_en, name_sr)',
-        )
-        .limit(RECENT_LIMIT)
+      let query = supabase.from('recipes').select(RECIPE_SUMMARY_SELECT).limit(RECENT_LIMIT)
 
       query =
         filter === 'topRated'
@@ -51,7 +38,7 @@ export function useRecentRecipes(filter: QuickFilter) {
       if (error) {
         setError(error.message)
       } else {
-        setRecipes((data ?? []) as unknown as RecentRecipe[])
+        setRecipes((data ?? []) as unknown as RecipeSummary[])
       }
       setIsLoading(false)
     }
