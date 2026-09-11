@@ -42,6 +42,7 @@ function AdminTopbar() {
           type="button"
           onClick={() => void handleSignOut()}
           title={t('login.signOut')}
+          aria-label={t('login.signOut')}
           className="flex size-9 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:text-foreground"
         >
           <LogOut className="size-4" />

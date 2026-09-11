@@ -57,6 +57,7 @@ function Topbar() {
           type="button"
           className="flex size-9 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:text-foreground md:hidden"
           title={t('topbar.search')}
+          aria-label={t('topbar.search')}
         >
           <Search className="size-4" />
         </button>
@@ -68,6 +69,7 @@ function Topbar() {
         <Link
           to={buildLocalizedPath(lang, session ? '/admin/recepti' : '/prijava')}
           title={session ? t('login.loggedInAs', { email: session.user.email }) : t('login.title')}
+          aria-label={session ? t('login.loggedInAs', { email: session.user.email }) : t('login.title')}
           className="flex size-9 shrink-0 items-center justify-center rounded-full bg-surface-elevated text-muted-foreground transition-colors hover:text-foreground"
         >
           <User className="size-4" />

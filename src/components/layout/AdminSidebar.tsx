@@ -28,6 +28,7 @@ function AdminSidebar() {
           to={buildLocalizedPath(lang, '/')}
           className="flex items-center justify-center gap-2 rounded-control px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-surface-hover hover:text-foreground md:justify-center lg:justify-start"
           title={t('admin.backToSite')}
+          aria-label={t('admin.backToSite')}
         >
           <ArrowLeft className="size-4 shrink-0" />
           <span className="hidden lg:inline">{t('admin.backToSite')}</span>

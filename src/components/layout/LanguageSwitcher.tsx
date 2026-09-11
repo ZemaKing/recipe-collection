@@ -30,6 +30,7 @@ function LanguageSwitcher() {
           type="button"
           className="flex size-9 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:text-foreground"
           title={t('topbar.language')}
+          aria-label={t('topbar.language')}
         >
           <Languages className="size-4" />
         </button>

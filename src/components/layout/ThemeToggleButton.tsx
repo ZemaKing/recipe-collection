@@ -12,6 +12,7 @@ function ThemeToggleButton() {
       type="button"
       onClick={toggleTheme}
       title={isDark ? t('topbar.switchToLight') : t('topbar.switchToDark')}
+      aria-label={isDark ? t('topbar.switchToLight') : t('topbar.switchToDark')}
       className="flex size-9 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:text-foreground"
     >
       {isDark ? <SunMedium className="size-4" /> : <Moon className="size-4" />}

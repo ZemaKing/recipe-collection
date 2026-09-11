@@ -22,6 +22,7 @@ function NavRow({ path, icon: Icon, labelKey }: NavItem) {
         )
       }
       title={label}
+      aria-label={label}
     >
       <Icon className="size-5 shrink-0" />
       <span className="hidden lg:inline">{label}</span>

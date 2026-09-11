@@ -34,6 +34,7 @@ function BottomTabBar() {
         to={buildLocalizedPath(lang, '/admin/recepti/novi')}
         className="-mt-6 flex size-12 shrink-0 items-center justify-center justify-self-center rounded-full bg-accent text-accent-foreground shadow-lg transition-colors hover:bg-accent-hover"
         title={t('nav.addRecipe')}
+        aria-label={t('nav.addRecipe')}
       >
         <Plus className="size-6" />
       </NavLink>

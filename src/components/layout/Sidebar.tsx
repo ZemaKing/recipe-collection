@@ -93,6 +93,7 @@ function Sidebar() {
           to={buildLocalizedPath(lang, '/admin/recepti/novi')}
           className="flex items-center justify-center gap-2 rounded-control bg-accent px-3 py-2 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent-hover"
           title={t('nav.addRecipe')}
+          aria-label={t('nav.addRecipe')}
         >
           <Plus className="size-4 shrink-0" />
           <span className="hidden lg:inline">{t('nav.addRecipe')}</span>

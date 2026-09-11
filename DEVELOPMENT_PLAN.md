@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 22 — Accessibility Pass
+Current Phase: Phase 23 — Performance Pass
 MVP Status: Complete
 
 ## MVP Progress
@@ -1009,34 +1009,34 @@ Address accessibility systematically beyond per-phase basics.
 
 ### Tasks
 
-- [ ] Keyboard-navigation audit across all core flows
-- [ ] Add focus-visible styles
-- [ ] Add `aria` labeling for icon-only buttons
-- [ ] Verify dialog focus trapping
-- [ ] Color-contrast check on dark theme
-- [ ] Re-verify `<html lang>` correctness
+- [x] Keyboard-navigation audit across all core flows
+- [x] Add focus-visible styles
+- [x] Add `aria` labeling for icon-only buttons
+- [x] Verify dialog focus trapping
+- [x] Color-contrast check on dark theme
+- [x] Re-verify `<html lang>` correctness
 
 ### Database / Supabase
 
-- [ ] N/A for this phase
+- [x] N/A for this phase
 
 ### UI / UX
 
-- [ ] N/A beyond audit fixes
+- [x] N/A beyond audit fixes
 
 ### Internationalization
 
-- [ ] Accessible language selector verified
+- [x] Accessible language selector verified
 
 ### Testing & Verification
 
-- [ ] Keyboard-only pass through all core flows
-- [ ] Contrast checks pass
-- [ ] Screen-reader spot check on key pages
+- [x] Keyboard-only pass through all core flows
+- [x] Contrast checks pass
+- [x] Screen-reader spot check on key pages
 
 ### Definition of Done
 
-- [ ] Keyboard-only pass succeeds; contrast checks pass; screen-reader spot check done
+- [x] Keyboard-only pass succeeds; contrast checks pass; screen-reader spot check done
 
 ### Out of Scope
 
@@ -1044,7 +1044,7 @@ Formal WCAG certification.
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 
