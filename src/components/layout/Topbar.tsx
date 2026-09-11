@@ -1,6 +1,7 @@
 import { ChefHat, Search, SunMedium, User } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { useAuth } from '@/hooks/useAuth'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
 import { buildLocalizedPath, stripLangPrefix } from '@/lib/localizedPath'
 import { QUERY_PARAM } from '@/lib/recipeSearchParams'
@@ -9,6 +10,7 @@ import LanguageSwitcher from './LanguageSwitcher'
 function Topbar() {
   const { t } = useTranslation()
   const lang = useCurrentLang()
+  const { session } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -68,9 +70,13 @@ function Topbar() {
 
         <LanguageSwitcher />
 
-        <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-surface-elevated text-muted-foreground">
+        <Link
+          to={buildLocalizedPath(lang, session ? '/admin/recepti/novi' : '/prijava')}
+          title={session ? t('login.loggedInAs', { email: session.user.email }) : t('login.title')}
+          className="flex size-9 shrink-0 items-center justify-center rounded-full bg-surface-elevated text-muted-foreground transition-colors hover:text-foreground"
+        >
           <User className="size-4" />
-        </div>
+        </Link>
       </div>
     </header>
   )

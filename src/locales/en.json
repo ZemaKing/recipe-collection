@@ -137,5 +137,19 @@
     "tips": {
       "tips": "Tips"
     }
+  },
+  "login": {
+    "title": "Admin login",
+    "subtitle": "Sign in to manage recipes.",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign in",
+    "submitting": "Signing in...",
+    "error": "Invalid email or password.",
+    "loggedInAs": "Logged in as {{email}}",
+    "signOut": "Sign out",
+    "rlsTest": "Test authenticated write",
+    "rlsPass": "Authenticated write succeeded.",
+    "rlsFail": "Authenticated write failed."
   }
 }

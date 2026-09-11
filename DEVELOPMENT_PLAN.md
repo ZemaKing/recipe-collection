@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 12 — Authentication
+Current Phase: Phase 13 — Admin Shell
 MVP Status: In Progress
 
 ## MVP Progress
@@ -20,7 +20,7 @@ MVP Status: In Progress
 - [x] Phase 9 — Search & Filtering (incl. quick-filter tags)
 - [x] Phase 10 — Recipe Detail Page
 - [x] Phase 11 — Storage & Image Display
-- [ ] Phase 12 — Authentication
+- [x] Phase 12 — Authentication
 - [ ] Phase 13 — Admin Shell
 - [ ] Phase 14 — Recipe Create/Edit Form
 - [ ] Phase 15 — Image Upload/Replace/Delete
@@ -557,32 +557,32 @@ Working admin login backed by Supabase Auth.
 
 ### Tasks
 
-- [ ] Manually create the single admin user in Supabase Auth (dev)
-- [ ] Build `LoginPage` (email/password form)
-- [ ] Implement session handling via Supabase auth listener
-- [ ] Build `ProtectedRoute` wrapper for `/{lang}/admin/*`
+- [x] Manually create the single admin user in Supabase Auth (dev)
+- [x] Build `LoginPage` (email/password form)
+- [x] Implement session handling via Supabase auth listener
+- [x] Build `ProtectedRoute` wrapper for `/{lang}/admin/*`
 
 ### Database / Supabase
 
-- [ ] Supabase Auth email/password configured
-- [ ] Session persistence verified
+- [x] Supabase Auth email/password configured
+- [x] Session persistence verified
 
 ### UI / UX
 
-- [ ] Login screen matches dark theme
+- [x] Login screen matches dark theme
 
 ### Internationalization
 
-- [ ] Login form and validation/error messages localized
+- [x] Login form and validation/error messages localized
 
 ### Testing & Verification
 
-- [ ] Manual: login/logout flow
-- [ ] RLS smoke test: authenticated writes succeed post-login
+- [x] Manual: login/logout flow
+- [x] RLS smoke test: authenticated writes succeed post-login
 
 ### Definition of Done
 
-- [ ] Admin can log in, session persists across reload, protected routes redirect when logged out, authenticated writes pass RLS
+- [x] Admin can log in, session persists across reload, protected routes redirect when logged out, authenticated writes pass RLS
 
 ### Out of Scope
 
@@ -590,7 +590,7 @@ Admin content screens.
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 
