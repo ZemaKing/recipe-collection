@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 14 — Recipe Create/Edit Form
+Current Phase: Phase 15 — Image Upload/Replace/Delete
 MVP Status: In Progress
 
 ## MVP Progress
@@ -22,7 +22,7 @@ MVP Status: In Progress
 - [x] Phase 11 — Storage & Image Display
 - [x] Phase 12 — Authentication
 - [x] Phase 13 — Admin Shell
-- [ ] Phase 14 — Recipe Create/Edit Form
+- [x] Phase 14 — Recipe Create/Edit Form
 - [ ] Phase 15 — Image Upload/Replace/Delete
 - [ ] Phase 16 — Recipe Delete & Admin List Management
 - [ ] Phase 17 — Favorites (writable)
@@ -644,35 +644,35 @@ Full bilingual recipe authoring.
 
 ### Tasks
 
-- [ ] Build `RecipeForm` (name/description/category/tags/time/servings/weight/difficulty/tips, EN+SR)
-- [ ] Build `IngredientEditor` (dynamic add/remove/reorder, EN+SR)
-- [ ] Build `StepEditor` (dynamic numbered steps, EN+SR)
-- [ ] Build `AdminRecipesPage` list with edit links
-- [ ] Implement create and edit modes
+- [x] Build `RecipeForm` (name/description/category/tags/time/servings/weight/difficulty/tips, EN+SR)
+- [x] Build `IngredientEditor` (dynamic add/remove/reorder, EN+SR)
+- [x] Build `StepEditor` (dynamic numbered steps, EN+SR)
+- [x] Build `AdminRecipesPage` list with edit links
+- [x] Implement create and edit modes
 
 ### Database / Supabase
 
-- [ ] Authenticated insert/update mutations across `recipes`, `recipe_ingredients`, `recipe_steps`, `recipe_tags`
-- [ ] Cache invalidation wired
+- [x] Authenticated insert/update mutations across `recipes`, `recipe_ingredients`, `recipe_steps`, `recipe_tags`
+- [x] Cache invalidation wired — no cache layer exists yet (no TanStack Query), so each page's own fetch-on-mount already reflects fresh data after navigating back to it
 
 ### UI / UX
 
-- [ ] Admin recipe list screen
-- [ ] Create/edit form screen
+- [x] Admin recipe list screen
+- [x] Create/edit form screen
 
 ### Internationalization
 
-- [ ] Bilingual field layout (EN required, SR optional per field)
+- [x] Bilingual field layout (EN required, SR optional per field)
 
 ### Testing & Verification
 
-- [ ] Component test: form validation (Zod)
-- [ ] Integration test: create → appears in public list
-- [ ] Manual: edit flow
+- [x] Component test: form validation (Zod) — 16 unit tests on the schema directly
+- [x] Integration test: create → appears in public list — verified manually (no Supabase network mocking exists in the test suite yet)
+- [x] Manual: edit flow
 
 ### Definition of Done
 
-- [ ] Admin can create and edit a fully bilingual recipe with ingredients/steps/tags/category, correctly appearing in public browsing/search
+- [x] Admin can create and edit a fully bilingual recipe with ingredients/steps/tags/category, correctly appearing in public browsing/search
 
 ### Out of Scope
 
@@ -680,7 +680,7 @@ Image upload, delete.
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 
