@@ -1,15 +1,19 @@
 import { useState } from 'react'
 import { BookOpen } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import EmptyState from '@/components/ui/EmptyState'
 import QuickFilterChips, { type QuickFilter } from '@/components/recipes/QuickFilterChips'
 import RecipeCard from '@/components/recipes/RecipeCard'
 import StatsWidget from '@/components/recipes/StatsWidget'
+import { useCurrentLang } from '@/hooks/useCurrentLang'
 import { useRecentRecipes } from '@/hooks/useRecentRecipes'
 import { useRecipeStats } from '@/hooks/useRecipeStats'
+import { buildLocalizedPath } from '@/lib/localizedPath'
 
 function HomePage() {
   const { t } = useTranslation()
+  const lang = useCurrentLang()
   const [filter, setFilter] = useState<QuickFilter>('all')
   const { recipes: visibleRecipes, isLoading } = useRecentRecipes(filter)
   const { stats } = useRecipeStats()
@@ -25,7 +29,15 @@ function HomePage() {
         />
 
         <div>
-          <h2 className="mb-3 text-lg font-semibold">{t('home.recentRecipes')}</h2>
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-lg font-semibold">{t('home.recentRecipes')}</h2>
+            <Link
+              to={buildLocalizedPath(lang, '/recepti')}
+              className="text-sm font-medium text-accent hover:text-accent-hover"
+            >
+              {t('home.seeAll')}
+            </Link>
+          </div>
 
           {!isLoading && visibleRecipes.length === 0 && (
             <EmptyState

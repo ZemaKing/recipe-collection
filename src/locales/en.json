@@ -38,6 +38,7 @@
   },
   "home": {
     "recentRecipes": "Recent Recipes",
+    "seeAll": "See all",
     "filters": {
       "topRated": "Top Rated"
     },

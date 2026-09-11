@@ -8,10 +8,10 @@ function AppShell() {
     <div className="flex min-h-screen bg-background text-foreground">
       <Sidebar />
 
-      <div className="flex min-h-screen flex-1 flex-col">
+      <div className="flex min-h-screen min-w-0 flex-1 flex-col">
         <Topbar />
 
-        <main className="flex-1 overflow-y-auto px-4 py-6 pb-24 md:px-6 md:pb-6">
+        <main className="min-w-0 flex-1 overflow-y-auto px-4 py-6 pb-24 md:px-6 md:pb-6">
           <Outlet />
         </main>
       </div>

@@ -38,6 +38,7 @@
   },
   "home": {
     "recentRecipes": "Nedavni recepti",
+    "seeAll": "Vidi sve",
     "filters": {
       "topRated": "Visoko ocenjeni"
     },
