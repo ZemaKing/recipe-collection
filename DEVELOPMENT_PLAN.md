@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 24 — Testing Hardening
+Current Phase: Phase 25 — Optional / Future Ideas (not scheduled)
 MVP Status: Complete
 
 ## MVP Progress
@@ -1093,58 +1093,11 @@ CDN/edge-caching strategy beyond Vercel defaults.
 
 ---
 
-## Phase 24 — Testing Hardening
-
-### Goal
-
-Deepen automated coverage beyond per-phase smoke tests.
-
-### Tasks
-
-- [ ] Set up Playwright
-- [ ] E2E: browse → detail
-- [ ] E2E: search/filter
-- [ ] E2E: language switch
-- [ ] E2E: admin login
-- [ ] E2E: recipe create/edit/delete
-- [ ] E2E: image upload
-- [ ] E2E: RLS rejection of unauthenticated writes
-
-### Database / Supabase
-
-- [ ] N/A for this phase
-
-### UI / UX
-
-- [ ] N/A for this phase
-
-### Internationalization
-
-- [ ] E2E covers both languages where relevant
-
-### Testing & Verification
-
-- [ ] E2E suite passes in CI
-
-### Definition of Done
-
-- [ ] E2E suite covers all listed flows and passes in CI
-
-### Out of Scope
-
-Full unit-test coverage of every component.
-
-### Phase Status
-
-- [ ] Phase Complete
-
----
-
 ## Phase 25 — Optional / Future Ideas (not scheduled)
 
 Backlog only — not part of MVP or Post-MVP polish. Promote items here to a new phase if the user decides to pursue them:
 
-- [ ] Light theme toggle — promoted to Phase 26
+- [x] Light theme toggle — promoted to Phase 26
 - [ ] Printable recipe view
 - [ ] Public shareable recipe links with rich previews
 - [ ] Nutrition info fields
