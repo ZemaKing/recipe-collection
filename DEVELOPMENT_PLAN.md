@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 6 — Seed / Sample Data
+Current Phase: Phase 7 — Recipe Listing Dashboard (Home)
 MVP Status: In Progress
 
 ## MVP Progress
@@ -14,7 +14,7 @@ MVP Status: In Progress
 - [x] Phase 3 — Supabase Project Setup
 - [x] Phase 4 — Core Database Schema & RLS
 - [x] Phase 5 — i18n Foundation
-- [ ] Phase 6 — Seed / Sample Data
+- [x] Phase 6 — Seed / Sample Data
 - [ ] Phase 7 — Recipe Listing Dashboard (Home)
 - [ ] Phase 8 — Categories & "All Recipes" Browsing
 - [ ] Phase 9 — Search & Filtering (incl. quick-filter tags)
@@ -278,31 +278,31 @@ Realistic bilingual sample data for development.
 
 ### Tasks
 
-- [ ] Write `supabase/seed.sql` with ~6–10 categories, ~5 tags, 10–15 bilingual sample recipes
-- [ ] Add sample `recipe_images` rows
-- [ ] Add a couple of `meal_plan_entries` and `kitchen_notes` rows
-- [ ] Make seed script idempotent (safely re-runnable)
+- [x] Write `supabase/seed.sql` with ~6–10 categories, ~5 tags, 10–15 bilingual sample recipes
+- [x] Add sample `recipe_images` rows
+- [x] Add a couple of `meal_plan_entries` and `kitchen_notes` rows
+- [x] Make seed script idempotent (safely re-runnable)
 
 ### Database / Supabase
 
-- [ ] Seed run against dev project only
+- [x] Seed run against dev project only
 
 ### UI / UX
 
-- [ ] N/A for this phase
+- [x] N/A for this phase
 
 ### Internationalization
 
-- [ ] Every localized field seeded with both `_en` and `_sr` values
-- [ ] One recipe deliberately seeded with a missing `_sr` value (fallback test case)
+- [x] Every localized field seeded with both `_en` and `_sr` values
+- [x] One recipe deliberately seeded with a missing `_sr` value (fallback test case)
 
 ### Testing & Verification
 
-- [ ] Query seeded tables to confirm row counts/shape
+- [x] Query seeded tables to confirm row counts/shape
 
 ### Definition of Done
 
-- [ ] Dev database contains representative bilingual data across all MVP tables
+- [x] Dev database contains representative bilingual data across all MVP tables
 
 ### Out of Scope
 
@@ -310,7 +310,7 @@ Production data entry.
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 **MVP START**

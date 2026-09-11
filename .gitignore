@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Personal reference material used to hand-write seed data (Phase 6) —
+# not meant to be served as static assets or committed.
+public/*.pdf
+public/*.docx
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
