@@ -23,7 +23,6 @@ export const primaryNavItems: NavItem[] = [
   { labelKey: 'nav.categories', path: '/kategorije', icon: LayoutGrid },
   { labelKey: 'nav.favorites', path: '/omiljeni', icon: Heart },
   { labelKey: 'nav.recentlyAdded', path: '/nedavno-dodati', icon: Clock },
-  { labelKey: 'nav.kitchenNotes', path: '/beleske', icon: NotebookPen },
 ]
 
 export const categoryNavItems: NavItem[] = [

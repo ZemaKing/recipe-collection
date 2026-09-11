@@ -76,7 +76,6 @@ function App() {
                 path="nedavno-dodati"
                 element={<PlaceholderPage title={t('pages.recentlyAdded')} />}
               />
-              <Route path="beleske" element={<PlaceholderPage title={t('pages.kitchenNotes')} />} />
               <Route path="profil" element={<PlaceholderPage title={t('pages.profile')} />} />
               <Route path="prijava" element={<LoginPage />} />
               <Route path="*" element={<PlaceholderPage title={t('pages.notFound')} />} />
