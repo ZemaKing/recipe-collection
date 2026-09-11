@@ -218,3 +218,45 @@ Per-visitor (non-admin) favorites.
 ### Phase Status
 
 - [ ] Phase Complete
+
+---
+
+## Phase 6 — Recently Added Page (not scheduled)
+
+### Goal
+
+Give the `/nedavno-dodati` nav destination (sidebar + Home's quick filter) an actual page instead of the placeholder. `AllRecipesPage` already supports a `sort=recent` mode (`created_at` descending) and Home's recent-recipes strip already queries the newest 8 — this is the same shape, unfiltered, in the full grid.
+
+### Tasks
+
+- [ ] Build the `/nedavno-dodati` page: `useAllRecipes` (or a thin variant) sorted newest-first, no filters, reusing the `RecipeCard` grid + `EmptyState` pattern
+- [ ] Replace the `PlaceholderPage` route for `nedavno-dodati` in `App.tsx` with the real page
+
+### Database / Supabase
+
+- [ ] N/A — reuses the existing `created_at` column, no schema changes
+
+### UI / UX
+
+- [ ] Empty state when the collection has zero recipes
+- [ ] Grid matches the existing browse pages' responsive breakpoints
+
+### Internationalization
+
+- [ ] Page title copy localized (EN/SR) — already present from the nav label and placeholder strings
+
+### Testing & Verification
+
+- [ ] Manual: adding a new recipe moves it to the top of `/nedavno-dodati`
+
+### Definition of Done
+
+- [ ] `/nedavno-dodati` shows all recipes newest-first in the standard grid, with a proper empty state, instead of the placeholder
+
+### Out of Scope
+
+Configurable time-window filtering (e.g. "added this week").
+
+### Phase Status
+
+- [ ] Phase Complete
