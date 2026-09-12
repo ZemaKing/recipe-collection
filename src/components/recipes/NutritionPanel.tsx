@@ -83,16 +83,18 @@ function NutritionPanel({ recipe }: NutritionPanelProps) {
           return (
             <div
               key={entry.key}
-              className="flex flex-col items-center gap-1.5 rounded-card border border-border bg-surface-elevated px-3 py-3 text-center"
+              className="flex items-center gap-3 rounded-card border border-border bg-surface-elevated px-3 py-2.5 text-left sm:flex-col sm:items-center sm:gap-1.5 sm:py-3 sm:text-center"
             >
-              <span className={cn('flex size-9 items-center justify-center rounded-full', bgClass)}>
+              <span className={cn('flex size-9 shrink-0 items-center justify-center rounded-full', bgClass)}>
                 <Icon className={cn('size-4', colorClass)} />
               </span>
-              <p className="text-base font-semibold text-foreground">
-                {formatQuantity(entry.value)}
-                {entry.unit === 'kcal' ? ` ${entry.unit}` : entry.unit}
-              </p>
-              <p className="text-xs text-muted-foreground">{entry.label}</p>
+              <div className="flex flex-col sm:contents">
+                <p className="text-base font-semibold text-foreground">
+                  {formatQuantity(entry.value)}
+                  {entry.unit === 'kcal' ? ` ${entry.unit}` : entry.unit}
+                </p>
+                <p className="text-xs text-muted-foreground">{entry.label}</p>
+              </div>
             </div>
           )
         })}
@@ -121,26 +123,28 @@ function NutritionPanel({ recipe }: NutritionPanelProps) {
               return (
                 <div
                   key={key}
-                  className="flex flex-col gap-1 rounded-card border border-border bg-surface-elevated px-3 py-2.5"
+                  className="flex items-center gap-3 rounded-card border border-border bg-surface-elevated px-3 py-2.5 sm:flex-col sm:items-start sm:gap-1"
                 >
                   <span
                     className={cn(
-                      'flex size-7 items-center justify-center rounded-full text-xs font-semibold',
+                      'flex size-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold',
                       getMicronutrientColorClass(key),
                     )}
                   >
                     {label.charAt(0)}
                   </span>
-                  <p className="text-sm font-semibold text-foreground">
-                    {formatQuantity(value.amount)}
-                    {value.unit}
-                  </p>
-                  <p className="text-xs text-muted-foreground">{label}</p>
-                  {percent !== null && (
-                    <p className="text-xs text-muted-foreground">
-                      {t('recipeDetail.nutrition.dailyValue', { percent })}
+                  <div className="flex flex-col sm:contents">
+                    <p className="text-sm font-semibold text-foreground">
+                      {formatQuantity(value.amount)}
+                      {value.unit}
                     </p>
-                  )}
+                    <p className="text-xs text-muted-foreground">{label}</p>
+                    {percent !== null && (
+                      <p className="text-xs text-muted-foreground">
+                        {t('recipeDetail.nutrition.dailyValue', { percent })}
+                      </p>
+                    )}
+                  </div>
                 </div>
               )
             })}
