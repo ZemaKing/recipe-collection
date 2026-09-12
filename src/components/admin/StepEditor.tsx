@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUp, Plus, Trash2 } from 'lucide-react'
+import { ArrowDown, ArrowUp, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import type { AdminRecipeStep } from '@/hooks/useAdminRecipe'
 
@@ -88,15 +88,6 @@ function StepEditor({ value, onChange, errors }: StepEditorProps) {
           </div>
         </div>
       ))}
-
-      <button
-        type="button"
-        onClick={() => onChange([...value, { text_en: '', text_sr: '' }])}
-        className="flex items-center justify-center gap-1.5 rounded-control border border-dashed border-border px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
-      >
-        <Plus className="size-4" />
-        {t('admin.recipeForm.addStep')}
-      </button>
     </div>
   )
 }

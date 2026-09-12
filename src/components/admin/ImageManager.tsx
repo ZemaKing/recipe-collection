@@ -123,7 +123,7 @@ function ImageManager({ recipeId }: ImageManagerProps) {
           key={image.id}
           className="flex flex-col gap-3 rounded-card border border-border bg-surface p-3 sm:flex-row"
         >
-          <div className="relative aspect-video w-full shrink-0 overflow-hidden rounded-control bg-surface-elevated sm:w-40">
+          <div className="relative aspect-video w-full shrink-0 overflow-hidden rounded-control bg-surface-elevated sm:w-32">
             <img
               src={getRecipeImageUrl(image.storage_path)}
               alt=""
@@ -260,8 +260,8 @@ function ImageManager({ recipeId }: ImageManagerProps) {
         </div>
       ))}
 
-      <label className="flex cursor-pointer items-center justify-center gap-1.5 rounded-control border border-dashed border-border px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground">
-        <Upload className="size-4" />
+      <label className="flex cursor-pointer flex-col items-center justify-center gap-1.5 rounded-card border border-dashed border-border px-3 py-6 text-sm font-medium text-muted-foreground hover:border-accent hover:text-foreground">
+        <Upload className="size-5" />
         {t('admin.recipeForm.addImage')}
         <input
           ref={fileInputRef}

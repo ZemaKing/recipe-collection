@@ -1,7 +1,6 @@
 import { FileX } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate, useParams } from 'react-router-dom'
-import ImageManager from '@/components/admin/ImageManager'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import RecipeForm from '@/components/admin/RecipeForm'
 import EmptyState from '@/components/ui/EmptyState'
 import { useAdminRecipe } from '@/hooks/useAdminRecipe'
@@ -10,6 +9,8 @@ import { useSaveRecipe } from '@/hooks/useSaveRecipe'
 import { buildLocalizedPath } from '@/lib/localizedPath'
 import type { RecipeFormValues } from '@/lib/recipeFormSchema'
 import { EMPTY_RECIPE_FORM_STATE, type RecipeFormState } from '@/lib/recipeFormState'
+
+const RECIPE_FORM_ID = 'recipe-form'
 
 function AdminRecipeFormPage() {
   const { t } = useTranslation()
@@ -71,25 +72,42 @@ function AdminRecipeFormPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-xl font-semibold">
-        {mode === 'create' ? t('pages.addRecipe') : t('admin.recipeForm.editTitle')}
-      </h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-xl font-semibold">
+          {mode === 'create' ? t('pages.addRecipe') : t('admin.recipeForm.editTitle')}
+        </h1>
+
+        <div className="flex items-center gap-2">
+          <Link
+            to={buildLocalizedPath(lang, '/admin/recepti')}
+            className="rounded-control border border-border px-3 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-surface-hover"
+          >
+            {t('admin.recipeForm.cancel')}
+          </Link>
+          <button
+            type="submit"
+            form={RECIPE_FORM_ID}
+            disabled={isSaving}
+            className="rounded-control bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {isSaving
+              ? t('admin.recipeForm.saving')
+              : mode === 'create'
+                ? t('admin.recipeForm.createSubmit')
+                : t('admin.recipeForm.editSubmit')}
+          </button>
+        </div>
+      </div>
 
       <RecipeForm
         key={slug ?? 'create'}
+        formId={RECIPE_FORM_ID}
         mode={mode}
+        recipeId={mode === 'edit' && recipe ? recipe.id : null}
         initialValues={initialValues}
-        isSaving={isSaving}
         submitError={error}
         onSubmit={(values) => void handleSubmit(values)}
       />
-
-      {mode === 'edit' && recipe && (
-        <section className="flex flex-col gap-3">
-          <h2 className="text-sm font-semibold text-foreground">{t('admin.recipeForm.images')}</h2>
-          <ImageManager recipeId={recipe.id} />
-        </section>
-      )}
     </div>
   )
 }

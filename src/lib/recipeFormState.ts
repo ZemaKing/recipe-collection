@@ -1,6 +1,15 @@
-import type { AdminRecipeDetail } from '@/hooks/useAdminRecipe'
+import type { AdminRecipeDetail, AdminRecipeIngredient } from '@/hooks/useAdminRecipe'
 
 export type RecipeFormState = Omit<AdminRecipeDetail, 'id'>
+
+export const EMPTY_INGREDIENT: AdminRecipeIngredient = {
+  name_en: '',
+  name_sr: '',
+  quantity: '',
+  unit_en: '',
+  unit_sr: '',
+  ingredient_id: '',
+}
 
 export const EMPTY_RECIPE_FORM_STATE: RecipeFormState = {
   slug: '',
@@ -18,6 +27,6 @@ export const EMPTY_RECIPE_FORM_STATE: RecipeFormState = {
   difficulty: '',
   rating: '',
   tagIds: [],
-  ingredients: [{ name_en: '', name_sr: '', quantity: '', unit_en: '', unit_sr: '', ingredient_id: '' }],
+  ingredients: [{ ...EMPTY_INGREDIENT }],
   steps: [{ text_en: '', text_sr: '' }],
 }

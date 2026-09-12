@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
-import { Plus, Search, Trash2 } from 'lucide-react'
+import { ArrowUpDown, Pencil, Plus, Search, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import DeleteRecipeDialog from '@/components/admin/DeleteRecipeDialog'
+import RecipeImage from '@/components/recipes/RecipeImage'
 import { useAdminRecipes, type AdminRecipeListItem, type AdminRecipeSort } from '@/hooks/useAdminRecipes'
+import { useCategories } from '@/hooks/useCategories'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
 import { useDeleteRecipe } from '@/hooks/useDeleteRecipe'
+import { getCategoryBadgeColor } from '@/lib/categoryColor'
 import { pickLocalized } from '@/lib/localizedField'
 import { buildLocalizedPath } from '@/lib/localizedPath'
 
@@ -19,8 +22,11 @@ function AdminRecipesPage() {
   const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
   const [sort, setSort] = useState<AdminRecipeSort>('name')
+  const [categoryId, setCategoryId] = useState('')
   const [page, setPage] = useState(0)
   const [pendingDelete, setPendingDelete] = useState<AdminRecipeListItem | null>(null)
+
+  const { categories } = useCategories()
 
   // Debounce the search box so typing doesn't fire a query per keystroke.
   useEffect(() => {
@@ -31,7 +37,12 @@ function AdminRecipesPage() {
     return () => clearTimeout(timer)
   }, [searchInput])
 
-  const { recipes, total, isLoading, error, pageSize, refetch } = useAdminRecipes({ search, sort, page })
+  const { recipes, total, isLoading, error, pageSize, refetch } = useAdminRecipes({
+    search,
+    sort,
+    page,
+    categoryId,
+  })
   const { deleteRecipe, isDeleting, error: deleteError } = useDeleteRecipe()
 
   const pageCount = Math.max(1, Math.ceil(total / pageSize))
@@ -70,6 +81,21 @@ function AdminRecipesPage() {
           />
         </div>
         <select
+          value={categoryId}
+          onChange={(e) => {
+            setCategoryId(e.target.value)
+            setPage(0)
+          }}
+          className={inputClass}
+        >
+          <option value="">{t('admin.recipesList.allCategories')}</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {pickLocalized(category.name_en, category.name_sr, lang)}
+            </option>
+          ))}
+        </select>
+        <select
           value={sort}
           onChange={(e) => {
             setSort(e.target.value as AdminRecipeSort)
@@ -85,33 +111,79 @@ function AdminRecipesPage() {
 
       {error && <p className="text-sm text-favorite">{error}</p>}
 
-      <div className="flex flex-col divide-y divide-border rounded-card border border-border bg-surface">
-        {recipes.map((recipe) => {
-          const name = pickLocalized(recipe.name_en, recipe.name_sr, lang)
-          const categoryName = recipe.category
-            ? pickLocalized(recipe.category.name_en, recipe.category.name_sr, lang)
-            : null
+      <div className="overflow-hidden rounded-card border border-border bg-surface">
+        <table className="w-full border-collapse text-sm">
+          <thead>
+            <tr className="border-b border-border text-left text-xs font-medium tracking-wide text-muted-foreground uppercase">
+              <th className="w-16 px-4 py-3 font-medium">{t('admin.recipesList.columnImage')}</th>
+              <th className="px-2 py-3 font-medium">
+                <span className="inline-flex items-center gap-1.5">
+                  {t('admin.recipesList.columnName')}
+                  <ArrowUpDown className="size-3.5" />
+                </span>
+              </th>
+              <th className="px-2 py-3 font-medium">{t('admin.recipesList.columnCategory')}</th>
+              <th className="px-4 py-3 text-right font-medium">{t('admin.recipesList.columnActions')}</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-border">
+            {recipes.map((recipe) => {
+              const name = pickLocalized(recipe.name_en, recipe.name_sr, lang)
+              const categoryName = recipe.category
+                ? pickLocalized(recipe.category.name_en, recipe.category.name_sr, lang)
+                : null
+              const badgeColor = recipe.category ? getCategoryBadgeColor(recipe.category.slug) : null
 
-          return (
-            <div key={recipe.id} className="flex items-center gap-2 px-4 py-3 text-sm">
-              <Link
-                to={buildLocalizedPath(lang, `/admin/recepti/${recipe.slug}/izmeni`)}
-                className="flex flex-1 items-center justify-between gap-2 transition-colors hover:text-accent"
-              >
-                <span className="font-medium text-foreground">{name}</span>
-                {categoryName && <span className="text-muted-foreground">{categoryName}</span>}
-              </Link>
-              <button
-                type="button"
-                onClick={() => setPendingDelete(recipe)}
-                aria-label={t('admin.recipesList.delete')}
-                className="flex size-8 shrink-0 items-center justify-center rounded-control border border-border text-favorite hover:bg-favorite/10"
-              >
-                <Trash2 className="size-3.5" />
-              </button>
-            </div>
-          )
-        })}
+              return (
+                <tr key={recipe.id} className="transition-colors hover:bg-surface-hover">
+                  <td className="px-4 py-2.5">
+                    <RecipeImage
+                      image={recipe.image}
+                      alt={name}
+                      className="aspect-[3/2] w-15 shrink-0 rounded-control"
+                    />
+                  </td>
+                  <td className="px-2 py-2.5">
+                    <Link
+                      to={buildLocalizedPath(lang, `/admin/recepti/${recipe.slug}/izmeni`)}
+                      className="font-medium text-foreground transition-colors hover:text-accent"
+                    >
+                      {name}
+                    </Link>
+                  </td>
+                  <td className="px-2 py-2.5">
+                    {categoryName && badgeColor && (
+                      <span
+                        className={`inline-flex items-center rounded-pill px-2.5 py-1 text-xs font-medium ${badgeColor.bg} ${badgeColor.text}`}
+                      >
+                        {categoryName}
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-4 py-2.5">
+                    <div className="flex items-center justify-end gap-2">
+                      <Link
+                        to={buildLocalizedPath(lang, `/admin/recepti/${recipe.slug}/izmeni`)}
+                        aria-label={t('admin.recipesList.edit')}
+                        className="flex size-8 shrink-0 items-center justify-center rounded-control border border-border text-muted-foreground hover:bg-surface-elevated hover:text-foreground"
+                      >
+                        <Pencil className="size-3.5" />
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => setPendingDelete(recipe)}
+                        aria-label={t('admin.recipesList.delete')}
+                        className="flex size-8 shrink-0 items-center justify-center rounded-control border border-border text-favorite hover:bg-favorite/10"
+                      >
+                        <Trash2 className="size-3.5" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
 
         {!isLoading && recipes.length === 0 && (
           <p className="px-4 py-6 text-center text-sm text-muted-foreground">{t('admin.recipesList.noResults')}</p>
