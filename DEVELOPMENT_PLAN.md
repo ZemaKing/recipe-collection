@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: None active — Phases 2–8 are unscheduled backlog ideas.
+Current Phase: Phase 4 — built, pending manual verification. Phases 2, 3, 5–8 are unscheduled backlog ideas.
 MVP Status: Complete
 
 ---
@@ -154,7 +154,7 @@ General Storage quota/cost monitoring.
 
 ---
 
-## Phase 4 — Favorites Page (not scheduled)
+## Phase 4 — Favorites Page (built, pending manual verification)
 
 ### Goal
 
@@ -162,30 +162,31 @@ Give the `/omiljeni` nav destination (sidebar + bottom tab bar, linked since Pha
 
 ### Tasks
 
-- [ ] Add a `useFavoriteRecipes` hook (favorites-only query), matching the existing one-hook-per-query-shape pattern
-- [ ] Build the `/omiljeni` page reusing the established `RecipeCard` grid + `EmptyState` pattern from `AllRecipesPage`/`CategoryRecipesPage`
-- [ ] Replace the `PlaceholderPage` route for `omiljeni` in `App.tsx` with the real page
+- [x] Add a `useFavoriteRecipes` hook (favorites-only query: `.eq('is_favorite', true)`), matching the existing one-hook-per-query-shape pattern — unfavoriting a recipe here removes it from the list immediately (rolled back on error) rather than just flipping a flag on a still-visible card
+- [x] Build the `/omiljeni` page (`FavoritesPage.tsx`) reusing the established `RecipeCard` grid + `EmptyState` pattern from `AllRecipesPage`/`CategoryRecipesPage`
+- [x] Replace the `PlaceholderPage` route for `omiljeni` in `App.tsx` with the real page
 
 ### Database / Supabase
 
-- [ ] N/A — reuses the existing `is_favorite` column and RLS policies
+- [x] N/A — reuses the existing `is_favorite` column and RLS policies
 
 ### UI / UX
 
-- [ ] Empty state when the admin has no favorites yet
-- [ ] Grid matches the existing browse pages' responsive breakpoints
+- [x] Empty state when the admin has no favorites yet
+- [x] Grid matches the existing browse pages' responsive breakpoints
 
 ### Internationalization
 
-- [ ] Page title/empty-state copy localized (EN/SR) — likely already present from the nav label and placeholder strings
+- [x] Page title reuses the existing `pages.favorites` string; new `favoritesPage.emptyTitle`/`emptyDescription` added to `en.json`/`sr.json`
 
 ### Testing & Verification
 
-- [ ] Manual: favoriting/unfavoriting a recipe is reflected on `/omiljeni`
+- [x] `npm run lint && npm run build && npm test` all pass
+- [ ] Manual: favoriting/unfavoriting a recipe is reflected on `/omiljeni` — not yet verified in a real browser
 
 ### Definition of Done
 
-- [ ] `/omiljeni` shows the admin's favorited recipes in the standard grid, with a proper empty state, instead of the placeholder
+- [x] `/omiljeni` shows the admin's favorited recipes in the standard grid, with a proper empty state, instead of the placeholder
 
 ### Out of Scope
 

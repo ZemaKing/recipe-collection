@@ -9,6 +9,7 @@ import { stripLangPrefix } from '@/lib/localizedPath'
 import AllRecipesPage from '@/pages/AllRecipesPage'
 import CategoriesPage from '@/pages/CategoriesPage'
 import CategoryRecipesPage from '@/pages/CategoryRecipesPage'
+import FavoritesPage from '@/pages/FavoritesPage'
 import HomePage from '@/pages/HomePage'
 import LoginPage from '@/pages/LoginPage'
 import PlaceholderPage from '@/pages/PlaceholderPage'
@@ -73,7 +74,7 @@ function App() {
               <Route path="recepti/:slug" element={<RecipeDetailPage />} />
               <Route path="kategorije" element={<CategoriesPage />} />
               <Route path="kategorije/:slug" element={<CategoryRecipesPage />} />
-              <Route path="omiljeni" element={<PlaceholderPage title={t('pages.favorites')} />} />
+              <Route path="omiljeni" element={<FavoritesPage />} />
               <Route
                 path="nedavno-dodati"
                 element={<PlaceholderPage title={t('pages.recentlyAdded')} />}

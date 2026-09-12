@@ -87,6 +87,10 @@
     "emptyTitle": "Još nema recepata u ovoj kategoriji",
     "emptyDescription": "Recepti dodati u ovu kategoriju pojaviće se ovde."
   },
+  "favoritesPage": {
+    "emptyTitle": "Još nema omiljenih recepata",
+    "emptyDescription": "Recepti koje označite kao omiljene pojaviće se ovde."
+  },
   "browse": {
     "categoryAll": "Sve kategorije",
     "favoritesOnly": "Samo omiljeni",

@@ -85,6 +85,10 @@
     "emptyTitle": "No recipes in this category yet",
     "emptyDescription": "Recipes added to this category will show up here."
   },
+  "favoritesPage": {
+    "emptyTitle": "No favorites yet",
+    "emptyDescription": "Recipes you favorite will show up here."
+  },
   "browse": {
     "categoryAll": "All categories",
     "favoritesOnly": "Favorites only",
