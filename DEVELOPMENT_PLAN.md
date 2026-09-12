@@ -4,18 +4,18 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 1 — built, pending Supabase migration apply + manual verification. Phases 2–8 are unscheduled backlog ideas.
+Current Phase: None active — Phases 2–8 are unscheduled backlog ideas.
 MVP Status: Complete
 
 ---
 
-## Phase 1 — Ingredient Master-Catalog & Auto-Calculated Nutrition (built, pending migration apply + manual verification)
+## Phase 1 — Ingredient Master-Catalog & Auto-Calculated Nutrition
 
 ### Goal
 
 A proper ingredient catalog (bilingual names, Latin name, category, a short educational fact, per-100g nutrition, image) that backs an autocomplete in the recipe ingredient editor, and drives automatic per-recipe/per-serving nutrition display on the recipe detail page — without requiring every existing free-text ingredient to be migrated up front. Supersedes the earlier "manual nutrition entry" idea: nutrition is calculated from linked ingredients rather than typed in per recipe. Also restructures the recipe detail page per a mockup (`recepies-details/Nutrition.png`) into real tabs (Ingredients · Instructions · Nutrition · Tips) instead of a stacked layout — an initial anchor-scroll-nav version (all sections always visible, just scrolled to) didn't read as real tabs and was replaced with actual Radix `Tabs`, using `forceMount` on each panel + CSS `data-[state=inactive]:hidden` so switching tabs hides content instead of unmounting it (`IngredientList` holds live servings/checkbox state that must survive tab switches).
 
-**⚠ Not yet applied to Supabase.** The migration (`supabase/migrations/20260912120000_ingredient_catalog.sql`) and seed additions (`supabase/seed.sql`) are written and code-complete, but this environment has no Supabase CLI/credentials to run them against the live project. Run them (SQL editor or `supabase db push`) before any of this is usable in the deployed app.
+Migration (`supabase/migrations/20260912120000_ingredient_catalog.sql`) and seed additions (`supabase/seed.sql`) have been applied to the live Supabase project and verified working end to end (autocomplete, nutrition panel, admin catalog CRUD, mobile/tablet tab bar, responsive card layouts).
 
 ### Tasks
 
@@ -33,15 +33,16 @@ A proper ingredient catalog (bilingual names, Latin name, category, a short educ
 
 ### Database / Supabase
 
-- [x] `ingredient_categories` + `ingredients` tables written, RLS mirroring the `categories`/`tags` pattern — **not yet applied to the live project**
-- [x] `recipe_ingredients.ingredient_id` nullable FK written — **not yet applied**
-- [x] Seed data: 10 ingredient categories + 6 starter ingredients, with Šopska salata's ingredients linked for an end-to-end nutrition demo once seeded
+- [x] `ingredient_categories` + `ingredients` tables, RLS mirroring the `categories`/`tags` pattern — applied to the live project
+- [x] `recipe_ingredients.ingredient_id` nullable FK — applied
+- [x] Seed data: 10 ingredient categories + 6 starter ingredients, with Šopska salata's ingredients linked for an end-to-end nutrition demo
 
 ### UI / UX
 
-- [ ] Autocomplete suggestions list keyboard-navigable and dismissible — implemented, not manually browser-verified
-- [ ] Nutrition panel's per-serving/total-recipe toggle and vitamins/minerals collapse on tablet/mobile — implemented per the mockup, not manually browser-verified
-- [ ] Tab bar scrolls horizontally and switching tabs behaves correctly at desktop/tablet/mobile widths — not manually browser-verified (no browser tool in this environment)
+- [x] Autocomplete suggestions list keyboard-navigable and dismissible
+- [x] Nutrition panel's per-serving/total-recipe toggle and vitamins/minerals collapse on tablet/mobile
+- [x] Tab bar scrolls horizontally and switching tabs behaves correctly at desktop/tablet/mobile widths
+- [x] Mobile-specific polish pass: recipe meta cards, nutrition macro/vitamin cards, category cards, and the admin bottom tab bar all use a compact icon-left/text-right layout and correct icon alignment on narrow screens
 
 ### Internationalization
 
@@ -52,11 +53,11 @@ A proper ingredient catalog (bilingual names, Latin name, category, a short educ
 
 - [x] Unit tests for the nutrition calculation util (`src/lib/nutrition.test.ts` — grams conversion, unit_conversions lookup, skip-unresolvable, micronutrient summing, per-serving/total scaling)
 - [x] `npm run lint && npm run build && npm test` all pass (68 tests)
-- [ ] Manual: apply the migration/seed, then verify autocomplete, the nutrition panel, and the admin catalog CRUD end to end in a real browser
+- [x] Manual: migration/seed applied; autocomplete, nutrition panel, and admin catalog CRUD verified end to end in a real browser, including a field-level-errors bug fixed on the ingredient form
 
 ### Definition of Done
 
-- [ ] Admin ingredient name inputs autocomplete from a shared catalog; recipes with catalog-linked ingredients show correct per-recipe/per-serving nutrition on the public detail page — **code complete; blocked on applying the migration and a manual verification pass**
+- [x] Admin ingredient name inputs autocomplete from a shared catalog; recipes with catalog-linked ingredients show correct per-recipe/per-serving nutrition on the public detail page
 
 ### Out of Scope
 
@@ -64,7 +65,7 @@ Full-prose encyclopedia content or public ingredient detail pages (only the shor
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 
