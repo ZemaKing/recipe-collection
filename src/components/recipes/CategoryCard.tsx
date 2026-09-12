@@ -21,13 +21,15 @@ function CategoryCard({ slug, name_en, name_sr, recipeCount, icon: Icon }: Categ
   return (
     <Link
       to={buildLocalizedPath(lang, `/kategorije/${slug}`)}
-      className="flex flex-col items-center gap-2 rounded-card border border-border bg-surface p-4 text-center transition-colors hover:border-accent/50"
+      className="flex items-center gap-3 rounded-card border border-border bg-surface px-3 py-2.5 text-left transition-colors hover:border-accent/50 sm:flex-col sm:gap-2 sm:p-4 sm:text-center"
     >
-      <div className="flex size-12 items-center justify-center rounded-full bg-accent-soft text-accent">
+      <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent">
         <Icon className="size-6" />
       </div>
-      <p className="line-clamp-2 text-sm font-semibold text-foreground">{name}</p>
-      <p className="text-xs text-muted-foreground">{t('common.recipeCount', { count: recipeCount })}</p>
+      <div className="flex min-w-0 flex-col sm:contents">
+        <p className="line-clamp-2 text-sm font-semibold text-foreground">{name}</p>
+        <p className="text-xs text-muted-foreground">{t('common.recipeCount', { count: recipeCount })}</p>
+      </div>
     </Link>
   )
 }
