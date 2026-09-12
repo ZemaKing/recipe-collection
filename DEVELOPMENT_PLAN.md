@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 5 — built, pending manual verification. Phases 2, 3, 6–8 are unscheduled backlog ideas.
+Current Phase: None active — Phases 2, 3, 6–8 are unscheduled backlog ideas.
 MVP Status: Complete
 
 ---
@@ -198,7 +198,7 @@ Per-visitor (non-admin) favorites.
 
 ---
 
-## Phase 5 — Recently Added Page (pending manual verification)
+## Phase 5 — Recently Added Page
 
 ### Goal
 
@@ -225,7 +225,7 @@ Give the `/nedavno-dodati` nav destination (sidebar + Home's quick filter) an ac
 ### Testing & Verification
 
 - [x] `npm run lint && npm run build && npm test` all pass
-- [ ] Manual: adding a new recipe moves it to the top of `/nedavno-dodati` — not yet verified in a real browser
+- [x] Manual: adding a new recipe moves it to the top of `/nedavno-dodati` — verified by user
 
 ### Definition of Done
 
@@ -237,7 +237,7 @@ Configurable time-window filtering (e.g. "added this week").
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 
