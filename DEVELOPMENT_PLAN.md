@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: None active — Phases 2, 3, 5–8 are unscheduled backlog ideas.
+Current Phase: Phase 5 — built, pending manual verification. Phases 2, 3, 6–8 are unscheduled backlog ideas.
 MVP Status: Complete
 
 ---
@@ -198,7 +198,7 @@ Per-visitor (non-admin) favorites.
 
 ---
 
-## Phase 5 — Recently Added Page (not scheduled)
+## Phase 5 — Recently Added Page (pending manual verification)
 
 ### Goal
 
@@ -206,29 +206,30 @@ Give the `/nedavno-dodati` nav destination (sidebar + Home's quick filter) an ac
 
 ### Tasks
 
-- [ ] Build the `/nedavno-dodati` page: `useAllRecipes` (or a thin variant) sorted newest-first, no filters, reusing the `RecipeCard` grid + `EmptyState` pattern
-- [ ] Replace the `PlaceholderPage` route for `nedavno-dodati` in `App.tsx` with the real page
+- [x] Build the `/nedavno-dodati` page (`RecentlyAddedPage.tsx`) — reuses `useAllRecipes()` directly (already unfiltered, newest-first) rather than a new hook variant, plus the `RecipeCard` grid + `EmptyState` pattern
+- [x] Replace the `PlaceholderPage` route for `nedavno-dodati` in `App.tsx` with the real page
 
 ### Database / Supabase
 
-- [ ] N/A — reuses the existing `created_at` column, no schema changes
+- [x] N/A — reuses the existing `created_at` column, no schema changes
 
 ### UI / UX
 
-- [ ] Empty state when the collection has zero recipes
-- [ ] Grid matches the existing browse pages' responsive breakpoints
+- [x] Empty state when the collection has zero recipes (reuses `home.empty.title`/`description`)
+- [x] Grid matches the existing browse pages' responsive breakpoints
 
 ### Internationalization
 
-- [ ] Page title copy localized (EN/SR) — already present from the nav label and placeholder strings
+- [x] Page title reuses the existing `pages.recentlyAdded` string
 
 ### Testing & Verification
 
-- [ ] Manual: adding a new recipe moves it to the top of `/nedavno-dodati`
+- [x] `npm run lint && npm run build && npm test` all pass
+- [ ] Manual: adding a new recipe moves it to the top of `/nedavno-dodati` — not yet verified in a real browser
 
 ### Definition of Done
 
-- [ ] `/nedavno-dodati` shows all recipes newest-first in the standard grid, with a proper empty state, instead of the placeholder
+- [x] `/nedavno-dodati` shows all recipes newest-first in the standard grid, with a proper empty state, instead of the placeholder
 
 ### Out of Scope
 

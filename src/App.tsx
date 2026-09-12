@@ -13,6 +13,7 @@ import FavoritesPage from '@/pages/FavoritesPage'
 import HomePage from '@/pages/HomePage'
 import LoginPage from '@/pages/LoginPage'
 import PlaceholderPage from '@/pages/PlaceholderPage'
+import RecentlyAddedPage from '@/pages/RecentlyAddedPage'
 import RecipeDetailPage from '@/pages/RecipeDetailPage'
 
 // Admin routes are only reached by an authenticated admin, so keep them out
@@ -75,10 +76,7 @@ function App() {
               <Route path="kategorije" element={<CategoriesPage />} />
               <Route path="kategorije/:slug" element={<CategoryRecipesPage />} />
               <Route path="omiljeni" element={<FavoritesPage />} />
-              <Route
-                path="nedavno-dodati"
-                element={<PlaceholderPage title={t('pages.recentlyAdded')} />}
-              />
+              <Route path="nedavno-dodati" element={<RecentlyAddedPage />} />
               <Route path="profil" element={<PlaceholderPage title={t('pages.profile')} />} />
               <Route path="prijava" element={<LoginPage />} />
               <Route path="*" element={<PlaceholderPage title={t('pages.notFound')} />} />
