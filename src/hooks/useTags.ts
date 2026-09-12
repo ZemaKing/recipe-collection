@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { PINNED_TAG_SLUG } from '@/lib/tagIcons'
 import { supabase } from '@/lib/supabaseClient'
 
 export interface Tag {
@@ -17,7 +18,15 @@ let pendingFetch: Promise<Tag[]> | null = null
 
 async function fetchTags(): Promise<Tag[]> {
   const { data } = await supabase.from('tags').select('id, slug, name_en, name_sr').order('name_en')
-  return data ?? []
+  const tags = data ?? []
+  // Pin one tag to the front regardless of alphabetical order; the rest
+  // keep the query's alphabetical order (stable sort).
+  const pinnedIndex = tags.findIndex((tag) => tag.slug === PINNED_TAG_SLUG)
+  if (pinnedIndex > 0) {
+    const [pinned] = tags.splice(pinnedIndex, 1)
+    tags.unshift(pinned)
+  }
+  return tags
 }
 
 export function useTags() {

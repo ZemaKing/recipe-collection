@@ -6,7 +6,7 @@ import { useTags } from '@/hooks/useTags'
 import { pickLocalized } from '@/lib/localizedField'
 import { buildLocalizedPath, stripLangPrefix } from '@/lib/localizedPath'
 import { parseTagsParam, toggleTagInParams } from '@/lib/recipeSearchParams'
-import { getTagColors, getTagIcon } from '@/lib/tagIcons'
+import { getTagColors, getTagIcon, PINNED_TAG_SLUG } from '@/lib/tagIcons'
 import { cn } from '@/lib/utils'
 import NavRow from './NavRow'
 import { categoryNavItems, primaryNavItems } from './nav-items'
@@ -38,27 +38,31 @@ function QuickFilters() {
         {t('browse.quickFilters')}
       </p>
       <div className="flex flex-col gap-1">
-        {tags.map((tag) => {
+        {tags.map((tag, index) => {
           const Icon = getTagIcon(tag.slug)
           const colors = getTagColors(tag.slug)
           const active = activeTags.includes(tag.slug)
           const label = pickLocalized(tag.name_en, tag.name_sr, lang)
+          // Visually separate the pinned tag from the rest of the (green)
+          // tags below it, rather than letting it blend into the list.
+          const showDividerAfter = tag.slug === PINNED_TAG_SLUG && index < tags.length - 1
           return (
-            <button
-              key={tag.id}
-              type="button"
-              onClick={() => handleToggle(tag.slug)}
-              title={label}
-              className={cn(
-                'flex items-center gap-3 rounded-control px-3 py-2 text-left text-sm font-medium transition-colors md:justify-center lg:justify-start',
-                active
-                  ? cn(colors.bgSoft, colors.text)
-                  : 'text-muted-foreground hover:bg-surface-hover hover:text-foreground',
-              )}
-            >
-              <Icon className={cn('size-5 shrink-0', colors.text)} />
-              <span className="hidden lg:inline">{label}</span>
-            </button>
+            <div key={tag.id} className={cn(showDividerAfter && 'border-b border-border pb-2')}>
+              <button
+                type="button"
+                onClick={() => handleToggle(tag.slug)}
+                title={label}
+                className={cn(
+                  'flex w-full items-center gap-3 rounded-control px-3 py-2 text-left text-sm font-medium transition-colors md:justify-center lg:justify-start',
+                  active
+                    ? cn(colors.bgSoft, colors.text)
+                    : 'text-muted-foreground hover:bg-surface-hover hover:text-foreground',
+                )}
+              >
+                <Icon className={cn('size-5 shrink-0', colors.text)} />
+                <span className="hidden lg:inline">{label}</span>
+              </button>
+            </div>
           )
         })}
       </div>

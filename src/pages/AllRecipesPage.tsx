@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { Fragment, useMemo } from 'react'
 import { SearchX, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
@@ -20,7 +20,7 @@ import {
   parseTagsParam,
   toggleTagInParams,
 } from '@/lib/recipeSearchParams'
-import { getTagColors, getTagIcon } from '@/lib/tagIcons'
+import { getTagColors, getTagIcon, PINNED_TAG_SLUG } from '@/lib/tagIcons'
 import { cn } from '@/lib/utils'
 
 function AllRecipesPage() {
@@ -113,26 +113,30 @@ function AllRecipesPage() {
             tag filter) is hidden below lg, so show every tag here since
             there's otherwise no way to add a tag filter on mobile. */}
         <div className="contents md:hidden">
-          {tags.map((tag) => {
+          {tags.map((tag, index) => {
             const Icon = getTagIcon(tag.slug)
             const colors = getTagColors(tag.slug)
             const active = activeTags.includes(tag.slug)
+            const showDividerAfter = tag.slug === PINNED_TAG_SLUG && index < tags.length - 1
             return (
-              <button
-                key={tag.id}
-                type="button"
-                onClick={() => toggleTag(tag.slug)}
-                className={cn(
-                  'flex items-center gap-1.5 rounded-pill border px-3 py-2 text-sm font-medium transition-colors',
-                  active
-                    ? cn(colors.border, colors.bgSoft, colors.text)
-                    : 'border-border text-muted-foreground hover:text-foreground',
-                )}
-              >
-                <Icon className={cn('size-3.5', colors.text)} />
-                {pickLocalized(tag.name_en, tag.name_sr, lang)}
-                {active && <X className="size-3.5" />}
-              </button>
+              <Fragment key={tag.id}>
+                <button
+                  type="button"
+                  onClick={() => toggleTag(tag.slug)}
+                  className={cn(
+                    'flex items-center gap-1.5 rounded-pill border px-3 py-2 text-sm font-medium transition-colors',
+                    active
+                      ? cn(colors.border, colors.bgSoft, colors.text)
+                      : 'border-border text-muted-foreground hover:text-foreground',
+                  )}
+                >
+                  <Icon className={cn('size-3.5', colors.text)} />
+                  {pickLocalized(tag.name_en, tag.name_sr, lang)}
+                  {active && <X className="size-3.5" />}
+                </button>
+                {/* Visually separate the pinned tag from the shared-green ones. */}
+                {showDividerAfter && <span aria-hidden="true" className="h-6 w-px self-center bg-border" />}
+              </Fragment>
             )
           })}
         </div>

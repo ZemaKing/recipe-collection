@@ -63,9 +63,11 @@ A special quick-filter tag for recipes passed down from the user's mother ("Mami
 ### Tasks
 
 - [x] Add a `mamin-recept` tag row (name_en "From Mom", name_sr "Mamin recept") to `supabase/seed.sql` (Phase 6 admin tag UI doesn't exist yet)
-- [x] Add an icon for it in `src/lib/tagIcons.ts` (`Heart`, distinct from the other tags' icons)
+- [x] Add an icon for it in `src/lib/tagIcons.ts` — `Gift`, not `Heart`, since a heart icon here read as the app's existing favorite-toggle heart rather than a distinct tag
 - [x] New `getTagColors(slug)` helper in `tagIcons.ts` returning `{ text, bgSoft, border }` — `mamin-recept` maps to the existing `--color-favorite` (pink/red) token instead of the shared green `--color-tag` tokens every other tag uses
 - [x] Updated `Sidebar`'s `QuickFilters` and both of `AllRecipesPage`'s tag-chip renders (mobile full-list, desktop active-list) to use `getTagColors(tag.slug)` instead of hardcoded `text-tag`/`bg-tag-soft`/`border-tag` classes
+- [x] New `PINNED_TAG_SLUG` constant in `tagIcons.ts`; `useTags()` now sorts that tag to the front of the list (rest stay alphabetical) instead of relying on alphabetical order
+- [x] Visual divider (border in the sidebar's vertical list, a vertical rule in the mobile chip row) rendered after the pinned tag to separate it from the shared-green tags below/after it
 
 ### Database / Supabase
 
