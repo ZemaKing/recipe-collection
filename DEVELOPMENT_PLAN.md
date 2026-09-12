@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 4 — built, pending manual verification. Phases 2, 3, 5–8 are unscheduled backlog ideas.
+Current Phase: None active — Phases 2, 3, 5–8 are unscheduled backlog ideas.
 MVP Status: Complete
 
 ---
@@ -154,7 +154,7 @@ General Storage quota/cost monitoring.
 
 ---
 
-## Phase 4 — Favorites Page (built, pending manual verification)
+## Phase 4 — Favorites Page
 
 ### Goal
 
@@ -182,7 +182,7 @@ Give the `/omiljeni` nav destination (sidebar + bottom tab bar, linked since Pha
 ### Testing & Verification
 
 - [x] `npm run lint && npm run build && npm test` all pass
-- [ ] Manual: favoriting/unfavoriting a recipe is reflected on `/omiljeni` — not yet verified in a real browser
+- [x] Manual: favoriting/unfavoriting a recipe is reflected on `/omiljeni` — verified by user
 
 ### Definition of Done
 
@@ -194,7 +194,7 @@ Per-visitor (non-admin) favorites.
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 
