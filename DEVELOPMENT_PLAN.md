@@ -9,53 +9,6 @@ MVP Status: Complete
 
 ---
 
-## Phase 6 — Admin Category & Tag Management (complete)
-
-### Goal
-
-Let the admin create/edit/delete recipe categories and tags from the UI instead of hand-written SQL migrations, and eliminate the current hardcoded duplication — a new category today requires editing `supabase/seed.sql`, `src/lib/categoryIcons.ts`, `src/components/layout/nav-items.ts`, and both locale files. Closes the missing "Predjela" (Appetizers) category gap as a concrete first deliverable.
-
-### Tasks
-
-- [x] Build `AdminCategoriesPage` (combined categories/tags tabbed admin screen), reusing the closest existing CRUD-dialog pattern in the codebase: `NoteFormDialog.tsx` + `DeleteNoteDialog.tsx` (create/edit dialog + confirm-delete dialog pair)
-- [x] Category delete must handle the existing `recipes.category_id ... on delete restrict` FK — surface a clear "reassign recipes first" error rather than a raw Postgres error
-- [x] Replace the hardcoded `categoryNavItems` (`nav-items.ts`) and `categoryIconBySlug` (`categoryIcons.ts`) with sidebar rendering driven live from `useCategories()`, falling back to the existing `MoreHorizontal` icon for categories without a hand-picked one
-- [x] Once categories render dynamically from `name_en`/`name_sr`, remove the now-unnecessary static `category.*` locale-file entries
-- [x] Add "Appetizers" / "Predjela" as an actual seeded category (`predjela`), with its own icon
-- [x] Fixed, non-alphabetical display order for categories (Doručak, Predjela, Supe i čorbe, Glavna jela, Prilozi, Salate, Peciva, Deserti, Pića i napici, Ostalo), centralized in `src/lib/categoryOrder.ts` and applied everywhere categories are listed
-
-### Database / Supabase
-
-- [x] No schema migration needed for the CRUD itself — `categories`/`tags` RLS already allows authenticated write
-- [x] Data-only migration seeding "Predjela" for already-deployed databases (`20260912130000_seed_predjela_category.sql`)
-
-### UI / UX
-
-- [x] Clear, non-technical error message when attempting to delete a category still assigned to recipes
-
-### Internationalization
-
-- [x] Category/tag names entered via the admin form are bilingual (name_en/name_sr), consistent with existing fields
-
-### Testing & Verification
-
-- [x] Manual: create, edit, and delete a category and a tag; confirm the public sidebar/nav reflects changes without a code deploy
-- [x] Manual: attempt to delete a category with recipes assigned, confirm the clear error message
-
-### Definition of Done
-
-- [x] Admin can fully manage categories and tags (including adding "Predjela") from the UI; adding a category no longer requires editing code
-
-### Out of Scope
-
-Reordering categories/tags via drag-and-drop admin UI (a fixed hardcoded order was used instead of alphabetical/creation order); bulk category merge/rename-with-recipe-reassignment tooling.
-
-### Phase Status
-
-- [x] Phase Complete
-
----
-
 ## Phase 8 — Category → Subcategory → Tags Restructure (not scheduled)
 
 ### Goal
