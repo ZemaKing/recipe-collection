@@ -12,17 +12,6 @@
     "profile": "Profile",
     "addRecipe": "Add Recipe"
   },
-  "category": {
-    "breakfast": "Breakfast",
-    "soups": "Soups",
-    "mainDishes": "Main Dishes",
-    "salads": "Salads",
-    "sideDishes": "Side Dishes",
-    "desserts": "Desserts",
-    "pastries": "Pastries",
-    "drinks": "Drinks",
-    "other": "Other"
-  },
   "topbar": {
     "searchPlaceholder": "Search recipes, ingredients...",
     "search": "Search",
@@ -175,7 +164,8 @@
       "recipes": "Recipes",
       "ingredients": "Ingredients",
       "mealPlan": "Meal Plan",
-      "notes": "Notes"
+      "notes": "Notes",
+      "categories": "Categories & Tags"
     },
     "recipesList": {
       "searchPlaceholder": "Search recipes...",
@@ -267,6 +257,33 @@
         "saving": "Saving...",
         "remove": "Remove"
       }
+    },
+    "categories": {
+      "categoriesTab": "Categories",
+      "tagsTab": "Tags",
+      "addCategory": "Add category",
+      "addTag": "Add tag",
+      "delete": "Delete",
+      "emptyCategoriesTitle": "No categories yet",
+      "emptyTagsTitle": "No tags yet",
+      "createCategoryTitle": "Add category",
+      "editCategoryTitle": "Edit category",
+      "createTagTitle": "Add tag",
+      "editTagTitle": "Edit tag",
+      "nameEn": "Name (EN)",
+      "nameSr": "Name (SR)",
+      "slug": "Slug",
+      "nameRequired": "English name is required.",
+      "slugRequired": "Slug is required.",
+      "cancel": "Cancel",
+      "save": "Save",
+      "saving": "Saving...",
+      "deleteCategoryTitle": "Delete category?",
+      "deleteTagTitle": "Delete tag?",
+      "deleteDescription": "This will permanently delete \"{{name}}\". This cannot be undone.",
+      "deleteInUse": "This category is still assigned to one or more recipes. Reassign those recipes to a different category before deleting it.",
+      "confirmDelete": "Delete",
+      "deleting": "Deleting..."
     },
     "notes": {
       "addNote": "Add note",

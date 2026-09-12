@@ -24,7 +24,7 @@ function AdminBottomTabBar() {
           }
         >
           <item.icon className="size-5 shrink-0" />
-          {t(item.labelKey)}
+          {item.label ?? t(item.labelKey ?? '')}
         </NavLink>
       ))}
 

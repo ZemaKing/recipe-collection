@@ -1,15 +1,17 @@
 import { ChefHat, Plus } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { NavLink, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { useCategories } from '@/hooks/useCategories'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
 import { useTags } from '@/hooks/useTags'
+import { getCategoryIcon } from '@/lib/categoryIcons'
 import { pickLocalized } from '@/lib/localizedField'
 import { buildLocalizedPath, stripLangPrefix } from '@/lib/localizedPath'
 import { parseTagsParam, toggleTagInParams } from '@/lib/recipeSearchParams'
 import { getTagColors, getTagIcon, PINNED_TAG_SLUG } from '@/lib/tagIcons'
 import { cn } from '@/lib/utils'
 import NavRow from './NavRow'
-import { categoryNavItems, primaryNavItems } from './nav-items'
+import { primaryNavItems } from './nav-items'
 
 function QuickFilters() {
   const { t } = useTranslation()
@@ -73,6 +75,7 @@ function QuickFilters() {
 function Sidebar() {
   const { t } = useTranslation()
   const lang = useCurrentLang()
+  const { categories } = useCategories()
 
   return (
     <aside className="hidden min-h-0 shrink-0 flex-col border-r border-border bg-surface md:flex md:w-20 lg:w-64">
@@ -93,8 +96,13 @@ function Sidebar() {
             {t('nav.categories')}
           </p>
           <div className="flex flex-col gap-1">
-            {categoryNavItems.map((item) => (
-              <NavRow key={item.path} {...item} />
+            {categories.map((category) => (
+              <NavRow
+                key={category.slug}
+                path={`/kategorije/${category.slug}`}
+                icon={getCategoryIcon(category.slug)}
+                label={pickLocalized(category.name_en, category.name_sr, lang)}
+              />
             ))}
           </div>
         </div>

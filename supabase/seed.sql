@@ -21,6 +21,7 @@ insert into categories (slug, name_en, name_sr) values
   ('deserti', 'Desserts', 'Deserti'),
   ('peciva', 'Pastries', 'Peciva'),
   ('pica-i-napici', 'Drinks', 'Pića i napici'),
+  ('predjela', 'Appetizers', 'Predjela'),
   ('ostalo', 'Other', 'Ostalo')
 on conflict (slug) do update set
   name_en = excluded.name_en,

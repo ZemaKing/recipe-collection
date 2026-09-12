@@ -2,6 +2,7 @@ import {
   CakeSlice,
   Croissant,
   CupSoda,
+  Drumstick,
   Egg,
   MoreHorizontal,
   Salad,
@@ -20,6 +21,7 @@ export const categoryIconBySlug: Record<string, LucideIcon> = {
   deserti: CakeSlice,
   peciva: Croissant,
   'pica-i-napici': CupSoda,
+  predjela: Drumstick,
   ostalo: MoreHorizontal,
 }
 

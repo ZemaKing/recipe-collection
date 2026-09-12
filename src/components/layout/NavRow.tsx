@@ -5,10 +5,10 @@ import { buildLocalizedPath } from '@/lib/localizedPath'
 import { cn } from '@/lib/utils'
 import type { NavItem } from './nav-items'
 
-function NavRow({ path, icon: Icon, labelKey }: NavItem) {
+function NavRow({ path, icon: Icon, labelKey, label: literalLabel }: NavItem) {
   const { t } = useTranslation()
   const lang = useCurrentLang()
-  const label = t(labelKey)
+  const label = literalLabel ?? (labelKey ? t(labelKey) : '')
   const to = buildLocalizedPath(lang, path)
 
   return (

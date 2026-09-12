@@ -4,12 +4,12 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 7 complete. Phases 2, 3, 6, 8 are unscheduled backlog ideas.
+Current Phase: Phase 7 and Phase 6 complete. Phases 2, 3, 8 are unscheduled backlog ideas.
 MVP Status: Complete
 
 ---
 
-## Phase 6 — Admin Category & Tag Management (not scheduled)
+## Phase 6 — Admin Category & Tag Management (complete)
 
 ### Goal
 
@@ -17,40 +17,42 @@ Let the admin create/edit/delete recipe categories and tags from the UI instead 
 
 ### Tasks
 
-- [ ] Build `AdminCategoriesPage` + `AdminTagsPage` (or one combined admin screen), reusing the closest existing CRUD-dialog pattern in the codebase: `NoteFormDialog.tsx` + `DeleteNoteDialog.tsx` (create/edit dialog + confirm-delete dialog pair)
-- [ ] Category delete must handle the existing `recipes.category_id ... on delete restrict` FK — surface a clear "reassign recipes first" error rather than a raw Postgres error
-- [ ] Replace the hardcoded `categoryNavItems` (`nav-items.ts`) and `categoryIconBySlug` (`categoryIcons.ts`) with sidebar/bottom-tab rendering driven live from `useCategories()`, falling back to the existing `MoreHorizontal` icon for categories without a hand-picked one (or add an optional `icon_name` column the admin picks from a fixed palette — decide at implementation time)
-- [ ] Once categories render dynamically from `name_en`/`name_sr`, remove the now-unnecessary static `category.*` locale-file entries
-- [ ] Add "Appetizers" / "Predjela" as an actual seeded category (`predjela`) — deliverable independently and immediately, even before the full CRUD UI ships
+- [x] Build `AdminCategoriesPage` (combined categories/tags tabbed admin screen), reusing the closest existing CRUD-dialog pattern in the codebase: `NoteFormDialog.tsx` + `DeleteNoteDialog.tsx` (create/edit dialog + confirm-delete dialog pair)
+- [x] Category delete must handle the existing `recipes.category_id ... on delete restrict` FK — surface a clear "reassign recipes first" error rather than a raw Postgres error
+- [x] Replace the hardcoded `categoryNavItems` (`nav-items.ts`) and `categoryIconBySlug` (`categoryIcons.ts`) with sidebar rendering driven live from `useCategories()`, falling back to the existing `MoreHorizontal` icon for categories without a hand-picked one
+- [x] Once categories render dynamically from `name_en`/`name_sr`, remove the now-unnecessary static `category.*` locale-file entries
+- [x] Add "Appetizers" / "Predjela" as an actual seeded category (`predjela`), with its own icon
+- [x] Fixed, non-alphabetical display order for categories (Doručak, Predjela, Supe i čorbe, Glavna jela, Prilozi, Salate, Peciva, Deserti, Pića i napici, Ostalo), centralized in `src/lib/categoryOrder.ts` and applied everywhere categories are listed
 
 ### Database / Supabase
 
-- [ ] No schema migration needed for the CRUD itself — `categories`/`tags` RLS already allows authenticated write
+- [x] No schema migration needed for the CRUD itself — `categories`/`tags` RLS already allows authenticated write
+- [x] Data-only migration seeding "Predjela" for already-deployed databases (`20260912130000_seed_predjela_category.sql`)
 
 ### UI / UX
 
-- [ ] Clear, non-technical error message when attempting to delete a category still assigned to recipes
+- [x] Clear, non-technical error message when attempting to delete a category still assigned to recipes
 
 ### Internationalization
 
-- [ ] Category/tag names entered via the admin form are bilingual (name_en/name_sr), consistent with existing fields
+- [x] Category/tag names entered via the admin form are bilingual (name_en/name_sr), consistent with existing fields
 
 ### Testing & Verification
 
-- [ ] Manual: create, edit, and delete a category and a tag; confirm the public sidebar/nav reflects changes without a code deploy
-- [ ] Manual: attempt to delete a category with recipes assigned, confirm the clear error message
+- [x] Manual: create, edit, and delete a category and a tag; confirm the public sidebar/nav reflects changes without a code deploy
+- [x] Manual: attempt to delete a category with recipes assigned, confirm the clear error message
 
 ### Definition of Done
 
-- [ ] Admin can fully manage categories and tags (including adding "Predjela") from the UI; adding a category no longer requires editing code
+- [x] Admin can fully manage categories and tags (including adding "Predjela") from the UI; adding a category no longer requires editing code
 
 ### Out of Scope
 
-Reordering categories/tags (rely on alphabetical or creation order); bulk category merge/rename-with-recipe-reassignment tooling.
+Reordering categories/tags via drag-and-drop admin UI (a fixed hardcoded order was used instead of alphabetical/creation order); bulk category merge/rename-with-recipe-reassignment tooling.
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 

@@ -26,7 +26,7 @@ function BottomTabBar() {
           }
         >
           <item.icon className="size-5" />
-          {t(item.labelKey)}
+          {item.label ?? t(item.labelKey ?? '')}
         </NavLink>
       ))}
 
@@ -51,7 +51,7 @@ function BottomTabBar() {
           }
         >
           <item.icon className="size-5" />
-          {t(item.labelKey)}
+          {item.label ?? t(item.labelKey ?? '')}
         </NavLink>
       ))}
     </nav>

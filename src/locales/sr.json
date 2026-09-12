@@ -12,17 +12,6 @@
     "profile": "Profil",
     "addRecipe": "Dodaj recept"
   },
-  "category": {
-    "breakfast": "Doručak",
-    "soups": "Supe i čorbe",
-    "mainDishes": "Glavna jela",
-    "salads": "Salate",
-    "sideDishes": "Prilozi",
-    "desserts": "Deserti",
-    "pastries": "Peciva",
-    "drinks": "Pića i napici",
-    "other": "Ostalo"
-  },
   "topbar": {
     "searchPlaceholder": "Pretraži recepte, sastojke...",
     "search": "Pretraga",
@@ -178,7 +167,8 @@
       "recipes": "Recepti",
       "ingredients": "Sastojci",
       "mealPlan": "Plan obroka",
-      "notes": "Beleške"
+      "notes": "Beleške",
+      "categories": "Kategorije i tagovi"
     },
     "recipesList": {
       "searchPlaceholder": "Pretraži recepte...",
@@ -270,6 +260,33 @@
         "saving": "Čuvanje...",
         "remove": "Ukloni"
       }
+    },
+    "categories": {
+      "categoriesTab": "Kategorije",
+      "tagsTab": "Tagovi",
+      "addCategory": "Dodaj kategoriju",
+      "addTag": "Dodaj tag",
+      "delete": "Obriši",
+      "emptyCategoriesTitle": "Još nema kategorija",
+      "emptyTagsTitle": "Još nema tagova",
+      "createCategoryTitle": "Dodaj kategoriju",
+      "editCategoryTitle": "Izmeni kategoriju",
+      "createTagTitle": "Dodaj tag",
+      "editTagTitle": "Izmeni tag",
+      "nameEn": "Naziv (EN)",
+      "nameSr": "Naziv (SR)",
+      "slug": "Slug",
+      "nameRequired": "Naziv na engleskom je obavezan.",
+      "slugRequired": "Slug je obavezan.",
+      "cancel": "Otkaži",
+      "save": "Sačuvaj",
+      "saving": "Čuvanje...",
+      "deleteCategoryTitle": "Obrisati kategoriju?",
+      "deleteTagTitle": "Obrisati tag?",
+      "deleteDescription": "Ovo će trajno obrisati \"{{name}}\". Ova radnja se ne može poništiti.",
+      "deleteInUse": "Ova kategorija je i dalje dodeljena jednom ili više recepata. Prebacite te recepte u drugu kategoriju pre brisanja.",
+      "confirmDelete": "Obriši",
+      "deleting": "Brisanje..."
     },
     "notes": {
       "addNote": "Dodaj belešku",

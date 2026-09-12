@@ -9,12 +9,16 @@ export interface Tag {
   name_sr: string | null
 }
 
-// Tags aren't editable from the UI, so a simple module-level cache is safe
-// for the session. This also dedupes the fetch when multiple consumers
+// A simple module-level cache dedupes the fetch when multiple consumers
 // mount at once (e.g. the sidebar's quick filters and the browse page both
-// call useTags on the same navigation).
+// call useTags on the same navigation). Admin tag edits call
+// invalidateTagsCache() so the next mount picks up fresh data.
 let cachedTags: Tag[] | null = null
 let pendingFetch: Promise<Tag[]> | null = null
+
+export function invalidateTagsCache() {
+  cachedTags = null
+}
 
 async function fetchTags(): Promise<Tag[]> {
   const { data } = await supabase.from('tags').select('id, slug, name_en, name_sr').order('name_en')
