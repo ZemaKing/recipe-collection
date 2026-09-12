@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: Phase 7 — built, pending Supabase seed re-run + manual verification. Phases 2, 3, 6, 8 are unscheduled backlog ideas.
+Current Phase: Phase 7 complete. Phases 2, 3, 6, 8 are unscheduled backlog ideas.
 MVP Status: Complete
 
 ---
@@ -54,7 +54,7 @@ Reordering categories/tags (rely on alphabetical or creation order); bulk catego
 
 ---
 
-## Phase 7 — "From Mom" Quick Filter (pending manual verification)
+## Phase 7 — "From Mom" Quick Filter
 
 ### Goal
 
@@ -63,7 +63,7 @@ A special quick-filter tag for recipes passed down from the user's mother ("Mami
 ### Tasks
 
 - [x] Add a `mamin-recept` tag row (name_en "From Mom", name_sr "Mamin recept") to `supabase/seed.sql` (Phase 6 admin tag UI doesn't exist yet)
-- [x] Add an icon for it in `src/lib/tagIcons.ts` — `Gift`, not `Heart`, since a heart icon here read as the app's existing favorite-toggle heart rather than a distinct tag
+- [x] Add an icon for it in `src/lib/tagIcons.ts` — a custom traced multi-color illustration (`src/components/icons/MomIcon.tsx`), not `Heart`, since a heart icon here read as the app's existing favorite-toggle heart rather than a distinct tag
 - [x] New `getTagColors(slug)` helper in `tagIcons.ts` returning `{ text, bgSoft, border }` — `mamin-recept` maps to the existing `--color-favorite` (pink/red) token instead of the shared green `--color-tag` tokens every other tag uses
 - [x] Updated `Sidebar`'s `QuickFilters` and both of `AllRecipesPage`'s tag-chip renders (mobile full-list, desktop active-list) to use `getTagColors(tag.slug)` instead of hardcoded `text-tag`/`bg-tag-soft`/`border-tag` classes
 - [x] New `PINNED_TAG_SLUG` constant in `tagIcons.ts`; `useTags()` now sorts that tag to the front of the list (rest stay alphabetical) instead of relying on alphabetical order
@@ -84,7 +84,7 @@ A special quick-filter tag for recipes passed down from the user's mother ("Mami
 ### Testing & Verification
 
 - [x] `npm run lint && npm run build && npm test` all pass
-- [ ] Manual: filtering by "Mamin recept" works identically to other tags functionally, differing only in color — not yet verified in a real browser (requires re-running `seed.sql` to pick up the new tag row)
+- [x] Manual: filtering by "Mamin recept" works identically to other tags functionally, differing only in color — verified in browser
 
 ### Definition of Done
 
@@ -96,7 +96,7 @@ A dedicated "family recipes" browsing page beyond the standard tag filter; per-t
 
 ### Phase Status
 
-- [ ] Phase Complete
+- [x] Phase Complete
 
 ---
 
