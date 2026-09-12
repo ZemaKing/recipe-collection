@@ -9,238 +9,6 @@ MVP Status: Complete
 
 ---
 
-## Phase 1 — Ingredient Master-Catalog & Auto-Calculated Nutrition
-
-### Goal
-
-A proper ingredient catalog (bilingual names, Latin name, category, a short educational fact, per-100g nutrition, image) that backs an autocomplete in the recipe ingredient editor, and drives automatic per-recipe/per-serving nutrition display on the recipe detail page — without requiring every existing free-text ingredient to be migrated up front. Supersedes the earlier "manual nutrition entry" idea: nutrition is calculated from linked ingredients rather than typed in per recipe. Also restructures the recipe detail page per a mockup (`recepies-details/Nutrition.png`) into real tabs (Ingredients · Instructions · Nutrition · Tips) instead of a stacked layout — an initial anchor-scroll-nav version (all sections always visible, just scrolled to) didn't read as real tabs and was replaced with actual Radix `Tabs`, using `forceMount` on each panel + CSS `data-[state=inactive]:hidden` so switching tabs hides content instead of unmounting it (`IngredientList` holds live servings/checkbox state that must survive tab switches).
-
-Migration (`supabase/migrations/20260912120000_ingredient_catalog.sql`) and seed additions (`supabase/seed.sql`) have been applied to the live Supabase project and verified working end to end (autocomplete, nutrition panel, admin catalog CRUD, mobile/tablet tab bar, responsive card layouts).
-
-### Tasks
-
-- [x] Migration: new `ingredient_categories` table (slug/name_en/name_sr), seeded with the 10 categories from the reference library (dairy, vegetables, misc/additives, fish-and-meat, sweets, oils-and-fats, vitamins-and-minerals, fruit, herbs-and-spices, grains)
-- [x] Migration: new `ingredients` table — name_en/name_sr, `latin_name`, `regional_names`, `fact_en`/`fact_sr`, `default_unit_en`/`default_unit_sr`, per-100g nutrition (`calories_kcal`, `protein_g`, `fat_g`, `carbs_g`, `fiber_g`), `micronutrients` jsonb, `unit_conversions` jsonb, image columns (`image_storage_path`, `image_alt_en`, `image_alt_sr`)
-- [x] Migration: nullable `recipe_ingredients.ingredient_id` FK (`on delete set null`)
-- [x] `IngredientEditor`: autocomplete the name_en input against the catalog (with a live default-unit + short-fact preview and an "add to catalog" link when there's no match, per the mockup); selecting a suggestion sets `ingredient_id` and prefills name_sr/default unit
-- [x] Extend `recipeFormSchema.ts`'s `ingredientSchema` with an optional `ingredient_id`
-- [x] New `AdminIngredientsPage` (`/admin/sastojci`) — search/category-filter table, mirroring `AdminRecipesPage`'s pattern
-- [x] Ingredient create/edit form (`AdminIngredientFormPage`/`IngredientForm`) — all catalog fields, micronutrients and unit_conversions as repeatable rows
-- [x] New `src/lib/nutrition.ts` — pure functions computing recipe-total and per-serving nutrition from catalog-linked ingredients, grams-based via `unit_conversions`, skipping unresolvable ingredients rather than guessing
-- [x] New `NutritionPanel` component (macro cards, vitamins/minerals with %DV via new `src/lib/nutritionReference.ts`, per-serving/total-recipe toggle) — hidden entirely if zero ingredients are catalog-linked
-- [x] `RecipeDetailPage` restructured into real tabs on tablet/mobile only (`Tabs`/`TabsList`/`TabsTrigger`/`TabsContent` from `src/components/ui/tabs.tsx`, previously built but unused, restyled to an underline tab look) — Ingredients/Instructions/Nutrition/Tips, Tips omitted when empty, sticky `TabsList`, each `TabsContent` uses `forceMount` so switching tabs never unmounts/resets `IngredientList`'s state. Desktop (`min-width: 1024px`, via new `useMediaQuery` hook) keeps the original always-visible stacked layout instead — plenty of room there, no need to hide anything behind a tab
-- [ ] Ingredient image upload (reusing `ImageManager.tsx`/`storage.ts` patterns) — **deferred**, not built in this pass; `image_storage_path`/`image_alt_en`/`image_alt_sr` columns exist but nothing writes to them yet
-
-### Database / Supabase
-
-- [x] `ingredient_categories` + `ingredients` tables, RLS mirroring the `categories`/`tags` pattern — applied to the live project
-- [x] `recipe_ingredients.ingredient_id` nullable FK — applied
-- [x] Seed data: 10 ingredient categories + 6 starter ingredients, with Šopska salata's ingredients linked for an end-to-end nutrition demo
-
-### UI / UX
-
-- [x] Autocomplete suggestions list keyboard-navigable and dismissible
-- [x] Nutrition panel's per-serving/total-recipe toggle and vitamins/minerals collapse on tablet/mobile
-- [x] Tab bar scrolls horizontally and switching tabs behaves correctly at desktop/tablet/mobile widths
-- [x] Mobile-specific polish pass: recipe meta cards, nutrition macro/vitamin cards, category cards, and the admin bottom tab bar all use a compact icon-left/text-right layout and correct icon alignment on narrow screens
-
-### Internationalization
-
-- [x] Catalog entries carry name_en/name_sr, fact_en/fact_sr, default_unit_en/sr; `latin_name`/`regional_names` are single non-bilingual columns
-- [x] All new admin/nutrition-panel strings added to both `en.json`/`sr.json`
-
-### Testing & Verification
-
-- [x] Unit tests for the nutrition calculation util (`src/lib/nutrition.test.ts` — grams conversion, unit_conversions lookup, skip-unresolvable, micronutrient summing, per-serving/total scaling)
-- [x] `npm run lint && npm run build && npm test` all pass (68 tests)
-- [x] Manual: migration/seed applied; autocomplete, nutrition panel, and admin catalog CRUD verified end to end in a real browser, including a field-level-errors bug fixed on the ingredient form
-
-### Definition of Done
-
-- [x] Admin ingredient name inputs autocomplete from a shared catalog; recipes with catalog-linked ingredients show correct per-recipe/per-serving nutrition on the public detail page
-
-### Out of Scope
-
-Full-prose encyclopedia content or public ingredient detail pages (only the short `fact_en`/`fact_sr` blurb is shown); automatic unit conversion for units without an explicit `unit_conversions` entry; backfilling every existing recipe's free-text ingredients to catalog links (linking happens organically as recipes are edited); ingredient image upload (deferred, see Tasks); the bulk import of the user's ~200-item reference library and ongoing manual catalog entry beyond the 6 seeded starter ingredients.
-
-### Phase Status
-
-- [x] Phase Complete
-
----
-
-## Phase 2 — Postgres Full-Text Search (not scheduled)
-
-### Goal
-
-Move recipe search from client-side filtering to server-side Postgres full-text search once the collection is large enough that shipping the full recipe list to the browser stops being practical.
-
-### Tasks
-
-- [ ] Migration: generated `tsvector` column on `recipes` (name_en/name_sr, `'simple'` text search config — no Serbian dictionary exists in Postgres) + GIN index
-- [ ] Decide how ingredient-name matches are handled (trigger-maintained combined vector, or a join-based search query) — current client-side search also matches ingredient names
-- [ ] Replace `useAllRecipes` (fetches the entire table, unpaginated) with a paginated, server-searched hook using supabase-js `.textSearch()` + `.range()`, mirroring the pagination `useAdminRecipes` already does
-- [ ] Rework `AllRecipesPage` so category/tag/favorite filters and the search query are server-side conditions instead of filtering an in-memory list, with the same debounce-then-refetch pattern the admin recipe list already uses
-
-### Database / Supabase
-
-- [ ] New migration adding the generated tsvector column + GIN index; no RLS changes needed (derived from already-public columns)
-
-### UI / UX
-
-- [ ] No regression in filter/sort/tag behavior on `AllRecipesPage` after the move to server-side querying
-
-### Internationalization
-
-- [ ] Search behaves reasonably for both EN and SR recipe names given the `'simple'` (non-stemming) text search config
-
-### Testing & Verification
-
-- [ ] Manual: search/filter/sort still work correctly against a larger seeded dataset; confirm network payload no longer includes the full recipe table on every page load
-
-### Definition of Done
-
-- [ ] `/recepti` search is server-side and paginated; the browser no longer downloads the entire recipe catalog to filter it locally
-
-### Out of Scope
-
-Stemming/relevance ranking beyond Postgres's `'simple'` config, typo-tolerant/fuzzy search.
-
-### Phase Status
-
-- [ ] Phase Complete
-
----
-
-## Phase 3 — Automated Storage Orphan-Sweep Job (not scheduled)
-
-### Goal
-
-Automatically clean up Supabase Storage objects left behind by failed/interrupted image replace or delete operations.
-
-### Tasks
-
-- [ ] Scheduled job (Supabase Edge Function on a cron, or Vercel cron hitting a serverless endpoint) that lists storage objects and compares against `recipe_images.storage_path` rows
-- [ ] Delete storage objects with no matching `recipe_images` row
-- [ ] Add a dry-run/logging mode to verify correctness before enabling actual deletion
-
-### Database / Supabase
-
-- [ ] Job needs service-role access to Storage (server-side only — never exposed to the frontend, consistent with the existing "never introduce service-role keys into frontend code" rule)
-
-### UI / UX
-
-- [ ] N/A for this phase
-
-### Internationalization
-
-- [ ] N/A for this phase
-
-### Testing & Verification
-
-- [ ] Manual: intentionally leave an orphaned object (e.g. cancel an upload mid-replace) and confirm the sweep removes it without touching in-use images
-
-### Definition of Done
-
-- [ ] Orphaned Storage objects are removed automatically on a schedule without risk to images still referenced by a recipe
-
-### Out of Scope
-
-General Storage quota/cost monitoring.
-
-### Phase Status
-
-- [ ] Phase Complete
-
----
-
-## Phase 4 — Favorites Page
-
-### Goal
-
-Give the `/omiljeni` nav destination (sidebar + bottom tab bar, linked since Phase 2/Phase 7) an actual page instead of the "hasn't been implemented yet" placeholder. Phase 17 wired up the favorite toggle itself (`is_favorite`, heart icon, `?favorite=1` filter on `/recepti`) but never built a dedicated listing page.
-
-### Tasks
-
-- [x] Add a `useFavoriteRecipes` hook (favorites-only query: `.eq('is_favorite', true)`), matching the existing one-hook-per-query-shape pattern — unfavoriting a recipe here removes it from the list immediately (rolled back on error) rather than just flipping a flag on a still-visible card
-- [x] Build the `/omiljeni` page (`FavoritesPage.tsx`) reusing the established `RecipeCard` grid + `EmptyState` pattern from `AllRecipesPage`/`CategoryRecipesPage`
-- [x] Replace the `PlaceholderPage` route for `omiljeni` in `App.tsx` with the real page
-
-### Database / Supabase
-
-- [x] N/A — reuses the existing `is_favorite` column and RLS policies
-
-### UI / UX
-
-- [x] Empty state when the admin has no favorites yet
-- [x] Grid matches the existing browse pages' responsive breakpoints
-
-### Internationalization
-
-- [x] Page title reuses the existing `pages.favorites` string; new `favoritesPage.emptyTitle`/`emptyDescription` added to `en.json`/`sr.json`
-
-### Testing & Verification
-
-- [x] `npm run lint && npm run build && npm test` all pass
-- [x] Manual: favoriting/unfavoriting a recipe is reflected on `/omiljeni` — verified by user
-
-### Definition of Done
-
-- [x] `/omiljeni` shows the admin's favorited recipes in the standard grid, with a proper empty state, instead of the placeholder
-
-### Out of Scope
-
-Per-visitor (non-admin) favorites.
-
-### Phase Status
-
-- [x] Phase Complete
-
----
-
-## Phase 5 — Recently Added Page
-
-### Goal
-
-Give the `/nedavno-dodati` nav destination (sidebar + Home's quick filter) an actual page instead of the placeholder. `AllRecipesPage` already supports a `sort=recent` mode (`created_at` descending) and Home's recent-recipes strip already queries the newest 8 — this is the same shape, unfiltered, in the full grid.
-
-### Tasks
-
-- [x] Build the `/nedavno-dodati` page (`RecentlyAddedPage.tsx`) — reuses `useAllRecipes()` directly (already unfiltered, newest-first) rather than a new hook variant, plus the `RecipeCard` grid + `EmptyState` pattern
-- [x] Replace the `PlaceholderPage` route for `nedavno-dodati` in `App.tsx` with the real page
-
-### Database / Supabase
-
-- [x] N/A — reuses the existing `created_at` column, no schema changes
-
-### UI / UX
-
-- [x] Empty state when the collection has zero recipes (reuses `home.empty.title`/`description`)
-- [x] Grid matches the existing browse pages' responsive breakpoints
-
-### Internationalization
-
-- [x] Page title reuses the existing `pages.recentlyAdded` string
-
-### Testing & Verification
-
-- [x] `npm run lint && npm run build && npm test` all pass
-- [x] Manual: adding a new recipe moves it to the top of `/nedavno-dodati` — verified by user
-
-### Definition of Done
-
-- [x] `/nedavno-dodati` shows all recipes newest-first in the standard grid, with a proper empty state, instead of the placeholder
-
-### Out of Scope
-
-Configurable time-window filtering (e.g. "added this week").
-
-### Phase Status
-
-- [x] Phase Complete
-
----
-
 ## Phase 6 — Admin Category & Tag Management (not scheduled)
 
 ### Goal
@@ -408,6 +176,91 @@ Recipe
 ├── Subcategory (1, optional until assigned)
 └── Tags (0..N)
 ```
+
+### Phase Status
+
+- [ ] Phase Complete
+
+---
+
+## Phase 32 — Postgres Full-Text Search (not scheduled)
+
+### Goal
+
+Move recipe search from client-side filtering to server-side Postgres full-text search once the collection is large enough that shipping the full recipe list to the browser stops being practical.
+
+### Tasks
+
+- [ ] Migration: generated `tsvector` column on `recipes` (name_en/name_sr, `'simple'` text search config — no Serbian dictionary exists in Postgres) + GIN index
+- [ ] Decide how ingredient-name matches are handled (trigger-maintained combined vector, or a join-based search query) — current client-side search also matches ingredient names
+- [ ] Replace `useAllRecipes` (fetches the entire table, unpaginated) with a paginated, server-searched hook using supabase-js `.textSearch()` + `.range()`, mirroring the pagination `useAdminRecipes` already does
+- [ ] Rework `AllRecipesPage` so category/tag/favorite filters and the search query are server-side conditions instead of filtering an in-memory list, with the same debounce-then-refetch pattern the admin recipe list already uses
+
+### Database / Supabase
+
+- [ ] New migration adding the generated tsvector column + GIN index; no RLS changes needed (derived from already-public columns)
+
+### UI / UX
+
+- [ ] No regression in filter/sort/tag behavior on `AllRecipesPage` after the move to server-side querying
+
+### Internationalization
+
+- [ ] Search behaves reasonably for both EN and SR recipe names given the `'simple'` (non-stemming) text search config
+
+### Testing & Verification
+
+- [ ] Manual: search/filter/sort still work correctly against a larger seeded dataset; confirm network payload no longer includes the full recipe table on every page load
+
+### Definition of Done
+
+- [ ] `/recepti` search is server-side and paginated; the browser no longer downloads the entire recipe catalog to filter it locally
+
+### Out of Scope
+
+Stemming/relevance ranking beyond Postgres's `'simple'` config, typo-tolerant/fuzzy search.
+
+### Phase Status
+
+- [ ] Phase Complete
+
+---
+
+## Phase 33 — Automated Storage Orphan-Sweep Job (not scheduled)
+
+### Goal
+
+Automatically clean up Supabase Storage objects left behind by failed/interrupted image replace or delete operations.
+
+### Tasks
+
+- [ ] Scheduled job (Supabase Edge Function on a cron, or Vercel cron hitting a serverless endpoint) that lists storage objects and compares against `recipe_images.storage_path` rows
+- [ ] Delete storage objects with no matching `recipe_images` row
+- [ ] Add a dry-run/logging mode to verify correctness before enabling actual deletion
+
+### Database / Supabase
+
+- [ ] Job needs service-role access to Storage (server-side only — never exposed to the frontend, consistent with the existing "never introduce service-role keys into frontend code" rule)
+
+### UI / UX
+
+- [ ] N/A for this phase
+
+### Internationalization
+
+- [ ] N/A for this phase
+
+### Testing & Verification
+
+- [ ] Manual: intentionally leave an orphaned object (e.g. cancel an upload mid-replace) and confirm the sweep removes it without touching in-use images
+
+### Definition of Done
+
+- [ ] Orphaned Storage objects are removed automatically on a schedule without risk to images still referenced by a recipe
+
+### Out of Scope
+
+General Storage quota/cost monitoring.
 
 ### Phase Status
 
