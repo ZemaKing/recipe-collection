@@ -1,22 +1,27 @@
-import { ChefHat, Gift, Leaf, Sprout, Tag, Timer, WheatOff, type LucideIcon } from 'lucide-react'
+import { ChefHat, Leaf, Sprout, Tag, Timer, WheatOff, type LucideIcon } from 'lucide-react'
+import MomIcon from '@/components/icons/MomIcon'
 
 // The one tag that gets pinned to the top of every tag list and its own
 // pink/red color instead of the shared green — kept as a single exported
 // constant so the ordering/divider logic elsewhere only names it once.
 export const PINNED_TAG_SLUG = 'mamin-recept'
 
-export const tagIconBySlug: Record<string, LucideIcon> = {
+// Lucide icons and the custom MomIcon both just take an optional className,
+// so a shared structural type lets both live in the same lookup map.
+type TagIcon = LucideIcon | ((props: { className?: string }) => React.JSX.Element)
+
+export const tagIconBySlug: Record<string, TagIcon> = {
   'za-pocetnike': ChefHat,
   'bez-glutena': WheatOff,
   'brzi-recepti': Timer,
   'sezonski-recepti': Leaf,
   vegetarijanski: Sprout,
-  // Gift (not Heart) — a heart icon here would read as "favorite" next to
-  // the actual favorite-toggle heart used elsewhere in the app.
-  [PINNED_TAG_SLUG]: Gift,
+  // Custom illustration (not Heart/Gift) — a heart icon here would read as
+  // "favorite" next to the actual favorite-toggle heart used elsewhere.
+  [PINNED_TAG_SLUG]: MomIcon,
 }
 
-export function getTagIcon(slug: string): LucideIcon {
+export function getTagIcon(slug: string): TagIcon {
   return tagIconBySlug[slug] ?? Tag
 }
 
