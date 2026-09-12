@@ -8,6 +8,7 @@ export interface AdminRecipeIngredient {
   quantity: string
   unit_en: string
   unit_sr: string
+  ingredient_id: string
 }
 
 export interface AdminRecipeStep {
@@ -39,7 +40,7 @@ export interface AdminRecipeDetail {
 const ADMIN_RECIPE_SELECT = `
   id, slug, name_en, name_sr, description_en, description_sr, tips_en, tips_sr,
   category_id, prep_time_minutes, cook_time_minutes, servings, weight_grams, difficulty, rating,
-  ingredients:recipe_ingredients(order_index, name_en, name_sr, quantity, unit_en, unit_sr),
+  ingredients:recipe_ingredients(order_index, name_en, name_sr, quantity, unit_en, unit_sr, ingredient_id),
   steps:recipe_steps(step_number, text_en, text_sr),
   recipe_tags(tag_id)
 `
@@ -104,6 +105,7 @@ export function useAdminRecipe(slug: string | undefined) {
               quantity: number | null
               unit_en: string | null
               unit_sr: string | null
+              ingredient_id: string | null
             }[]
           ).map((ing) => ({
             name_en: ing.name_en,
@@ -111,6 +113,7 @@ export function useAdminRecipe(slug: string | undefined) {
             quantity: toStr(ing.quantity),
             unit_en: ing.unit_en ?? '',
             unit_sr: ing.unit_sr ?? '',
+            ingredient_id: ing.ingredient_id ?? '',
           })),
           steps: (data.steps as { text_en: string; text_sr: string | null }[]).map((step) => ({
             text_en: step.text_en,

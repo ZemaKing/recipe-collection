@@ -139,6 +139,21 @@
     },
     "tips": {
       "tips": "Saveti"
+    },
+    "nutrition": {
+      "title": "Nutritivne vrednosti",
+      "autoCalculated": "Automatski izračunato iz {{linked}} od {{total}} sastojaka",
+      "perServing": "Po porciji",
+      "totalRecipe": "Ceo recept",
+      "disclaimer": "Nutritivne vrednosti su procene na osnovu povezanih sastojaka iz našeg kataloga.",
+      "calories": "Kalorije",
+      "protein": "Proteini",
+      "fat": "Masti",
+      "carbs": "Ugljeni hidrati",
+      "fiber": "Vlakna",
+      "vitaminsMinerals": "Ključni vitamini i minerali",
+      "vitaminsMineralsCount": "Vitamini i minerali ({{count}})",
+      "dailyValue": "{{percent}}% DV"
     }
   },
   "login": {
@@ -157,6 +172,7 @@
     "backToSite": "Nazad na sajt",
     "nav": {
       "recipes": "Recepti",
+      "ingredients": "Sastojci",
       "mealPlan": "Plan obroka",
       "notes": "Beleške"
     },
@@ -193,6 +209,9 @@
       "quantity": "Kol.",
       "unitEn": "Jedinica (EN)",
       "unitSr": "Jedinica (SR)",
+      "noCatalogMatch": "Sastojak nije pronađen u katalogu.",
+      "addToCatalog": "Dodaj u katalog",
+      "defaultUnit": "Podrazumevana jedinica: {{unit}}",
       "moveUp": "Pomeri gore",
       "moveDown": "Pomeri dole",
       "remove": "Ukloni",
@@ -272,6 +291,42 @@
       "deleteDescription": "Ovo će trajno obrisati belešku \"{{title}}\". Ova radnja se ne može poništiti.",
       "confirmDelete": "Obriši",
       "deleting": "Brisanje..."
+    },
+    "ingredients": {
+      "addIngredient": "Dodaj sastojak",
+      "searchPlaceholder": "Pretraži sastojke...",
+      "allCategories": "Sve kategorije",
+      "columnNameEn": "Naziv (EN)",
+      "columnNameSr": "Naziv (SR)",
+      "columnCategory": "Kategorija",
+      "columnCalories": "Kalorije (na 100g)",
+      "columnActions": "Radnje",
+      "edit": "Izmeni",
+      "delete": "Obriši",
+      "noResults": "Nema sastojaka koji odgovaraju pretrazi.",
+      "deleteTitle": "Obrisati sastojak?",
+      "deleteDescription": "Ovo će trajno obrisati sastojak \"{{name}}\" iz kataloga. Recepti koji ga koriste zadržavaju tekst sastojka, ali gube vezu sa katalogom. Ova radnja se ne može poništiti.",
+      "editTitle": "Izmeni sastojak",
+      "createSubmit": "Kreiraj sastojak",
+      "namesSection": "Nazivi",
+      "latinName": "Latinski naziv",
+      "regionalNames": "Regionalni nazivi",
+      "defaultUnitEn": "Podrazumevana jedinica (EN)",
+      "defaultUnitSr": "Podrazumevana jedinica (SR)",
+      "factEn": "Zanimljivost (EN)",
+      "factSr": "Zanimljivost (SR)",
+      "factPlaceholder": "Kratka rečenica ili dve, edukativnog karaktera",
+      "nutritionSection": "Nutritivne vrednosti",
+      "nutritionPer100g": "Sve vrednosti su na 100g.",
+      "micronutrients": "Vitamini i minerali",
+      "micronutrientKey": "Ključ (npr. vitamin_c)",
+      "amount": "Količina",
+      "unit": "Jedinica",
+      "addMicronutrient": "Dodaj vitamin/mineral",
+      "unitConversions": "Konverzije jedinica",
+      "unitConversionsHelp": "Grama po jedinici, za jedinice koje nisu g/kg (npr. \"kašika\" → 15).",
+      "grams": "Grama",
+      "addUnitConversion": "Dodaj konverziju jedinice"
     }
   },
   "errors": {
@@ -286,6 +341,10 @@
     "mustBeNumber": "Mora biti broj.",
     "mustBeWholeNumber": "Mora biti ceo broj (bez decimala).",
     "mustBeNonNegative": "Mora biti nula ili više.",
-    "ratingRange": "Ocena mora biti između 0 i 5."
+    "mustBePositive": "Mora biti veće od nule.",
+    "ratingRange": "Ocena mora biti između 0 i 5.",
+    "micronutrientKeyRequired": "Ključ je obavezan.",
+    "micronutrientUnitRequired": "Jedinica je obavezna.",
+    "unitConversionUnitRequired": "Jedinica je obavezna."
   }
 }

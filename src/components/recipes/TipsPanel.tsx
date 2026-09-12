@@ -7,8 +7,9 @@ interface TipsPanelProps {
   recipe: RecipeDetail
 }
 
-// Always visible (not tabbed) — the mockup's "Saveti" box sits below the
-// step list on both desktop and mobile, it isn't hidden behind a tab.
+// Rendered inside the "Tips" tab on the detail page — the page only
+// includes that tab when tips_en is present, so this early return is
+// mostly a safety net rather than the primary gate.
 function TipsPanel({ recipe }: TipsPanelProps) {
   const { t } = useTranslation()
   const lang = useCurrentLang()

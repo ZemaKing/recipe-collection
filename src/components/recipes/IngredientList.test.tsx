@@ -6,8 +6,26 @@ import type { RecipeIngredient } from '@/hooks/useRecipeBySlug'
 import IngredientList from './IngredientList'
 
 const ingredients: RecipeIngredient[] = [
-  { id: '1', order_index: 1, name_en: 'Beef', name_sr: 'Juneće meso', quantity: 500, unit_en: 'g', unit_sr: 'g' },
-  { id: '2', order_index: 2, name_en: 'Oil', name_sr: 'Ulje', quantity: null, unit_en: null, unit_sr: null },
+  {
+    id: '1',
+    order_index: 1,
+    name_en: 'Beef',
+    name_sr: 'Juneće meso',
+    quantity: 500,
+    unit_en: 'g',
+    unit_sr: 'g',
+    ingredient: null,
+  },
+  {
+    id: '2',
+    order_index: 2,
+    name_en: 'Oil',
+    name_sr: 'Ulje',
+    quantity: null,
+    unit_en: null,
+    unit_sr: null,
+    ingredient: null,
+  },
 ]
 
 function renderList(baseServings: number | null) {

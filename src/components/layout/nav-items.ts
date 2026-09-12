@@ -1,6 +1,7 @@
 import {
   BookOpen,
   CalendarDays,
+  Carrot,
   Clock,
   Heart,
   Home,
@@ -58,6 +59,7 @@ export const bottomTabItems: NavItem[] = [
 
 export const adminNavItems: NavItem[] = [
   { labelKey: 'admin.nav.recipes', path: '/admin/recepti', icon: BookOpen },
+  { labelKey: 'admin.nav.ingredients', path: '/admin/sastojci', icon: Carrot },
   { labelKey: 'admin.nav.mealPlan', path: '/admin/plan-obroka', icon: CalendarDays },
   { labelKey: 'admin.nav.notes', path: '/admin/beleske', icon: NotebookPen },
 ]

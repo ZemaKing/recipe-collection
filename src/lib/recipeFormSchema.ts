@@ -33,6 +33,9 @@ export const ingredientSchema = z.object({
   quantity: optionalNonNegativeNumber,
   unit_en: optionalText,
   unit_sr: optionalText,
+  // Set when the admin picked a catalog match via autocomplete; left
+  // unset for plain free-text ingredient names (fully backward compatible).
+  ingredient_id: optionalText,
 })
 
 export const stepSchema = z.object({

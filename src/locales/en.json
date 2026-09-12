@@ -136,6 +136,21 @@
     },
     "tips": {
       "tips": "Tips"
+    },
+    "nutrition": {
+      "title": "Nutrition Information",
+      "autoCalculated": "Auto-calculated from {{linked}} of {{total}} ingredients",
+      "perServing": "Per serving",
+      "totalRecipe": "Total recipe",
+      "disclaimer": "Nutrition values are estimates based on linked ingredients from our catalog.",
+      "calories": "Calories",
+      "protein": "Protein",
+      "fat": "Fat",
+      "carbs": "Carbs",
+      "fiber": "Fiber",
+      "vitaminsMinerals": "Key Vitamins & Minerals",
+      "vitaminsMineralsCount": "Vitamins & Minerals ({{count}})",
+      "dailyValue": "{{percent}}% DV"
     }
   },
   "login": {
@@ -154,6 +169,7 @@
     "backToSite": "Back to site",
     "nav": {
       "recipes": "Recipes",
+      "ingredients": "Ingredients",
       "mealPlan": "Meal Plan",
       "notes": "Notes"
     },
@@ -190,6 +206,9 @@
       "quantity": "Qty",
       "unitEn": "Unit (EN)",
       "unitSr": "Unit (SR)",
+      "noCatalogMatch": "No catalog match found.",
+      "addToCatalog": "Add to catalog",
+      "defaultUnit": "Default unit: {{unit}}",
       "moveUp": "Move up",
       "moveDown": "Move down",
       "remove": "Remove",
@@ -269,6 +288,42 @@
       "deleteDescription": "This will permanently delete \"{{title}}\". This cannot be undone.",
       "confirmDelete": "Delete",
       "deleting": "Deleting..."
+    },
+    "ingredients": {
+      "addIngredient": "Add ingredient",
+      "searchPlaceholder": "Search ingredients...",
+      "allCategories": "All categories",
+      "columnNameEn": "Name (EN)",
+      "columnNameSr": "Name (SR)",
+      "columnCategory": "Category",
+      "columnCalories": "Calories (per 100g)",
+      "columnActions": "Actions",
+      "edit": "Edit",
+      "delete": "Delete",
+      "noResults": "No ingredients match your search.",
+      "deleteTitle": "Delete ingredient?",
+      "deleteDescription": "This will permanently delete \"{{name}}\" from the catalog. Recipes using it keep their ingredient text but lose the catalog link. This cannot be undone.",
+      "editTitle": "Edit ingredient",
+      "createSubmit": "Create ingredient",
+      "namesSection": "Names",
+      "latinName": "Latin name",
+      "regionalNames": "Regional names",
+      "defaultUnitEn": "Default unit (EN)",
+      "defaultUnitSr": "Default unit (SR)",
+      "factEn": "Fact (EN)",
+      "factSr": "Fact (SR)",
+      "factPlaceholder": "A short 1-2 sentence educational note",
+      "nutritionSection": "Nutrition",
+      "nutritionPer100g": "All values are per 100g.",
+      "micronutrients": "Vitamins & minerals",
+      "micronutrientKey": "Key (e.g. vitamin_c)",
+      "amount": "Amount",
+      "unit": "Unit",
+      "addMicronutrient": "Add vitamin/mineral",
+      "unitConversions": "Unit conversions",
+      "unitConversionsHelp": "Grams per unit, for units other than g/kg (e.g. \"kašika\" → 15).",
+      "grams": "Grams",
+      "addUnitConversion": "Add unit conversion"
     }
   },
   "errors": {
@@ -283,6 +338,10 @@
     "mustBeNumber": "Must be a number.",
     "mustBeWholeNumber": "Must be a whole number (no decimals).",
     "mustBeNonNegative": "Must be zero or more.",
-    "ratingRange": "Rating must be between 0 and 5."
+    "mustBePositive": "Must be greater than zero.",
+    "ratingRange": "Rating must be between 0 and 5.",
+    "micronutrientKeyRequired": "Key is required.",
+    "micronutrientUnitRequired": "Unit is required.",
+    "unitConversionUnitRequired": "Unit is required."
   }
 }

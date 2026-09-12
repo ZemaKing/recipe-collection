@@ -17,6 +17,8 @@ import RecipeDetailPage from '@/pages/RecipeDetailPage'
 // Admin routes are only reached by an authenticated admin, so keep them out
 // of the bundle every public visitor downloads.
 const AdminShell = lazy(() => import('@/components/layout/AdminShell'))
+const AdminIngredientFormPage = lazy(() => import('@/pages/AdminIngredientFormPage'))
+const AdminIngredientsPage = lazy(() => import('@/pages/AdminIngredientsPage'))
 const AdminMealPlanPage = lazy(() => import('@/pages/AdminMealPlanPage'))
 const AdminNotesPage = lazy(() => import('@/pages/AdminNotesPage'))
 const AdminRecipeFormPage = lazy(() => import('@/pages/AdminRecipeFormPage'))
@@ -94,6 +96,9 @@ function App() {
                 <Route path="admin/recepti/:slug/izmeni" element={<AdminRecipeFormPage />} />
                 <Route path="admin/plan-obroka" element={<AdminMealPlanPage />} />
                 <Route path="admin/beleske" element={<AdminNotesPage />} />
+                <Route path="admin/sastojci" element={<AdminIngredientsPage />} />
+                <Route path="admin/sastojci/novi" element={<AdminIngredientFormPage />} />
+                <Route path="admin/sastojci/:slug/izmeni" element={<AdminIngredientFormPage />} />
               </Route>
             </Route>
           </Route>

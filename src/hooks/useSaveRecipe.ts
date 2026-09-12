@@ -56,6 +56,7 @@ export function useSaveRecipe() {
             quantity: ingredient.quantity ?? null,
             unit_en: ingredient.unit_en ?? null,
             unit_sr: ingredient.unit_sr ?? null,
+            ingredient_id: ingredient.ingredient_id ?? null,
           })),
         )
         if (error) throw error

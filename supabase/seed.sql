@@ -763,4 +763,149 @@ values (
   false
 );
 
+-- ingredient_categories -------------------------------------------------
+-- Matches the reference-library folder structure (Phase 1: ingredient catalog).
+
+insert into ingredient_categories (slug, name_en, name_sr) values
+  ('dairy', 'Dairy', 'Mleko i mlečni proizvodi'),
+  ('vegetables', 'Vegetables', 'Povrće'),
+  ('misc-additives', 'Misc / Additives', 'Prilozi i dodaci'),
+  ('fish-and-meat', 'Fish & Meat', 'Riba i meso'),
+  ('sweets', 'Sweets', 'Slatkiši i poslastice'),
+  ('oils-and-fats', 'Oils & Fats', 'Ulja i masti'),
+  ('vitamins-and-minerals', 'Vitamins & Minerals', 'Vitamini i minerali'),
+  ('fruit', 'Fruit', 'Voće'),
+  ('herbs-and-spices', 'Herbs & Spices', 'Začini i bilje'),
+  ('grains', 'Grains', 'Žitarice')
+on conflict (slug) do update set
+  name_en = excluded.name_en,
+  name_sr = excluded.name_sr;
+
+-- ingredients -------------------------------------------------------------
+-- A starter set covering Šopska salata's ingredients (so the nutrition
+-- auto-calculation has real data to demonstrate end to end) plus a couple
+-- of extras for the admin autocomplete demo.
+
+do $$
+declare
+  v_ing_cat_id uuid;
+begin
+
+  select id into v_ing_cat_id from ingredient_categories where slug = 'vegetables';
+  insert into ingredients (
+    slug, ingredient_category_id, name_en, name_sr, latin_name,
+    fact_en, fact_sr, default_unit_en, default_unit_sr,
+    calories_kcal, protein_g, fat_g, carbs_g, fiber_g, micronutrients, unit_conversions
+  ) values
+    (
+      'tomato', v_ing_cat_id, 'Tomato', 'Paradajz', 'Solanum lycopersicum',
+      'Rich in vitamin C and lycopene, an antioxidant linked to heart health.',
+      'Bogat vitaminom C i likopenom, antioksidansom povezanim sa zdravljem srca.',
+      'g', 'g', 18, 0.9, 0.2, 3.9, 1.2,
+      '{"vitamin_c": {"amount": 14, "unit": "mg"}, "potassium": {"amount": 237, "unit": "mg"}}',
+      '{"pcs": 123, "kom": 123}'
+    ),
+    (
+      'cucumber', v_ing_cat_id, 'Cucumber', 'Krastavac', 'Cucumis sativus',
+      'Mostly water, making it naturally low-calorie and hydrating.',
+      'Uglavnom voda, zbog čega je prirodno niskokaloričan i hidrira organizam.',
+      'g', 'g', 15, 0.7, 0.1, 3.6, 0.5,
+      '{"vitamin_c": {"amount": 2.8, "unit": "mg"}, "potassium": {"amount": 147, "unit": "mg"}}',
+      '{"pcs": 150, "kom": 150}'
+    ),
+    (
+      'green-bell-pepper', v_ing_cat_id, 'Green Bell Pepper', 'Zelena paprika', 'Capsicum annuum',
+      'One of the richest common vegetable sources of vitamin C.',
+      'Jedan od najbogatijih izvora vitamina C među uobičajenim povrćem.',
+      'g', 'g', 20, 0.9, 0.2, 4.6, 1.7,
+      '{"vitamin_c": {"amount": 80, "unit": "mg"}, "potassium": {"amount": 175, "unit": "mg"}}',
+      '{"pcs": 120, "kom": 120}'
+    ),
+    (
+      'red-onion', v_ing_cat_id, 'Red Onion', 'Crveni luk', 'Allium cepa',
+      'Contains quercetin, a plant antioxidant found at higher levels in the red-skinned variety.',
+      'Sadrži kvercetin, biljni antioksidans prisutan u većoj količini u crvenoj sorti luka.',
+      'g', 'g', 40, 1.1, 0.1, 9.3, 1.7,
+      '{"vitamin_c": {"amount": 7.4, "unit": "mg"}, "potassium": {"amount": 146, "unit": "mg"}}',
+      '{"pcs": 70, "kom": 70}'
+    ),
+    (
+      'pumpkin', v_ing_cat_id, 'Pumpkin', 'Bundeva', 'Cucurbita pepo',
+      'Rich in beta-carotene, fiber and antioxidants.',
+      'Bogata beta-karotenom, vlaknima i antioksidansima.',
+      'g', 'g', 26, 1, 0.1, 6.5, 0.5,
+      '{"vitamin_a": {"amount": 170, "unit": "µg"}, "potassium": {"amount": 340, "unit": "mg"}}',
+      '{}'
+    )
+  on conflict (slug) do update set
+    ingredient_category_id = excluded.ingredient_category_id,
+    name_en = excluded.name_en, name_sr = excluded.name_sr, latin_name = excluded.latin_name,
+    fact_en = excluded.fact_en, fact_sr = excluded.fact_sr,
+    default_unit_en = excluded.default_unit_en, default_unit_sr = excluded.default_unit_sr,
+    calories_kcal = excluded.calories_kcal, protein_g = excluded.protein_g, fat_g = excluded.fat_g,
+    carbs_g = excluded.carbs_g, fiber_g = excluded.fiber_g,
+    micronutrients = excluded.micronutrients, unit_conversions = excluded.unit_conversions;
+
+  select id into v_ing_cat_id from ingredient_categories where slug = 'dairy';
+  insert into ingredients (
+    slug, ingredient_category_id, name_en, name_sr, latin_name,
+    fact_en, fact_sr, default_unit_en, default_unit_sr,
+    calories_kcal, protein_g, fat_g, carbs_g, fiber_g, micronutrients, unit_conversions
+  ) values (
+    'white-brined-cheese', v_ing_cat_id, 'White Brined Cheese', 'Beli sir', null,
+    'A salty, crumbly cheese similar to feta, aged in brine.',
+    'Slan, mrvičast sir sličan feti, zreo u salamuri.',
+    'g', 'g', 264, 14, 21, 4.1, 0,
+    '{"calcium": {"amount": 493, "unit": "mg"}}',
+    '{}'
+  )
+  on conflict (slug) do update set
+    ingredient_category_id = excluded.ingredient_category_id,
+    name_en = excluded.name_en, name_sr = excluded.name_sr, latin_name = excluded.latin_name,
+    fact_en = excluded.fact_en, fact_sr = excluded.fact_sr,
+    default_unit_en = excluded.default_unit_en, default_unit_sr = excluded.default_unit_sr,
+    calories_kcal = excluded.calories_kcal, protein_g = excluded.protein_g, fat_g = excluded.fat_g,
+    carbs_g = excluded.carbs_g, fiber_g = excluded.fiber_g,
+    micronutrients = excluded.micronutrients, unit_conversions = excluded.unit_conversions;
+
+  select id into v_ing_cat_id from ingredient_categories where slug = 'oils-and-fats';
+  insert into ingredients (
+    slug, ingredient_category_id, name_en, name_sr, latin_name,
+    fact_en, fact_sr, default_unit_en, default_unit_sr,
+    calories_kcal, protein_g, fat_g, carbs_g, fiber_g, micronutrients, unit_conversions
+  ) values (
+    'olive-oil', v_ing_cat_id, 'Olive Oil', 'Maslinovo ulje', 'Olea europaea',
+    'A source of monounsaturated fat and vitamin E, central to Mediterranean cooking.',
+    'Izvor mononezasićenih masti i vitamina E, osnova mediteranske kuhinje.',
+    'ml', 'ml', 884, 0, 100, 0, 0,
+    '{"vitamin_e": {"amount": 14, "unit": "mg"}}',
+    '{"tbsp": 14, "kašike": 14, "kašika": 14}'
+  )
+  on conflict (slug) do update set
+    ingredient_category_id = excluded.ingredient_category_id,
+    name_en = excluded.name_en, name_sr = excluded.name_sr, latin_name = excluded.latin_name,
+    fact_en = excluded.fact_en, fact_sr = excluded.fact_sr,
+    default_unit_en = excluded.default_unit_en, default_unit_sr = excluded.default_unit_sr,
+    calories_kcal = excluded.calories_kcal, protein_g = excluded.protein_g, fat_g = excluded.fat_g,
+    carbs_g = excluded.carbs_g, fiber_g = excluded.fiber_g,
+    micronutrients = excluded.micronutrients, unit_conversions = excluded.unit_conversions;
+
+end $$;
+
+-- Link Šopska salata's ingredients to the catalog so the nutrition panel
+-- has real data to auto-calculate from.
+
+update recipe_ingredients set ingredient_id = (select id from ingredients where slug = 'tomato')
+  where recipe_id = (select id from recipes where slug = 'sopska-salata') and order_index = 1;
+update recipe_ingredients set ingredient_id = (select id from ingredients where slug = 'cucumber')
+  where recipe_id = (select id from recipes where slug = 'sopska-salata') and order_index = 2;
+update recipe_ingredients set ingredient_id = (select id from ingredients where slug = 'green-bell-pepper')
+  where recipe_id = (select id from recipes where slug = 'sopska-salata') and order_index = 3;
+update recipe_ingredients set ingredient_id = (select id from ingredients where slug = 'red-onion')
+  where recipe_id = (select id from recipes where slug = 'sopska-salata') and order_index = 4;
+update recipe_ingredients set ingredient_id = (select id from ingredients where slug = 'white-brined-cheese')
+  where recipe_id = (select id from recipes where slug = 'sopska-salata') and order_index = 5;
+update recipe_ingredients set ingredient_id = (select id from ingredients where slug = 'olive-oil')
+  where recipe_id = (select id from recipes where slug = 'sopska-salata') and order_index = 6;
+
 commit;

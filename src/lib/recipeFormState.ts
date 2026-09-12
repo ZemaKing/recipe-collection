@@ -18,6 +18,6 @@ export const EMPTY_RECIPE_FORM_STATE: RecipeFormState = {
   difficulty: '',
   rating: '',
   tagIds: [],
-  ingredients: [{ name_en: '', name_sr: '', quantity: '', unit_en: '', unit_sr: '' }],
+  ingredients: [{ name_en: '', name_sr: '', quantity: '', unit_en: '', unit_sr: '', ingredient_id: '' }],
   steps: [{ text_en: '', text_sr: '' }],
 }

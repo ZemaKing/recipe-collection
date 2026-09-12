@@ -4,56 +4,63 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: None active — Phases 1–6 are unscheduled backlog ideas
+Current Phase: Phase 1 — built, pending Supabase migration apply + manual verification. Phases 2–8 are unscheduled backlog ideas.
 MVP Status: Complete
 
 ---
 
-## Phase 1 — Ingredient Master-Catalog & Auto-Calculated Nutrition (not scheduled)
+## Phase 1 — Ingredient Master-Catalog & Auto-Calculated Nutrition (built, pending migration apply + manual verification)
 
 ### Goal
 
-A proper ingredient catalog (bilingual names, Latin name, category, a short educational fact, per-100g nutrition, image) that backs an autocomplete in the recipe ingredient editor, and drives automatic per-recipe/per-serving nutrition display on the recipe detail page — without requiring every existing free-text ingredient to be migrated up front. Supersedes the earlier "manual nutrition entry" idea: nutrition is calculated from linked ingredients rather than typed in per recipe.
+A proper ingredient catalog (bilingual names, Latin name, category, a short educational fact, per-100g nutrition, image) that backs an autocomplete in the recipe ingredient editor, and drives automatic per-recipe/per-serving nutrition display on the recipe detail page — without requiring every existing free-text ingredient to be migrated up front. Supersedes the earlier "manual nutrition entry" idea: nutrition is calculated from linked ingredients rather than typed in per recipe. Also restructures the recipe detail page per a mockup (`recepies-details/Nutrition.png`) into real tabs (Ingredients · Instructions · Nutrition · Tips) instead of a stacked layout — an initial anchor-scroll-nav version (all sections always visible, just scrolled to) didn't read as real tabs and was replaced with actual Radix `Tabs`, using `forceMount` on each panel + CSS `data-[state=inactive]:hidden` so switching tabs hides content instead of unmounting it (`IngredientList` holds live servings/checkbox state that must survive tab switches).
+
+**⚠ Not yet applied to Supabase.** The migration (`supabase/migrations/20260912120000_ingredient_catalog.sql`) and seed additions (`supabase/seed.sql`) are written and code-complete, but this environment has no Supabase CLI/credentials to run them against the live project. Run them (SQL editor or `supabase db push`) before any of this is usable in the deployed app.
 
 ### Tasks
 
-- [ ] Migration: new `ingredient_categories` table (slug/name_en/name_sr), seeded with the 10 categories from the reference library (dairy, vegetables, misc/additives, fish-and-meat, sweets, oils-and-fats, vitamins-and-minerals, fruit, herbs-and-spices, grains)
-- [ ] Migration: new `ingredients` table — name_en/name_sr, `latin_name` (single column, language-neutral), `regional_names` (free text), `fact_en`/`fact_sr` (short 1-2 sentence educational blurb, not full prose), `default_unit_en`/`default_unit_sr`, per-100g nutrition (`calories_kcal`, `protein_g`, `fat_g`, `carbs_g`, `fiber_g`), `micronutrients` jsonb (`{ "vitamin_b12": { "amount": 0.5, "unit": "µg" } }`), `unit_conversions` jsonb (`{ "kašika": 15, "čaša": 250 }` grams-per-unit), image fields (`image_storage_path`, `image_alt_en`, `image_alt_sr`)
-- [ ] Migration: add nullable `recipe_ingredients.ingredient_id` FK (`on delete set null`) — keeps every existing free-text row valid; only catalog-linked rows contribute to nutrition
-- [ ] `IngredientEditor`: autocomplete the name_en input against the catalog; selecting a suggestion sets `ingredient_id` and prefills name_sr/default unit; typing a non-match leaves `ingredient_id` null (free text, backward compatible) with an inline "add to catalog" affordance
-- [ ] Extend `recipeFormSchema.ts`'s `ingredientSchema` with an optional `ingredient_id`, reusing the existing `optionalText`/`optionalNonNegativeNumber` validation idioms
-- [ ] New `AdminIngredientsPage` (e.g. `/admin/sastojci`) — search/category-filter/pagination, mirroring `AdminRecipesPage`'s existing pattern
-- [ ] Ingredient create/edit form: all catalog fields above, with micronutrients and unit_conversions as repeatable key/value rows (reuse the add/remove/reorder row-array pattern from `IngredientEditor.tsx`/`StepEditor.tsx`), plus image upload reusing `ImageManager.tsx` + `src/lib/storage.ts` (new Storage path prefix, e.g. `ingredient-images/`)
-- [ ] New `src/lib/nutrition.ts`: pure functions computing recipe-total and per-serving nutrition from catalog-linked ingredients — grams-based (direct for g/kg units, via `unit_conversions` lookup otherwise; skip an ingredient from the total if no conversion exists rather than guessing), reusing the servings-scaling logic already in `src/lib/servings.ts`
-- [ ] New `NutritionPanel` component rendered near `RecipeMeta` on `RecipeDetailPage` — hidden entirely if zero ingredients are catalog-linked; shows a "based on N of M ingredients" disclaimer when the calculation is partial
+- [x] Migration: new `ingredient_categories` table (slug/name_en/name_sr), seeded with the 10 categories from the reference library (dairy, vegetables, misc/additives, fish-and-meat, sweets, oils-and-fats, vitamins-and-minerals, fruit, herbs-and-spices, grains)
+- [x] Migration: new `ingredients` table — name_en/name_sr, `latin_name`, `regional_names`, `fact_en`/`fact_sr`, `default_unit_en`/`default_unit_sr`, per-100g nutrition (`calories_kcal`, `protein_g`, `fat_g`, `carbs_g`, `fiber_g`), `micronutrients` jsonb, `unit_conversions` jsonb, image columns (`image_storage_path`, `image_alt_en`, `image_alt_sr`)
+- [x] Migration: nullable `recipe_ingredients.ingredient_id` FK (`on delete set null`)
+- [x] `IngredientEditor`: autocomplete the name_en input against the catalog (with a live default-unit + short-fact preview and an "add to catalog" link when there's no match, per the mockup); selecting a suggestion sets `ingredient_id` and prefills name_sr/default unit
+- [x] Extend `recipeFormSchema.ts`'s `ingredientSchema` with an optional `ingredient_id`
+- [x] New `AdminIngredientsPage` (`/admin/sastojci`) — search/category-filter table, mirroring `AdminRecipesPage`'s pattern
+- [x] Ingredient create/edit form (`AdminIngredientFormPage`/`IngredientForm`) — all catalog fields, micronutrients and unit_conversions as repeatable rows
+- [x] New `src/lib/nutrition.ts` — pure functions computing recipe-total and per-serving nutrition from catalog-linked ingredients, grams-based via `unit_conversions`, skipping unresolvable ingredients rather than guessing
+- [x] New `NutritionPanel` component (macro cards, vitamins/minerals with %DV via new `src/lib/nutritionReference.ts`, per-serving/total-recipe toggle) — hidden entirely if zero ingredients are catalog-linked
+- [x] `RecipeDetailPage` restructured into real tabs on tablet/mobile only (`Tabs`/`TabsList`/`TabsTrigger`/`TabsContent` from `src/components/ui/tabs.tsx`, previously built but unused, restyled to an underline tab look) — Ingredients/Instructions/Nutrition/Tips, Tips omitted when empty, sticky `TabsList`, each `TabsContent` uses `forceMount` so switching tabs never unmounts/resets `IngredientList`'s state. Desktop (`min-width: 1024px`, via new `useMediaQuery` hook) keeps the original always-visible stacked layout instead — plenty of room there, no need to hide anything behind a tab
+- [ ] Ingredient image upload (reusing `ImageManager.tsx`/`storage.ts` patterns) — **deferred**, not built in this pass; `image_storage_path`/`image_alt_en`/`image_alt_sr` columns exist but nothing writes to them yet
 
 ### Database / Supabase
 
-- [ ] `ingredient_categories` + `ingredients` tables, RLS mirroring the `categories`/`tags` public-select/authenticated-write pattern
-- [ ] `recipe_ingredients.ingredient_id` nullable FK, `on delete set null`
+- [x] `ingredient_categories` + `ingredients` tables written, RLS mirroring the `categories`/`tags` pattern — **not yet applied to the live project**
+- [x] `recipe_ingredients.ingredient_id` nullable FK written — **not yet applied**
+- [x] Seed data: 10 ingredient categories + 6 starter ingredients, with Šopska salata's ingredients linked for an end-to-end nutrition demo once seeded
 
 ### UI / UX
 
-- [ ] Autocomplete suggestions list is keyboard-navigable and dismissible
-- [ ] Nutrition panel only renders when at least one ingredient is catalog-linked; recalculates reactively when the servings scaler changes
+- [ ] Autocomplete suggestions list keyboard-navigable and dismissible — implemented, not manually browser-verified
+- [ ] Nutrition panel's per-serving/total-recipe toggle and vitamins/minerals collapse on tablet/mobile — implemented per the mockup, not manually browser-verified
+- [ ] Tab bar scrolls horizontally and switching tabs behaves correctly at desktop/tablet/mobile widths — not manually browser-verified (no browser tool in this environment)
 
 ### Internationalization
 
-- [ ] Catalog entries carry name_en/name_sr, fact_en/fact_sr, default_unit_en/sr like other bilingual fields; `latin_name`/`regional_names` are single (language-neutral / regional-Serbian) columns, not bilingual pairs
+- [x] Catalog entries carry name_en/name_sr, fact_en/fact_sr, default_unit_en/sr; `latin_name`/`regional_names` are single non-bilingual columns
+- [x] All new admin/nutrition-panel strings added to both `en.json`/`sr.json`
 
 ### Testing & Verification
 
-- [ ] Unit tests for the nutrition calculation util (grams conversion, per-serving math, partial-ingredient disclaimer threshold)
-- [ ] Manual: typing a known ingredient name shows matching suggestions; picking one fills the row and links `ingredient_id`
-- [ ] Manual: nutrition panel updates correctly when the servings scaler changes
+- [x] Unit tests for the nutrition calculation util (`src/lib/nutrition.test.ts` — grams conversion, unit_conversions lookup, skip-unresolvable, micronutrient summing, per-serving/total scaling)
+- [x] `npm run lint && npm run build && npm test` all pass (68 tests)
+- [ ] Manual: apply the migration/seed, then verify autocomplete, the nutrition panel, and the admin catalog CRUD end to end in a real browser
 
 ### Definition of Done
 
-- [ ] Admin ingredient name inputs autocomplete from a shared catalog; recipes with catalog-linked ingredients show correct per-recipe/per-serving nutrition on the public detail page
+- [ ] Admin ingredient name inputs autocomplete from a shared catalog; recipes with catalog-linked ingredients show correct per-recipe/per-serving nutrition on the public detail page — **code complete; blocked on applying the migration and a manual verification pass**
 
 ### Out of Scope
 
-Full-prose encyclopedia content or public ingredient detail pages (only the short `fact_en`/`fact_sr` blurb is shown); automatic unit conversion for units without an explicit `unit_conversions` entry; backfilling every existing recipe's free-text ingredients to catalog links (linking happens organically as recipes are edited); the bulk import of the user's ~200-item reference library and ongoing manual catalog entry are both deferred to when that content is actually provided — not part of this phase's build.
+Full-prose encyclopedia content or public ingredient detail pages (only the short `fact_en`/`fact_sr` blurb is shown); automatic unit conversion for units without an explicit `unit_conversions` entry; backfilling every existing recipe's free-text ingredients to catalog links (linking happens organically as recipes are edited); ingredient image upload (deferred, see Tasks); the bulk import of the user's ~200-item reference library and ongoing manual catalog entry beyond the 6 seeded starter ingredients.
 
 ### Phase Status
 

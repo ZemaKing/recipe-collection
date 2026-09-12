@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { pickPrimaryImage } from '@/lib/recipeQueries'
 import { supabase } from '@/lib/supabaseClient'
+import type { IngredientNutritionRef } from '@/types/ingredient'
 import type { RecipeImageRef } from '@/types/recipe'
 
 export type Difficulty = 'easy' | 'medium' | 'hard'
@@ -13,6 +14,7 @@ export interface RecipeIngredient {
   quantity: number | null
   unit_en: string | null
   unit_sr: string | null
+  ingredient: IngredientNutritionRef | null
 }
 
 export interface RecipeStep {
@@ -52,7 +54,9 @@ const RECIPE_DETAIL_SELECT = `
   prep_time_minutes, cook_time_minutes, servings, weight_grams, difficulty, rating, is_favorite,
   category:categories(slug, name_en, name_sr),
   images:recipe_images(storage_path, alt_en, alt_sr, is_primary),
-  ingredients:recipe_ingredients(id, order_index, name_en, name_sr, quantity, unit_en, unit_sr),
+  ingredients:recipe_ingredients(id, order_index, name_en, name_sr, quantity, unit_en, unit_sr,
+    ingredient:ingredients(calories_kcal, protein_g, fat_g, carbs_g, fiber_g, micronutrients, unit_conversions)
+  ),
   steps:recipe_steps(id, step_number, text_en, text_sr)
 `
 
