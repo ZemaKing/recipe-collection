@@ -54,52 +54,6 @@ Reordering categories/tags (rely on alphabetical or creation order); bulk catego
 
 ---
 
-## Phase 7 — "From Mom" Quick Filter
-
-### Goal
-
-A special quick-filter tag for recipes passed down from the user's mother ("Mamin recept" / "From Mom"), styled in pink/red instead of the shared green used for the other quick filters (Za početnike, Bez glutena, Brzi recepti, Sezonski recepti, Vegetarijanski) added in the earlier quick-filters redesign.
-
-### Tasks
-
-- [x] Add a `mamin-recept` tag row (name_en "From Mom", name_sr "Mamin recept") to `supabase/seed.sql` (Phase 6 admin tag UI doesn't exist yet)
-- [x] Add an icon for it in `src/lib/tagIcons.ts` — a custom traced multi-color illustration (`src/components/icons/MomIcon.tsx`), not `Heart`, since a heart icon here read as the app's existing favorite-toggle heart rather than a distinct tag
-- [x] New `getTagColors(slug)` helper in `tagIcons.ts` returning `{ text, bgSoft, border }` — `mamin-recept` maps to the existing `--color-favorite` (pink/red) token instead of the shared green `--color-tag` tokens every other tag uses
-- [x] Updated `Sidebar`'s `QuickFilters` and both of `AllRecipesPage`'s tag-chip renders (mobile full-list, desktop active-list) to use `getTagColors(tag.slug)` instead of hardcoded `text-tag`/`bg-tag-soft`/`border-tag` classes
-- [x] New `PINNED_TAG_SLUG` constant in `tagIcons.ts`; `useTags()` now sorts that tag to the front of the list (rest stay alphabetical) instead of relying on alphabetical order
-- [x] Visual divider (border in the sidebar's vertical list, a vertical rule in the mobile chip row) rendered after the pinned tag to separate it from the shared-green tags below/after it
-
-### Database / Supabase
-
-- [x] New `tags` row via seed (no schema change)
-
-### UI / UX
-
-- [x] Icon and label consistently pink/red everywhere this tag appears (sidebar icon-only tablet state, sidebar full label, mobile/desktop filter chips) — all three render sites now derive color from the same `getTagColors` helper
-
-### Internationalization
-
-- [x] name_en/name_sr on the tag row cover both languages; no locale-file changes needed
-
-### Testing & Verification
-
-- [x] `npm run lint && npm run build && npm test` all pass
-- [x] Manual: filtering by "Mamin recept" works identically to other tags functionally, differing only in color — verified in browser
-
-### Definition of Done
-
-- [x] "Mamin recept"/"From Mom" appears as a quick filter everywhere the other tags do, visually distinguished in pink/red
-
-### Out of Scope
-
-A dedicated "family recipes" browsing page beyond the standard tag filter; per-tag custom colors for tags other than this one.
-
-### Phase Status
-
-- [x] Phase Complete
-
----
-
 ## Phase 8 — Category → Subcategory → Tags Restructure (not scheduled)
 
 ### Goal
