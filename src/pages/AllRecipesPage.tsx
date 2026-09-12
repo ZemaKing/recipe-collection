@@ -20,7 +20,7 @@ import {
   parseTagsParam,
   toggleTagInParams,
 } from '@/lib/recipeSearchParams'
-import { getTagIcon } from '@/lib/tagIcons'
+import { getTagColors, getTagIcon } from '@/lib/tagIcons'
 import { cn } from '@/lib/utils'
 
 function AllRecipesPage() {
@@ -115,6 +115,7 @@ function AllRecipesPage() {
         <div className="contents md:hidden">
           {tags.map((tag) => {
             const Icon = getTagIcon(tag.slug)
+            const colors = getTagColors(tag.slug)
             const active = activeTags.includes(tag.slug)
             return (
               <button
@@ -124,11 +125,11 @@ function AllRecipesPage() {
                 className={cn(
                   'flex items-center gap-1.5 rounded-pill border px-3 py-2 text-sm font-medium transition-colors',
                   active
-                    ? 'border-tag bg-tag-soft text-tag'
+                    ? cn(colors.border, colors.bgSoft, colors.text)
                     : 'border-border text-muted-foreground hover:text-foreground',
                 )}
               >
-                <Icon className="size-3.5 text-tag" />
+                <Icon className={cn('size-3.5', colors.text)} />
                 {pickLocalized(tag.name_en, tag.name_sr, lang)}
                 {active && <X className="size-3.5" />}
               </button>
@@ -143,12 +144,18 @@ function AllRecipesPage() {
             const tag = tags.find((item) => item.slug === tagSlug)
             if (!tag) return null
             const Icon = getTagIcon(tag.slug)
+            const colors = getTagColors(tag.slug)
             return (
               <button
                 key={tagSlug}
                 type="button"
                 onClick={() => toggleTag(tagSlug)}
-                className="flex items-center gap-1.5 rounded-pill border border-tag bg-tag-soft px-3 py-2 text-sm font-medium text-tag"
+                className={cn(
+                  'flex items-center gap-1.5 rounded-pill border px-3 py-2 text-sm font-medium',
+                  colors.border,
+                  colors.bgSoft,
+                  colors.text,
+                )}
               >
                 <Icon className="size-3.5" />
                 {pickLocalized(tag.name_en, tag.name_sr, lang)}

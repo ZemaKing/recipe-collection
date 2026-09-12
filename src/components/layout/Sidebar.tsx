@@ -6,7 +6,7 @@ import { useTags } from '@/hooks/useTags'
 import { pickLocalized } from '@/lib/localizedField'
 import { buildLocalizedPath, stripLangPrefix } from '@/lib/localizedPath'
 import { parseTagsParam, toggleTagInParams } from '@/lib/recipeSearchParams'
-import { getTagIcon } from '@/lib/tagIcons'
+import { getTagColors, getTagIcon } from '@/lib/tagIcons'
 import { cn } from '@/lib/utils'
 import NavRow from './NavRow'
 import { categoryNavItems, primaryNavItems } from './nav-items'
@@ -40,6 +40,7 @@ function QuickFilters() {
       <div className="flex flex-col gap-1">
         {tags.map((tag) => {
           const Icon = getTagIcon(tag.slug)
+          const colors = getTagColors(tag.slug)
           const active = activeTags.includes(tag.slug)
           const label = pickLocalized(tag.name_en, tag.name_sr, lang)
           return (
@@ -51,11 +52,11 @@ function QuickFilters() {
               className={cn(
                 'flex items-center gap-3 rounded-control px-3 py-2 text-left text-sm font-medium transition-colors md:justify-center lg:justify-start',
                 active
-                  ? 'bg-tag-soft text-tag'
+                  ? cn(colors.bgSoft, colors.text)
                   : 'text-muted-foreground hover:bg-surface-hover hover:text-foreground',
               )}
             >
-              <Icon className="size-5 shrink-0 text-tag" />
+              <Icon className={cn('size-5 shrink-0', colors.text)} />
               <span className="hidden lg:inline">{label}</span>
             </button>
           )

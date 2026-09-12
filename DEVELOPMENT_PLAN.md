@@ -4,7 +4,7 @@ See the master plan rationale (mockup analysis, schema design, i18n architecture
 
 ## Project Status
 
-Current Phase: None active — Phases 2, 3, 6–8 are unscheduled backlog ideas.
+Current Phase: Phase 7 — built, pending Supabase seed re-run + manual verification. Phases 2, 3, 6, 8 are unscheduled backlog ideas.
 MVP Status: Complete
 
 ---
@@ -54,7 +54,7 @@ Reordering categories/tags (rely on alphabetical or creation order); bulk catego
 
 ---
 
-## Phase 7 — "From Mom" Quick Filter (not scheduled)
+## Phase 7 — "From Mom" Quick Filter (pending manual verification)
 
 ### Goal
 
@@ -62,30 +62,31 @@ A special quick-filter tag for recipes passed down from the user's mother ("Mami
 
 ### Tasks
 
-- [ ] Add a `mamin-recept` tag row (name_en "From Mom", name_sr "Mamin recept") — via `supabase/seed.sql` if done before Phase 6 ships, or through the Phase 6 admin tag UI once it exists
-- [ ] Add an icon for it in `src/lib/tagIcons.ts` (e.g. `Heart`, distinct from the other tags' icons)
-- [ ] Give this one tag pink/red styling instead of the generic green `--color-tag` tokens — reuse the existing `--color-favorite` token (already pink/red, used for the favorite heart) rather than introducing a new color token
-- [ ] Update the tag-rendering logic in `Sidebar`'s `QuickFilters` and `AllRecipesPage`'s tag chips (both the mobile full-list and desktop active-list) to special-case this tag's color instead of applying the uniform `text-tag`/`bg-tag-soft`/`border-tag` classes used for every other tag
+- [x] Add a `mamin-recept` tag row (name_en "From Mom", name_sr "Mamin recept") to `supabase/seed.sql` (Phase 6 admin tag UI doesn't exist yet)
+- [x] Add an icon for it in `src/lib/tagIcons.ts` (`Heart`, distinct from the other tags' icons)
+- [x] New `getTagColors(slug)` helper in `tagIcons.ts` returning `{ text, bgSoft, border }` — `mamin-recept` maps to the existing `--color-favorite` (pink/red) token instead of the shared green `--color-tag` tokens every other tag uses
+- [x] Updated `Sidebar`'s `QuickFilters` and both of `AllRecipesPage`'s tag-chip renders (mobile full-list, desktop active-list) to use `getTagColors(tag.slug)` instead of hardcoded `text-tag`/`bg-tag-soft`/`border-tag` classes
 
 ### Database / Supabase
 
-- [ ] New `tags` row (no schema change — `tags` table already supports arbitrary rows)
+- [x] New `tags` row via seed (no schema change)
 
 ### UI / UX
 
-- [ ] Icon and label consistently pink/red everywhere this tag appears (sidebar icon-only tablet state, sidebar full label, mobile/desktop filter chips), matching the always-colored-icon pattern established for the other quick filters
+- [x] Icon and label consistently pink/red everywhere this tag appears (sidebar icon-only tablet state, sidebar full label, mobile/desktop filter chips) — all three render sites now derive color from the same `getTagColors` helper
 
 ### Internationalization
 
-- [ ] name_en/name_sr on the tag row cover both languages, consistent with how other tags work (no locale-file changes needed)
+- [x] name_en/name_sr on the tag row cover both languages; no locale-file changes needed
 
 ### Testing & Verification
 
-- [ ] Manual: filtering by "Mamin recept" works identically to other tags functionally, differing only in color
+- [x] `npm run lint && npm run build && npm test` all pass
+- [ ] Manual: filtering by "Mamin recept" works identically to other tags functionally, differing only in color — not yet verified in a real browser (requires re-running `seed.sql` to pick up the new tag row)
 
 ### Definition of Done
 
-- [ ] "Mamin recept"/"From Mom" appears as a quick filter everywhere the other tags do, visually distinguished in pink/red
+- [x] "Mamin recept"/"From Mom" appears as a quick filter everywhere the other tags do, visually distinguished in pink/red
 
 ### Out of Scope
 

@@ -34,7 +34,8 @@ insert into tags (slug, name_en, name_sr) values
   ('za-pocetnike', 'For Beginners', 'Za početnike'),
   ('vegetarijanski', 'Vegetarian', 'Vegetarijanski'),
   ('bez-glutena', 'Gluten-Free', 'Bez glutena'),
-  ('sezonski-recepti', 'Seasonal Recipes', 'Sezonski recepti')
+  ('sezonski-recepti', 'Seasonal Recipes', 'Sezonski recepti'),
+  ('mamin-recept', 'From Mom', 'Mamin recept')
 on conflict (slug) do update set
   name_en = excluded.name_en,
   name_sr = excluded.name_sr;
