@@ -177,7 +177,7 @@ function IngredientForm({ mode, initialValues, isSaving, submitError, onSubmit }
             />
           </div>
 
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1 sm:col-span-2">
             <label className={labelClass}>{t('admin.recipeForm.category')}</label>
             <select
               value={form.ingredient_category_id}
