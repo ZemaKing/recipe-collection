@@ -44,8 +44,10 @@ function RecipeDetailHero({ recipe, onToggleFavorite }: RecipeDetailHeroProps) {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <ImageGallery image={recipe.image} alt={imageAlt} />
+    <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:gap-6">
+      <div className="lg:w-[380px] lg:shrink-0">
+        <ImageGallery image={recipe.image} alt={imageAlt} />
+      </div>
 
       <div className="flex flex-col gap-2">
         <div className="flex items-start justify-between gap-3">
