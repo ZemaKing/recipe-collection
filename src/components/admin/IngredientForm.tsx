@@ -55,7 +55,24 @@ function IngredientForm({ mode, initialValues, isSaving, submitError, onSubmit }
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
-    const result = ingredientFormSchema.safeParse(form)
+
+    // Drop rows the admin added but never filled in (e.g. clicked "+" by
+    // mistake) rather than treating them as validation errors. Rebuild the
+    // form state itself (not just a local copy) so the rendered rows and
+    // the validated/error indices stay in sync with each other.
+    const nextForm: IngredientFormState = {
+      ...form,
+      micronutrients: form.micronutrients.filter((row) => row.key || row.amount || row.unit),
+      unitConversions: form.unitConversions.filter((row) => row.unit || row.grams),
+    }
+    if (
+      nextForm.micronutrients.length !== form.micronutrients.length ||
+      nextForm.unitConversions.length !== form.unitConversions.length
+    ) {
+      setForm(nextForm)
+    }
+
+    const result = ingredientFormSchema.safeParse(nextForm)
 
     if (!result.success) {
       const nextErrors: Record<string, string> = {}
@@ -273,27 +290,42 @@ function IngredientForm({ mode, initialValues, isSaving, submitError, onSubmit }
         <div className="flex flex-col gap-2">
           <span className={labelClass}>{t('admin.ingredients.micronutrients')}</span>
           {form.micronutrients.map((row, index) => (
-            <div key={index} className="grid grid-cols-[1fr_auto_auto_auto] gap-2">
-              <input
-                value={row.key}
-                onChange={(e) => updateMicronutrientRow(index, { key: e.target.value })}
-                placeholder={t('admin.ingredients.micronutrientKey')}
-                list="micronutrient-key-options"
-                className={inputClass}
-              />
-              <input
-                value={row.amount}
-                onChange={(e) => updateMicronutrientRow(index, { amount: e.target.value })}
-                placeholder={t('admin.ingredients.amount')}
-                inputMode="decimal"
-                className={`${inputClass} w-24`}
-              />
-              <input
-                value={row.unit}
-                onChange={(e) => updateMicronutrientRow(index, { unit: e.target.value })}
-                placeholder={t('admin.ingredients.unit')}
-                className={`${inputClass} w-20`}
-              />
+            <div key={index} className="grid grid-cols-[1fr_auto_auto_auto] items-start gap-2">
+              <div>
+                <input
+                  value={row.key}
+                  onChange={(e) => updateMicronutrientRow(index, { key: e.target.value })}
+                  placeholder={t('admin.ingredients.micronutrientKey')}
+                  list="micronutrient-key-options"
+                  className={`${inputClass} w-full`}
+                />
+                {errorMessages[`micronutrients.${index}.key`] && (
+                  <p className="mt-1 text-xs text-favorite">{errorMessages[`micronutrients.${index}.key`]}</p>
+                )}
+              </div>
+              <div>
+                <input
+                  value={row.amount}
+                  onChange={(e) => updateMicronutrientRow(index, { amount: e.target.value })}
+                  placeholder={t('admin.ingredients.amount')}
+                  inputMode="decimal"
+                  className={`${inputClass} w-24`}
+                />
+                {errorMessages[`micronutrients.${index}.amount`] && (
+                  <p className="mt-1 text-xs text-favorite">{errorMessages[`micronutrients.${index}.amount`]}</p>
+                )}
+              </div>
+              <div>
+                <input
+                  value={row.unit}
+                  onChange={(e) => updateMicronutrientRow(index, { unit: e.target.value })}
+                  placeholder={t('admin.ingredients.unit')}
+                  className={`${inputClass} w-20`}
+                />
+                {errorMessages[`micronutrients.${index}.unit`] && (
+                  <p className="mt-1 text-xs text-favorite">{errorMessages[`micronutrients.${index}.unit`]}</p>
+                )}
+              </div>
               <button
                 type="button"
                 onClick={() => removeMicronutrientRow(index)}
@@ -323,20 +355,30 @@ function IngredientForm({ mode, initialValues, isSaving, submitError, onSubmit }
           <span className={labelClass}>{t('admin.ingredients.unitConversions')}</span>
           <p className="text-xs text-muted-foreground">{t('admin.ingredients.unitConversionsHelp')}</p>
           {form.unitConversions.map((row, index) => (
-            <div key={index} className="grid grid-cols-[1fr_auto_auto] gap-2">
-              <input
-                value={row.unit}
-                onChange={(e) => updateUnitConversionRow(index, { unit: e.target.value })}
-                placeholder={t('admin.ingredients.unit')}
-                className={inputClass}
-              />
-              <input
-                value={row.grams}
-                onChange={(e) => updateUnitConversionRow(index, { grams: e.target.value })}
-                placeholder={t('admin.ingredients.grams')}
-                inputMode="decimal"
-                className={`${inputClass} w-24`}
-              />
+            <div key={index} className="grid grid-cols-[1fr_auto_auto] items-start gap-2">
+              <div>
+                <input
+                  value={row.unit}
+                  onChange={(e) => updateUnitConversionRow(index, { unit: e.target.value })}
+                  placeholder={t('admin.ingredients.unit')}
+                  className={`${inputClass} w-full`}
+                />
+                {errorMessages[`unitConversions.${index}.unit`] && (
+                  <p className="mt-1 text-xs text-favorite">{errorMessages[`unitConversions.${index}.unit`]}</p>
+                )}
+              </div>
+              <div>
+                <input
+                  value={row.grams}
+                  onChange={(e) => updateUnitConversionRow(index, { grams: e.target.value })}
+                  placeholder={t('admin.ingredients.grams')}
+                  inputMode="decimal"
+                  className={`${inputClass} w-24`}
+                />
+                {errorMessages[`unitConversions.${index}.grams`] && (
+                  <p className="mt-1 text-xs text-favorite">{errorMessages[`unitConversions.${index}.grams`]}</p>
+                )}
+              </div>
               <button
                 type="button"
                 onClick={() => removeUnitConversionRow(index)}
