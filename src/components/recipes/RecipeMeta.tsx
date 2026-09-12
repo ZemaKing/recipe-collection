@@ -10,10 +10,12 @@ interface RecipeMetaProps {
 
 function MetaItem({ icon: Icon, label, value }: { icon: LucideIcon; label: string; value: string }) {
   return (
-    <div className="flex flex-col items-center gap-1 rounded-card border border-border bg-surface px-4 py-3 text-center">
-      <Icon className="size-5 text-accent" />
-      <p className="text-sm font-semibold text-foreground">{value}</p>
-      <p className="text-xs text-muted-foreground">{label}</p>
+    <div className="flex items-center gap-3 rounded-card border border-border bg-surface px-3 py-2.5 text-left sm:flex-col sm:gap-1 sm:px-4 sm:py-3 sm:text-center">
+      <Icon className="size-5 shrink-0 text-accent" />
+      <div className="flex flex-col sm:contents">
+        <p className="text-sm font-semibold text-foreground">{value}</p>
+        <p className="text-xs text-muted-foreground">{label}</p>
+      </div>
     </div>
   )
 }
