@@ -7,6 +7,15 @@ export interface AdminCategory {
   slug: string
   name_en: string
   name_sr: string | null
+  recipeCount: number
+}
+
+interface AdminCategoryRow {
+  id: string
+  slug: string
+  name_en: string
+  name_sr: string | null
+  recipes: { count: number }[]
 }
 
 export function useAdminCategories() {
@@ -22,14 +31,16 @@ export function useAdminCategories() {
       setIsLoading(true)
       const { data, error } = await supabase
         .from('categories')
-        .select('id, slug, name_en, name_sr')
+        .select('id, slug, name_en, name_sr, recipes(count)')
         .order('name_en')
 
       if (cancelled) return
       if (error) {
         setError(error.message)
       } else {
-        setCategories([...(data ?? [])].sort((a, b) => compareCategoryOrder(a.slug, b.slug)))
+        const rows = (data ?? []) as unknown as AdminCategoryRow[]
+        const mapped = rows.map(({ recipes, ...rest }) => ({ ...rest, recipeCount: recipes?.[0]?.count ?? 0 }))
+        setCategories(mapped.sort((a, b) => compareCategoryOrder(a.slug, b.slug)))
         setError(null)
       }
       setIsLoading(false)

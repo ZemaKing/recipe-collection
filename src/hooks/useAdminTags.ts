@@ -6,6 +6,15 @@ export interface AdminTag {
   slug: string
   name_en: string
   name_sr: string | null
+  recipeCount: number
+}
+
+interface AdminTagRow {
+  id: string
+  slug: string
+  name_en: string
+  name_sr: string | null
+  recipe_tags: { count: number }[]
 }
 
 export function useAdminTags() {
@@ -19,13 +28,17 @@ export function useAdminTags() {
 
     async function load() {
       setIsLoading(true)
-      const { data, error } = await supabase.from('tags').select('id, slug, name_en, name_sr').order('name_en')
+      const { data, error } = await supabase
+        .from('tags')
+        .select('id, slug, name_en, name_sr, recipe_tags(count)')
+        .order('name_en')
 
       if (cancelled) return
       if (error) {
         setError(error.message)
       } else {
-        setTags(data ?? [])
+        const rows = (data ?? []) as unknown as AdminTagRow[]
+        setTags(rows.map(({ recipe_tags, ...rest }) => ({ ...rest, recipeCount: recipe_tags?.[0]?.count ?? 0 })))
         setError(null)
       }
       setIsLoading(false)
