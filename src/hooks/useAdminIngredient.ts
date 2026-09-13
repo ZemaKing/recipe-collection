@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
-import type { IngredientFormState, MicronutrientRow, UnitConversionRow } from '@/lib/ingredientFormState'
+import type { IngredientFormState, MineralRow, UnitConversionRow, VitaminRow } from '@/lib/ingredientFormState'
 
 const ADMIN_INGREDIENT_SELECT = `
   id, slug, name_en, name_sr, latin_name, regional_names, fact_en, fact_sr,
   default_unit_en, default_unit_sr, ingredient_category_id,
-  calories_kcal, protein_g, fat_g, carbs_g, fiber_g, micronutrients, unit_conversions
+  calories_kcal, protein_g, fat_g, carbs_g, fiber_g, unit_conversions,
+  vitamins:ingredient_vitamins(vitamin_id, amount_per_100g),
+  minerals:ingredient_minerals(mineral_id, amount_per_100g)
 `
 
 function toStr(value: number | null): string {
@@ -40,8 +42,9 @@ export function useAdminIngredient(slug: string | undefined) {
       } else if (!data) {
         setNotFound(true)
       } else {
-        const micronutrients = data.micronutrients as Record<string, { amount: number; unit: string }>
         const unitConversions = data.unit_conversions as Record<string, number>
+        const vitamins = data.vitamins as { vitamin_id: string; amount_per_100g: number }[]
+        const minerals = data.minerals as { mineral_id: string; amount_per_100g: number }[]
 
         setIngredient({
           id: data.id,
@@ -60,12 +63,11 @@ export function useAdminIngredient(slug: string | undefined) {
           fat_g: toStr(data.fat_g),
           carbs_g: toStr(data.carbs_g),
           fiber_g: toStr(data.fiber_g),
-          micronutrients: Object.entries(micronutrients ?? {}).map(
-            ([key, value]): MicronutrientRow => ({
-              key,
-              amount: toStr(value.amount),
-              unit: value.unit,
-            }),
+          vitamins: (vitamins ?? []).map(
+            (row): VitaminRow => ({ vitamin_id: row.vitamin_id, amount: toStr(row.amount_per_100g) }),
+          ),
+          minerals: (minerals ?? []).map(
+            (row): MineralRow => ({ mineral_id: row.mineral_id, amount: toStr(row.amount_per_100g) }),
           ),
           unitConversions: Object.entries(unitConversions ?? {}).map(
             ([unit, grams]): UnitConversionRow => ({ unit, grams: toStr(grams) }),

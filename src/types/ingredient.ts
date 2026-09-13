@@ -10,6 +10,22 @@ export interface IngredientCategory {
   name_sr: string | null
 }
 
+export interface Vitamin {
+  id: string
+  code: string
+  name_en: string
+  name_sr: string
+  unit: string
+}
+
+export interface Mineral {
+  id: string
+  code: string
+  name_en: string
+  name_sr: string
+  unit: string
+}
+
 export interface Ingredient {
   id: string
   slug: string

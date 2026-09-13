@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react'
 import { Plus, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import MicronutrientPickerSection from '@/components/admin/MicronutrientPickerSection'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
 import { useIngredientCategories } from '@/hooks/useIngredientCategories'
-import { DAILY_VALUES } from '@/lib/nutritionReference'
+import { useMinerals } from '@/hooks/useMinerals'
+import { useVitamins } from '@/hooks/useVitamins'
 import { pickLocalized } from '@/lib/localizedField'
 import { ingredientFormSchema, type IngredientFormValues } from '@/lib/ingredientFormSchema'
 import type { IngredientFormState } from '@/lib/ingredientFormState'
@@ -29,12 +31,23 @@ function IngredientForm({ mode, initialValues, isSaving, submitError, onSubmit }
   const { t } = useTranslation()
   const lang = useCurrentLang()
   const { categories } = useIngredientCategories()
+  const { vitamins: vitaminCatalog } = useVitamins()
+  const { minerals: mineralCatalog } = useMinerals()
 
   const [form, setForm] = useState<IngredientFormState>(initialValues)
   const [slugTouched, setSlugTouched] = useState(mode === 'edit')
   const [errors, setErrors] = useState<Record<string, string>>({})
 
-  const micronutrientKeyOptions = useMemo(() => Object.keys(DAILY_VALUES), [])
+  const vitaminsById = useMemo(() => new Map(vitaminCatalog.map((v) => [v.id, v])), [vitaminCatalog])
+  const mineralsById = useMemo(() => new Map(mineralCatalog.map((m) => [m.id, m])), [mineralCatalog])
+  const availableVitamins = useMemo(
+    () => vitaminCatalog.filter((v) => !form.vitamins.some((r) => r.vitamin_id === v.id)),
+    [vitaminCatalog, form.vitamins],
+  )
+  const availableMinerals = useMemo(
+    () => mineralCatalog.filter((m) => !form.minerals.some((r) => r.mineral_id === m.id)),
+    [mineralCatalog, form.minerals],
+  )
 
   function update<K extends keyof IngredientFormState>(key: K, value: IngredientFormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }))
@@ -62,13 +75,9 @@ function IngredientForm({ mode, initialValues, isSaving, submitError, onSubmit }
     // the validated/error indices stay in sync with each other.
     const nextForm: IngredientFormState = {
       ...form,
-      micronutrients: form.micronutrients.filter((row) => row.key || row.amount || row.unit),
       unitConversions: form.unitConversions.filter((row) => row.unit || row.grams),
     }
-    if (
-      nextForm.micronutrients.length !== form.micronutrients.length ||
-      nextForm.unitConversions.length !== form.unitConversions.length
-    ) {
+    if (nextForm.unitConversions.length !== form.unitConversions.length) {
       setForm(nextForm)
     }
 
@@ -87,21 +96,39 @@ function IngredientForm({ mode, initialValues, isSaving, submitError, onSubmit }
     onSubmit(result.data)
   }
 
-  function addMicronutrientRow() {
-    update('micronutrients', [...form.micronutrients, { key: '', amount: '', unit: '' }])
+  function addVitaminRow(vitaminId: string) {
+    update('vitamins', [...form.vitamins, { vitamin_id: vitaminId, amount: '' }])
   }
 
-  function updateMicronutrientRow(index: number, patch: Partial<IngredientFormState['micronutrients'][number]>) {
+  function updateVitaminRow(index: number, amount: string) {
     update(
-      'micronutrients',
-      form.micronutrients.map((row, i) => (i === index ? { ...row, ...patch } : row)),
+      'vitamins',
+      form.vitamins.map((row, i) => (i === index ? { ...row, amount } : row)),
     )
   }
 
-  function removeMicronutrientRow(index: number) {
+  function removeVitaminRow(index: number) {
     update(
-      'micronutrients',
-      form.micronutrients.filter((_, i) => i !== index),
+      'vitamins',
+      form.vitamins.filter((_, i) => i !== index),
+    )
+  }
+
+  function addMineralRow(mineralId: string) {
+    update('minerals', [...form.minerals, { mineral_id: mineralId, amount: '' }])
+  }
+
+  function updateMineralRow(index: number, amount: string) {
+    update(
+      'minerals',
+      form.minerals.map((row, i) => (i === index ? { ...row, amount } : row)),
+    )
+  }
+
+  function removeMineralRow(index: number) {
+    update(
+      'minerals',
+      form.minerals.filter((_, i) => i !== index),
     )
   }
 
@@ -287,69 +314,31 @@ function IngredientForm({ mode, initialValues, isSaving, submitError, onSubmit }
           </div>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <span className={labelClass}>{t('admin.ingredients.micronutrients')}</span>
-          {form.micronutrients.map((row, index) => (
-            <div key={index} className="grid grid-cols-[1fr_auto_auto_auto] items-start gap-2">
-              <div>
-                <input
-                  value={row.key}
-                  onChange={(e) => updateMicronutrientRow(index, { key: e.target.value })}
-                  placeholder={t('admin.ingredients.micronutrientKey')}
-                  list="micronutrient-key-options"
-                  className={`${inputClass} w-full`}
-                />
-                {errorMessages[`micronutrients.${index}.key`] && (
-                  <p className="mt-1 text-xs text-favorite">{errorMessages[`micronutrients.${index}.key`]}</p>
-                )}
-              </div>
-              <div>
-                <input
-                  value={row.amount}
-                  onChange={(e) => updateMicronutrientRow(index, { amount: e.target.value })}
-                  placeholder={t('admin.ingredients.amount')}
-                  inputMode="decimal"
-                  className={`${inputClass} w-24`}
-                />
-                {errorMessages[`micronutrients.${index}.amount`] && (
-                  <p className="mt-1 text-xs text-favorite">{errorMessages[`micronutrients.${index}.amount`]}</p>
-                )}
-              </div>
-              <div>
-                <input
-                  value={row.unit}
-                  onChange={(e) => updateMicronutrientRow(index, { unit: e.target.value })}
-                  placeholder={t('admin.ingredients.unit')}
-                  className={`${inputClass} w-20`}
-                />
-                {errorMessages[`micronutrients.${index}.unit`] && (
-                  <p className="mt-1 text-xs text-favorite">{errorMessages[`micronutrients.${index}.unit`]}</p>
-                )}
-              </div>
-              <button
-                type="button"
-                onClick={() => removeMicronutrientRow(index)}
-                aria-label={t('admin.recipeForm.remove')}
-                className="flex size-9 items-center justify-center rounded-control border border-border text-favorite hover:bg-favorite/10"
-              >
-                <Trash2 className="size-3.5" />
-              </button>
-            </div>
-          ))}
-          <datalist id="micronutrient-key-options">
-            {micronutrientKeyOptions.map((key) => (
-              <option key={key} value={key} />
-            ))}
-          </datalist>
-          <button
-            type="button"
-            onClick={addMicronutrientRow}
-            className="flex items-center justify-center gap-1.5 rounded-control border border-dashed border-border px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
-          >
-            <Plus className="size-4" />
-            {t('admin.ingredients.addMicronutrient')}
-          </button>
-        </div>
+        <MicronutrientPickerSection
+          label={t('admin.ingredients.vitaminsSection')}
+          addPlaceholder={t('admin.ingredients.addVitaminPlaceholder')}
+          catalog={availableVitamins}
+          entriesById={vitaminsById}
+          rows={form.vitamins.map((r) => ({ id: r.vitamin_id, amount: r.amount }))}
+          lang={lang}
+          errorFor={(i) => errorMessages[`vitamins.${i}.amount`] ?? errorMessages[`vitamins.${i}.vitamin_id`]}
+          onAdd={addVitaminRow}
+          onChangeAmount={updateVitaminRow}
+          onRemove={removeVitaminRow}
+        />
+
+        <MicronutrientPickerSection
+          label={t('admin.ingredients.mineralsSection')}
+          addPlaceholder={t('admin.ingredients.addMineralPlaceholder')}
+          catalog={availableMinerals}
+          entriesById={mineralsById}
+          rows={form.minerals.map((r) => ({ id: r.mineral_id, amount: r.amount }))}
+          lang={lang}
+          errorFor={(i) => errorMessages[`minerals.${i}.amount`] ?? errorMessages[`minerals.${i}.mineral_id`]}
+          onAdd={addMineralRow}
+          onChangeAmount={updateMineralRow}
+          onRemove={removeMineralRow}
+        />
 
         <div className="flex flex-col gap-2">
           <span className={labelClass}>{t('admin.ingredients.unitConversions')}</span>

@@ -145,7 +145,11 @@
       "carbs": "Ugljeni hidrati",
       "fiber": "Vlakna",
       "vitaminsMinerals": "Ključni vitamini i minerali",
-      "vitaminsMineralsCount": "Vitamini i minerali ({{count}})",
+      "vitaminsMineralsSubtitle": "Glavni mikronutrijenti u ovom receptu (po porciji)",
+      "seeAllNutrients": "Prikaži sve nutrijente",
+      "showFewerNutrients": "Prikaži manje",
+      "macroDailyValue": "od {{target}} {{unit}} DV",
+      "dailyValueAmount": "Dnevna vrednost: {{amount}} {{unit}}",
       "dailyValue": "{{percent}}% DV"
     }
   },
@@ -353,11 +357,12 @@
       "factPlaceholder": "Kratka rečenica ili dve, edukativnog karaktera",
       "nutritionSection": "Nutritivne vrednosti",
       "nutritionPer100g": "Sve vrednosti su na 100g.",
-      "micronutrients": "Vitamini i minerali",
-      "micronutrientKey": "Ključ (npr. vitamin_c)",
+      "vitaminsSection": "Vitamini",
+      "mineralsSection": "Minerali",
+      "addVitaminPlaceholder": "Pretraži vitamine…",
+      "addMineralPlaceholder": "Pretraži minerale…",
       "amount": "Količina",
       "unit": "Jedinica",
-      "addMicronutrient": "Dodaj vitamin/mineral",
       "unitConversions": "Konverzije jedinica",
       "unitConversionsHelp": "Grama po jedinici, za jedinice koje nisu g/kg (npr. \"kašika\" → 15).",
       "grams": "Grama",
@@ -378,8 +383,8 @@
     "mustBeNonNegative": "Mora biti nula ili više.",
     "mustBePositive": "Mora biti veće od nule.",
     "ratingRange": "Ocena mora biti između 0 i 5.",
-    "micronutrientKeyRequired": "Ključ je obavezan.",
-    "micronutrientUnitRequired": "Jedinica je obavezna.",
+    "duplicateVitamin": "Ovaj vitamin je već dodat.",
+    "duplicateMineral": "Ovaj mineral je već dodat.",
     "unitConversionUnitRequired": "Jedinica je obavezna."
   }
 }

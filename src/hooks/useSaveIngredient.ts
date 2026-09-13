@@ -11,9 +11,6 @@ export function useSaveIngredient() {
     setError(null)
 
     try {
-      const micronutrients = Object.fromEntries(
-        values.micronutrients.map((row) => [row.key, { amount: row.amount, unit: row.unit }]),
-      )
       const unitConversions = Object.fromEntries(values.unitConversions.map((row) => [row.unit, row.grams]))
 
       const payload = {
@@ -32,19 +29,56 @@ export function useSaveIngredient() {
         fat_g: values.fat_g ?? null,
         carbs_g: values.carbs_g ?? null,
         fiber_g: values.fiber_g ?? null,
-        micronutrients,
         unit_conversions: unitConversions,
       }
+
+      let resolvedId: string
 
       if (ingredientId) {
         const { error } = await supabase.from('ingredients').update(payload).eq('id', ingredientId)
         if (error) throw error
-        return ingredientId
+        resolvedId = ingredientId
+      } else {
+        const { data, error } = await supabase.from('ingredients').insert(payload).select('id').single()
+        if (error) throw error
+        resolvedId = data.id as string
       }
 
-      const { data, error } = await supabase.from('ingredients').insert(payload).select('id').single()
-      if (error) throw error
-      return data.id as string
+      const { error: vitaminDeleteError } = await supabase
+        .from('ingredient_vitamins')
+        .delete()
+        .eq('ingredient_id', resolvedId)
+      if (vitaminDeleteError) throw vitaminDeleteError
+
+      if (values.vitamins.length > 0) {
+        const { error } = await supabase.from('ingredient_vitamins').insert(
+          values.vitamins.map((row) => ({
+            ingredient_id: resolvedId,
+            vitamin_id: row.vitamin_id,
+            amount_per_100g: row.amount,
+          })),
+        )
+        if (error) throw error
+      }
+
+      const { error: mineralDeleteError } = await supabase
+        .from('ingredient_minerals')
+        .delete()
+        .eq('ingredient_id', resolvedId)
+      if (mineralDeleteError) throw mineralDeleteError
+
+      if (values.minerals.length > 0) {
+        const { error } = await supabase.from('ingredient_minerals').insert(
+          values.minerals.map((row) => ({
+            ingredient_id: resolvedId,
+            mineral_id: row.mineral_id,
+            amount_per_100g: row.amount,
+          })),
+        )
+        if (error) throw error
+      }
+
+      return resolvedId
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unknown error'
       setError(message)

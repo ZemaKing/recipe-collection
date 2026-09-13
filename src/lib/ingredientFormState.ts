@@ -1,7 +1,11 @@
-export interface MicronutrientRow {
-  key: string
+export interface VitaminRow {
+  vitamin_id: string
   amount: string
-  unit: string
+}
+
+export interface MineralRow {
+  mineral_id: string
+  amount: string
 }
 
 export interface UnitConversionRow {
@@ -25,7 +29,8 @@ export interface IngredientFormState {
   fat_g: string
   carbs_g: string
   fiber_g: string
-  micronutrients: MicronutrientRow[]
+  vitamins: VitaminRow[]
+  minerals: MineralRow[]
   unitConversions: UnitConversionRow[]
 }
 
@@ -45,6 +50,7 @@ export const EMPTY_INGREDIENT_FORM_STATE: IngredientFormState = {
   fat_g: '',
   carbs_g: '',
   fiber_g: '',
-  micronutrients: [],
+  vitamins: [],
+  minerals: [],
   unitConversions: [],
 }

@@ -142,7 +142,11 @@
       "carbs": "Carbs",
       "fiber": "Fiber",
       "vitaminsMinerals": "Key Vitamins & Minerals",
-      "vitaminsMineralsCount": "Vitamins & Minerals ({{count}})",
+      "vitaminsMineralsSubtitle": "Main micronutrients in this recipe (per serving)",
+      "seeAllNutrients": "See all nutrients",
+      "showFewerNutrients": "Show fewer",
+      "macroDailyValue": "of {{target}} {{unit}} DV",
+      "dailyValueAmount": "Daily value: {{amount}} {{unit}}",
       "dailyValue": "{{percent}}% DV"
     }
   },
@@ -350,11 +354,12 @@
       "factPlaceholder": "A short 1-2 sentence educational note",
       "nutritionSection": "Nutrition",
       "nutritionPer100g": "All values are per 100g.",
-      "micronutrients": "Vitamins & minerals",
-      "micronutrientKey": "Key (e.g. vitamin_c)",
+      "vitaminsSection": "Vitamins",
+      "mineralsSection": "Minerals",
+      "addVitaminPlaceholder": "Search vitamins…",
+      "addMineralPlaceholder": "Search minerals…",
       "amount": "Amount",
       "unit": "Unit",
-      "addMicronutrient": "Add vitamin/mineral",
       "unitConversions": "Unit conversions",
       "unitConversionsHelp": "Grams per unit, for units other than g/kg (e.g. \"kašika\" → 15).",
       "grams": "Grams",
@@ -375,8 +380,8 @@
     "mustBeNonNegative": "Must be zero or more.",
     "mustBePositive": "Must be greater than zero.",
     "ratingRange": "Rating must be between 0 and 5.",
-    "micronutrientKeyRequired": "Key is required.",
-    "micronutrientUnitRequired": "Unit is required.",
+    "duplicateVitamin": "This vitamin is already added.",
+    "duplicateMineral": "This mineral is already added.",
     "unitConversionUnitRequired": "Unit is required."
   }
 }
