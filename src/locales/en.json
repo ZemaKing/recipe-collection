@@ -259,6 +259,7 @@
       "unitSr": "Jedinica",
       "noCatalogMatch": "No catalog match found.",
       "addToCatalog": "Add to catalog",
+      "linkedToCatalog": "Linked to the ingredient catalog",
       "defaultUnit": "Default unit: {{unit}}",
       "moveUp": "Move up",
       "moveDown": "Move down",

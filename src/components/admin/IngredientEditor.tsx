@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowDown, ArrowUp, Pencil, Plus, Search, Trash2, X } from 'lucide-react'
+import { ArrowDown, ArrowUp, CheckCircle2, Pencil, Plus, Search, Trash2, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import type { AdminRecipeIngredient } from '@/hooks/useAdminRecipe'
@@ -214,7 +214,16 @@ function IngredientEditor({ value, onChange, errors }: IngredientEditorProps) {
                 <tr key={index} className={cn(editingIndex === index && 'bg-accent-soft/40')}>
                   <td className="px-2 py-2 text-muted-foreground">{index + 1}</td>
                   <td className="px-2 py-2 text-foreground">{row.name_sr || '—'}</td>
-                  <td className="px-2 py-2 text-foreground">{row.name_en}</td>
+                  <td className="px-2 py-2 text-foreground">
+                    <div className="flex items-center justify-between gap-2">
+                      <span>{row.name_en}</span>
+                      {row.ingredient_id && (
+                        <span title={t('admin.recipeForm.linkedToCatalog')}>
+                          <CheckCircle2 className="size-3.5 shrink-0 text-emerald-400" />
+                        </span>
+                      )}
+                    </div>
+                  </td>
                   <td className="px-2 py-2 text-foreground">{row.quantity || '—'}</td>
                   <td className="px-2 py-2 text-foreground">{row.unit_en || '—'}</td>
                   <td className="px-2 py-2">

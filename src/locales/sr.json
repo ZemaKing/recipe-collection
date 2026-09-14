@@ -263,6 +263,7 @@
       "unitSr": "Jedinica",
       "noCatalogMatch": "Sastojak nije pronađen u katalogu.",
       "addToCatalog": "Dodaj u katalog",
+      "linkedToCatalog": "Povezano sa katalogom sastojaka",
       "defaultUnit": "Podrazumevana jedinica: {{unit}}",
       "moveUp": "Pomeri gore",
       "moveDown": "Pomeri dole",
