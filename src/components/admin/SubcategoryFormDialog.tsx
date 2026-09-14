@@ -1,10 +1,9 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import CategorySelect from '@/components/admin/CategorySelect'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { useCategories } from '@/hooks/useCategories'
-import { useCurrentLang } from '@/hooks/useCurrentLang'
 import type { AdminSubcategory } from '@/hooks/useAdminSubcategories'
-import { pickLocalized } from '@/lib/localizedField'
 import { slugify } from '@/lib/slugify'
 
 export type SubcategoryFormValues = {
@@ -53,7 +52,6 @@ interface SubcategoryFormProps {
 
 function SubcategoryForm({ subcategory, isSaving, error, onSave, onCancel }: SubcategoryFormProps) {
   const { t } = useTranslation()
-  const lang = useCurrentLang()
   const { categories } = useCategories()
 
   const [categoryId, setCategoryId] = useState(subcategory?.category_id ?? '')
@@ -107,23 +105,17 @@ function SubcategoryForm({ subcategory, isSaving, error, onSave, onCancel }: Sub
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <label className="flex flex-col gap-1 text-sm">
           <span className="font-medium text-foreground">{t('admin.subcategories.category')}</span>
-          <select
+          <CategorySelect
+            categories={categories}
             value={categoryId}
-            onChange={(e) => {
-              setCategoryId(e.target.value)
+            onChange={(nextCategoryId) => {
+              setCategoryId(nextCategoryId)
               setCategoryError(false)
             }}
-            className={`rounded-control border bg-surface-elevated px-2.5 py-2 text-sm text-foreground ${
-              categoryError ? 'border-favorite' : 'border-border'
-            }`}
-          >
-            <option value="">{t('admin.subcategories.selectCategory')}</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {pickLocalized(category.name_en, category.name_sr, lang)}
-              </option>
-            ))}
-          </select>
+            hasError={categoryError}
+            placeholder={t('admin.subcategories.selectCategory')}
+            compact
+          />
           {categoryError && <span className="text-xs text-favorite">{t('admin.subcategories.categoryRequired')}</span>}
         </label>
 

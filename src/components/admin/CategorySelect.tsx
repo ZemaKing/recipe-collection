@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import Select, { components, type OptionProps, type SingleValueProps } from 'react-select'
 import type { CategoryWithCount } from '@/hooks/useCategories'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
+import { getCategoryBadgeColor } from '@/lib/categoryColor'
 import { getCategoryDescription } from '@/lib/categoryDescriptions'
 import { getCategoryIcon } from '@/lib/categoryIcons'
 import { pickLocalized } from '@/lib/localizedField'
@@ -30,19 +31,38 @@ interface CategorySelectProps {
   hasError?: boolean
   inputId?: string
   placeholder: string
+  // Compact mode drops the recipe-count pill and description line (used in
+  // small contexts like the subcategory dialog) so options are short enough
+  // that the menu doesn't need its own scrollbar inside an already-scrolling
+  // dialog.
+  compact?: boolean
 }
 
 function CategoryBadge({ slug, className }: { slug: string; className: string }) {
+  const colors = getCategoryBadgeColor(slug)
   return (
-    <span className={`flex shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent ${className}`}>
+    <span className={`flex shrink-0 items-center justify-center rounded-full ${colors.bg} ${colors.text} ${className}`}>
       {renderCategoryIcon(slug, 'size-5')}
     </span>
   )
 }
 
-function CategoryOption(props: OptionProps<CategoryOptionData, false>) {
+function CategoryOption(props: OptionProps<CategoryOptionData, false> & { selectProps: { compact?: boolean } }) {
   const { t } = useTranslation()
-  const { data } = props
+  const { data, selectProps } = props
+  const compact = selectProps.compact
+
+  if (compact) {
+    return (
+      <components.Option {...props}>
+        <div className="flex items-center gap-2.5">
+          <CategoryBadge slug={data.slug} className="size-8" />
+          <p className="truncate text-sm font-medium text-foreground">{data.name}</p>
+        </div>
+      </components.Option>
+    )
+  }
+
   return (
     <components.Option {...props}>
       <div className="flex items-center gap-3">
@@ -73,7 +93,7 @@ function CategorySingleValue(props: SingleValueProps<CategoryOptionData, false>)
   )
 }
 
-function CategorySelect({ categories, value, onChange, hasError, inputId, placeholder }: CategorySelectProps) {
+function CategorySelect({ categories, value, onChange, hasError, inputId, placeholder, compact }: CategorySelectProps) {
   const { t } = useTranslation()
   const lang = useCurrentLang()
 
@@ -90,7 +110,12 @@ function CategorySelect({ categories, value, onChange, hasError, inputId, placeh
   )
 
   const selected = options.find((option) => option.value === value) ?? null
-  const styles = useMemo(() => createSelectStyles<CategoryOptionData>(hasError), [hasError])
+  // Compact rows are ~48px tall — cap the menu at 5 visible rows so longer
+  // category lists scroll instead of growing the dialog taller.
+  const styles = useMemo(
+    () => createSelectStyles<CategoryOptionData>(hasError, compact ? 256 : undefined),
+    [hasError, compact],
+  )
 
   return (
     <Select<CategoryOptionData>
@@ -106,6 +131,8 @@ function CategorySelect({ categories, value, onChange, hasError, inputId, placeh
       filterOption={(option, rawInput) => option.data.name.toLowerCase().includes(rawInput.toLowerCase())}
       components={{ Option: CategoryOption, SingleValue: CategorySingleValue }}
       styles={styles}
+      // @ts-expect-error -- custom prop forwarded to Option via selectProps
+      compact={compact}
     />
   )
 }

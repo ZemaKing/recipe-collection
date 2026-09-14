@@ -3,7 +3,7 @@ import type { StylesConfig } from 'react-select'
 // Shared react-select styling so every custom select in the admin matches
 // the app's CSS-variable-driven theme (dark by default, redefined for light
 // mode/forced-colors in index.css) instead of react-select's own defaults.
-export function createSelectStyles<Option>(hasError?: boolean): StylesConfig<Option, false> {
+export function createSelectStyles<Option>(hasError?: boolean, menuMaxHeight = 380): StylesConfig<Option, false> {
   return {
     control: (base, state) => ({
       ...base,
@@ -47,7 +47,7 @@ export function createSelectStyles<Option>(hasError?: boolean): StylesConfig<Opt
       overflow: 'hidden',
       zIndex: 30,
     }),
-    menuList: (base) => ({ ...base, maxHeight: 380, padding: 4 }),
+    menuList: (base) => ({ ...base, maxHeight: menuMaxHeight, padding: 4 }),
     option: (base, state) => ({
       ...base,
       backgroundColor: state.isSelected
