@@ -651,7 +651,6 @@ function AdminCategoriesPage() {
                         <p className="line-clamp-2 text-sm font-semibold text-foreground">
                           {pickLocalized(tag.name_en, tag.name_sr, lang)}
                         </p>
-                        <span className="rounded-pill bg-surface px-2.5 py-1 text-xs text-muted-foreground">{tag.slug}</span>
                         <span className="rounded-pill bg-surface px-2.5 py-1 text-xs font-medium text-foreground">
                           {t('common.recipeCount', { count: tag.recipeCount })}
                         </span>
