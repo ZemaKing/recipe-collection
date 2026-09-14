@@ -5,6 +5,7 @@ export type SortOption = 'rating' | 'time' | 'recent'
 export interface RecipeFilterOptions {
   query?: string
   categorySlug?: string | null
+  subcategorySlug?: string | null
   favoritesOnly?: boolean
   // A recipe must carry every selected tag (AND), not just one of them.
   tagSlugs?: string[]
@@ -33,6 +34,7 @@ export function filterAndSortRecipes<T extends SearchableRecipe>(
 
   const filtered = recipes.filter((recipe) => {
     if (options.categorySlug && recipe.category?.slug !== options.categorySlug) return false
+    if (options.subcategorySlug && recipe.subcategory?.slug !== options.subcategorySlug) return false
     if (options.favoritesOnly && !recipe.is_favorite) return false
     if (tagSlugs.length > 0 && !tagSlugs.every((tag) => recipe.tagSlugs.includes(tag))) return false
     if (query && !matchesQuery(recipe, query)) return false

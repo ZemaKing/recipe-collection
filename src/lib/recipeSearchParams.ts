@@ -3,6 +3,7 @@ import type { SortOption } from '@/lib/recipeFilter'
 export const QUERY_PARAM = 'q'
 export const TAGS_PARAM = 'tags'
 export const CATEGORY_PARAM = 'category'
+export const SUBCATEGORY_PARAM = 'subcategory'
 export const FAVORITE_PARAM = 'favorite'
 export const SORT_PARAM = 'sort'
 

@@ -76,6 +76,7 @@ function App() {
               <Route path="recepti/:slug" element={<RecipeDetailPage />} />
               <Route path="kategorije" element={<CategoriesPage />} />
               <Route path="kategorije/:slug" element={<CategoryRecipesPage />} />
+              <Route path="kategorije/:slug/:subcategorySlug" element={<CategoryRecipesPage />} />
               <Route path="omiljeni" element={<FavoritesPage />} />
               <Route path="nedavno-dodati" element={<RecentlyAddedPage />} />
               <Route path="profil" element={<PlaceholderPage title={t('pages.profile')} />} />

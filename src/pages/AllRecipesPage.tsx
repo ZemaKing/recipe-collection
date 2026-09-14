@@ -8,6 +8,7 @@ import { useAllRecipes } from '@/hooks/useAllRecipes'
 import { useAuth } from '@/hooks/useAuth'
 import { useCategories } from '@/hooks/useCategories'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
+import { useSubcategories } from '@/hooks/useSubcategories'
 import { useTags } from '@/hooks/useTags'
 import { pickLocalized } from '@/lib/localizedField'
 import { filterAndSortRecipes, type SortOption } from '@/lib/recipeFilter'
@@ -16,6 +17,7 @@ import {
   FAVORITE_PARAM,
   QUERY_PARAM,
   SORT_PARAM,
+  SUBCATEGORY_PARAM,
   parseSortParam,
   parseTagsParam,
   toggleTagInParams,
@@ -29,34 +31,50 @@ function AllRecipesPage() {
   const { session } = useAuth()
   const { recipes, isLoading, toggleFavorite } = useAllRecipes()
   const { categories } = useCategories()
+  const { subcategories } = useSubcategories()
   const { tags } = useTags()
   const [searchParams, setSearchParams] = useSearchParams()
 
   const query = searchParams.get(QUERY_PARAM) ?? ''
   const categorySlug = searchParams.get(CATEGORY_PARAM)
+  const subcategorySlug = searchParams.get(SUBCATEGORY_PARAM)
   const favoritesOnly = searchParams.get(FAVORITE_PARAM) === '1'
   const sort = parseSortParam(searchParams)
   const activeTags = parseTagsParam(searchParams)
 
   const hasActiveFilters =
-    !!query || !!categorySlug || favoritesOnly || activeTags.length > 0 || sort !== 'recent'
+    !!query || !!categorySlug || !!subcategorySlug || favoritesOnly || activeTags.length > 0 || sort !== 'recent'
+
+  const selectedCategory = categories.find((category) => category.slug === categorySlug)
+  const availableSubcategories = selectedCategory
+    ? subcategories.filter((subcategory) => subcategory.category_id === selectedCategory.id)
+    : []
 
   const visibleRecipes = useMemo(
     () =>
       filterAndSortRecipes(recipes, {
         query,
         categorySlug,
+        subcategorySlug,
         favoritesOnly,
         tagSlugs: activeTags,
         sort,
       }),
-    [recipes, query, categorySlug, favoritesOnly, activeTags, sort],
+    [recipes, query, categorySlug, subcategorySlug, favoritesOnly, activeTags, sort],
   )
 
   function updateParam(key: string, value: string | null) {
     const next = new URLSearchParams(searchParams)
     if (value) next.set(key, value)
     else next.delete(key)
+    setSearchParams(next)
+  }
+
+  function handleCategoryChange(slug: string | null) {
+    const next = new URLSearchParams(searchParams)
+    if (slug) next.set(CATEGORY_PARAM, slug)
+    else next.delete(CATEGORY_PARAM)
+    next.delete(SUBCATEGORY_PARAM)
     setSearchParams(next)
   }
 
@@ -78,7 +96,7 @@ function AllRecipesPage() {
       <div className="flex flex-wrap items-center gap-2">
         <select
           value={categorySlug ?? ''}
-          onChange={(event) => updateParam(CATEGORY_PARAM, event.target.value || null)}
+          onChange={(event) => handleCategoryChange(event.target.value || null)}
           className="rounded-control border border-border bg-surface-elevated px-3 py-2 text-sm text-foreground"
         >
           <option value="">{t('browse.categoryAll')}</option>
@@ -88,6 +106,21 @@ function AllRecipesPage() {
             </option>
           ))}
         </select>
+
+        {selectedCategory && availableSubcategories.length > 0 && (
+          <select
+            value={subcategorySlug ?? ''}
+            onChange={(event) => updateParam(SUBCATEGORY_PARAM, event.target.value || null)}
+            className="rounded-control border border-border bg-surface-elevated px-3 py-2 text-sm text-foreground"
+          >
+            <option value="">{t('browse.subcategoryAll')}</option>
+            {availableSubcategories.map((subcategory) => (
+              <option key={subcategory.id} value={subcategory.slug}>
+                {pickLocalized(subcategory.name_en, subcategory.name_sr, lang)}
+              </option>
+            ))}
+          </select>
+        )}
 
         <select
           value={sort}
