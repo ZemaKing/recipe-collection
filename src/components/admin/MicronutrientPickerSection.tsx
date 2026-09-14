@@ -62,7 +62,7 @@ function MicronutrientPickerSection({
 
   return (
     <div className="flex flex-col gap-2">
-      <span className={labelClass}>{label}</span>
+      {label && <span className={labelClass}>{label}</span>}
 
       {rows.map((row, index) => {
         const entry = entriesById.get(row.id)

@@ -8,8 +8,6 @@ export function useRecipeNotes(recipeId: string | null) {
 
   useEffect(() => {
     if (!recipeId) {
-      setNotes([])
-      setIsLoading(false)
       return
     }
 

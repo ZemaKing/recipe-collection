@@ -1,5 +1,18 @@
 import { forwardRef, useImperativeHandle, useMemo, useState } from 'react'
-import { BarChart3, FileText, Image as ImageIcon, ImageOff, LayoutGrid, Lightbulb, Plus, Scale, Trash2 } from 'lucide-react'
+import {
+  ArrowLeftRight,
+  BarChart3,
+  FileText,
+  Image as ImageIcon,
+  ImageOff,
+  LayoutGrid,
+  Lightbulb,
+  Pill,
+  Plus,
+  Ruler,
+  Sparkles,
+  Trash2,
+} from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import FormCard, { RequiredMark } from '@/components/admin/FormCard'
 import ImportIngredientJsonDialog from '@/components/admin/ImportIngredientJsonDialog'
@@ -228,79 +241,81 @@ const IngredientForm = forwardRef<IngredientFormHandle, IngredientFormProps>(fun
           </p>
         )}
 
-        <FormCard icon={FileText} title={t('admin.ingredients.namesSection')} description={t('admin.ingredients.namesSectionSubtitle')}>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <div className="flex flex-col gap-1">
-              <label className={labelClass}>{t('admin.recipeForm.nameSr')}</label>
-              <input
-                value={form.name_sr}
-                onChange={(e) => update('name_sr', e.target.value)}
-                placeholder={t('admin.ingredients.nameSrPlaceholder')}
-                className={inputClass}
-              />
-            </div>
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:items-start">
+          <FormCard icon={FileText} title={t('admin.ingredients.namesSection')} description={t('admin.ingredients.namesSectionSubtitle')}>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div className="flex flex-col gap-1">
+                <label className={labelClass}>{t('admin.recipeForm.nameSr')}</label>
+                <input
+                  value={form.name_sr}
+                  onChange={(e) => update('name_sr', e.target.value)}
+                  placeholder={t('admin.ingredients.nameSrPlaceholder')}
+                  className={inputClass}
+                />
+              </div>
 
-            <div className="flex flex-col gap-1">
-              <label className={labelClass}>
-                {t('admin.recipeForm.nameEn')}
-                <RequiredMark />
-              </label>
-              <input
-                value={form.name_en}
-                onChange={(e) => handleNameEnChange(e.target.value)}
-                placeholder={t('admin.ingredients.nameEnPlaceholder')}
-                className={inputClass}
-              />
-              {errorMessages.name_en && <p className="text-xs text-favorite">{errorMessages.name_en}</p>}
-            </div>
+              <div className="flex flex-col gap-1">
+                <label className={labelClass}>
+                  {t('admin.recipeForm.nameEn')}
+                  <RequiredMark />
+                </label>
+                <input
+                  value={form.name_en}
+                  onChange={(e) => handleNameEnChange(e.target.value)}
+                  placeholder={t('admin.ingredients.nameEnPlaceholder')}
+                  className={inputClass}
+                />
+                {errorMessages.name_en && <p className="text-xs text-favorite">{errorMessages.name_en}</p>}
+              </div>
 
-            <div className="flex flex-col gap-1 sm:col-span-2">
-              <label className={labelClass}>{t('admin.recipeForm.slug')}</label>
-              <input
-                value={form.slug}
-                onChange={(e) => {
-                  setSlugTouched(true)
-                  update('slug', e.target.value)
-                }}
-                placeholder={t('admin.ingredients.slugPlaceholder')}
-                className={inputClass}
-              />
-              <p className="text-xs text-muted-foreground">{t('admin.ingredients.slugHint')}</p>
-              {errorMessages.slug && <p className="text-xs text-favorite">{errorMessages.slug}</p>}
-            </div>
+              <div className="flex flex-col gap-1 sm:col-span-2">
+                <label className={labelClass}>{t('admin.recipeForm.slug')}</label>
+                <input
+                  value={form.slug}
+                  onChange={(e) => {
+                    setSlugTouched(true)
+                    update('slug', e.target.value)
+                  }}
+                  placeholder={t('admin.ingredients.slugPlaceholder')}
+                  className={inputClass}
+                />
+                <p className="text-xs text-muted-foreground">{t('admin.ingredients.slugHint')}</p>
+                {errorMessages.slug && <p className="text-xs text-favorite">{errorMessages.slug}</p>}
+              </div>
 
-            <div className="flex flex-col gap-1">
-              <label className={labelClass}>{t('admin.ingredients.latinName')}</label>
-              <input
-                value={form.latin_name}
-                onChange={(e) => update('latin_name', e.target.value)}
-                placeholder={t('admin.ingredients.latinNamePlaceholder')}
-                className={inputClass}
-              />
-            </div>
+              <div className="flex flex-col gap-1">
+                <label className={labelClass}>{t('admin.ingredients.latinName')}</label>
+                <input
+                  value={form.latin_name}
+                  onChange={(e) => update('latin_name', e.target.value)}
+                  placeholder={t('admin.ingredients.latinNamePlaceholder')}
+                  className={inputClass}
+                />
+              </div>
 
-            <div className="flex flex-col gap-1">
-              <label className={labelClass}>{t('admin.ingredients.regionalNames')}</label>
-              <input
-                value={form.regional_names}
-                onChange={(e) => update('regional_names', e.target.value)}
-                placeholder={t('admin.ingredients.regionalNamesPlaceholder')}
-                className={inputClass}
-              />
+              <div className="flex flex-col gap-1">
+                <label className={labelClass}>{t('admin.ingredients.regionalNames')}</label>
+                <input
+                  value={form.regional_names}
+                  onChange={(e) => update('regional_names', e.target.value)}
+                  placeholder={t('admin.ingredients.regionalNamesPlaceholder')}
+                  className={inputClass}
+                />
+              </div>
             </div>
-          </div>
-        </FormCard>
+          </FormCard>
 
-        <FormCard icon={ImageIcon} title={t('admin.ingredients.imagesSection')} description={t('admin.ingredients.imagesSectionSubtitle')}>
-          {ingredientId ? (
-            <IngredientImageManager ingredientId={ingredientId} />
-          ) : (
-            <div className="flex items-center gap-2 rounded-card border border-dashed border-border p-4 text-sm text-muted-foreground">
-              <ImageOff className="size-4 shrink-0" />
-              {t('admin.ingredients.imagesNeedSave')}
-            </div>
-          )}
-        </FormCard>
+          <FormCard icon={ImageIcon} title={t('admin.ingredients.imagesSection')} description={t('admin.ingredients.imagesSectionSubtitle')}>
+            {ingredientId ? (
+              <IngredientImageManager ingredientId={ingredientId} />
+            ) : (
+              <div className="flex items-center gap-2 rounded-card border border-dashed border-border p-4 text-sm text-muted-foreground">
+                <ImageOff className="size-4 shrink-0" />
+                {t('admin.ingredients.imagesNeedSave')}
+              </div>
+            )}
+          </FormCard>
+        </div>
 
         <FormCard icon={LayoutGrid} title={t('admin.ingredients.categorySection')} description={t('admin.ingredients.categorySectionSubtitle')}>
           <IngredientCategoryPicker
@@ -310,179 +325,190 @@ const IngredientForm = forwardRef<IngredientFormHandle, IngredientFormProps>(fun
           />
         </FormCard>
 
-        <FormCard icon={Lightbulb} title={t('admin.ingredients.factSection')} description={t('admin.ingredients.factSectionSubtitle')}>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <div className="flex flex-col gap-1">
-              <label className={labelClass}>{t('admin.ingredients.factSr')}</label>
-              <textarea
-                value={form.fact_sr}
-                onChange={(e) => update('fact_sr', e.target.value)}
-                rows={2}
-                maxLength={300}
-                placeholder={t('admin.ingredients.factSrPlaceholder')}
-                className={inputClass}
-              />
-              <p className="self-end text-xs text-muted-foreground">{form.fact_sr.length}/300</p>
-              {errorMessages.fact_sr && <p className="text-xs text-favorite">{errorMessages.fact_sr}</p>}
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <label className={labelClass}>{t('admin.ingredients.factEn')}</label>
-              <textarea
-                value={form.fact_en}
-                onChange={(e) => update('fact_en', e.target.value)}
-                rows={2}
-                maxLength={300}
-                placeholder={t('admin.ingredients.factEnPlaceholder')}
-                className={inputClass}
-              />
-              <p className="self-end text-xs text-muted-foreground">{form.fact_en.length}/300</p>
-              {errorMessages.fact_en && <p className="text-xs text-favorite">{errorMessages.fact_en}</p>}
-            </div>
-          </div>
-        </FormCard>
-
-        <FormCard icon={BarChart3} title={t('admin.ingredients.nutritionSection')} description={t('admin.ingredients.nutritionPer100g')}>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
-            <SuffixNumberField
-              label={t('recipeDetail.nutrition.calories')}
-              value={form.calories_kcal}
-              onChange={(v) => update('calories_kcal', v)}
-              suffix="kcal"
-              placeholder={t('admin.ingredients.caloriesPlaceholder')}
-              error={errorMessages.calories_kcal}
-            />
-            <SuffixNumberField
-              label={t('recipeDetail.nutrition.protein')}
-              value={form.protein_g}
-              onChange={(v) => update('protein_g', v)}
-              suffix="g"
-              placeholder={t('admin.ingredients.proteinPlaceholder')}
-              error={errorMessages.protein_g}
-            />
-            <SuffixNumberField
-              label={t('recipeDetail.nutrition.fat')}
-              value={form.fat_g}
-              onChange={(v) => update('fat_g', v)}
-              suffix="g"
-              placeholder={t('admin.ingredients.fatPlaceholder')}
-              error={errorMessages.fat_g}
-            />
-            <SuffixNumberField
-              label={t('recipeDetail.nutrition.carbs')}
-              value={form.carbs_g}
-              onChange={(v) => update('carbs_g', v)}
-              suffix="g"
-              placeholder={t('admin.ingredients.carbsPlaceholder')}
-              error={errorMessages.carbs_g}
-            />
-            <SuffixNumberField
-              label={t('recipeDetail.nutrition.fiber')}
-              value={form.fiber_g}
-              onChange={(v) => update('fiber_g', v)}
-              suffix="g"
-              placeholder={t('admin.ingredients.fiberPlaceholder')}
-              error={errorMessages.fiber_g}
-            />
-          </div>
-
-          <MicronutrientPickerSection
-            label={t('admin.ingredients.vitaminsSection')}
-            addPlaceholder={t('admin.ingredients.addVitaminPlaceholder')}
-            catalog={availableVitamins}
-            entriesById={vitaminsById}
-            rows={form.vitamins.map((r) => ({ id: r.vitamin_id, amount: r.amount }))}
-            lang={lang}
-            errorFor={(i) => errorMessages[`vitamins.${i}.amount`] ?? errorMessages[`vitamins.${i}.vitamin_id`]}
-            onAdd={addVitaminRow}
-            onChangeAmount={updateVitaminRow}
-            onRemove={removeVitaminRow}
-          />
-
-          <MicronutrientPickerSection
-            label={t('admin.ingredients.mineralsSection')}
-            addPlaceholder={t('admin.ingredients.addMineralPlaceholder')}
-            catalog={availableMinerals}
-            entriesById={mineralsById}
-            rows={form.minerals.map((r) => ({ id: r.mineral_id, amount: r.amount }))}
-            lang={lang}
-            errorFor={(i) => errorMessages[`minerals.${i}.amount`] ?? errorMessages[`minerals.${i}.mineral_id`]}
-            onAdd={addMineralRow}
-            onChangeAmount={updateMineralRow}
-            onRemove={removeMineralRow}
-          />
-        </FormCard>
-
-        <FormCard icon={Scale} title={t('admin.ingredients.unitsSection')} description={t('admin.ingredients.unitConversionsHelp')}>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <div className="flex flex-col gap-1">
-              <label className={labelClass}>{t('admin.ingredients.defaultUnitSr')}</label>
-              <input
-                value={form.default_unit_sr}
-                onChange={(e) => update('default_unit_sr', e.target.value)}
-                placeholder={t('admin.ingredients.defaultUnitPlaceholder')}
-                className={inputClass}
-              />
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <label className={labelClass}>{t('admin.ingredients.defaultUnitEn')}</label>
-              <input
-                value={form.default_unit_en}
-                onChange={(e) => update('default_unit_en', e.target.value)}
-                placeholder={t('admin.ingredients.defaultUnitPlaceholder')}
-                className={inputClass}
-              />
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <span className={labelClass}>{t('admin.ingredients.unitConversions')}</span>
-            {form.unitConversions.map((row, index) => (
-              <div key={index} className="grid grid-cols-[1fr_auto_auto] items-start gap-2">
-                <div>
-                  <input
-                    value={row.unit}
-                    onChange={(e) => updateUnitConversionRow(index, { unit: e.target.value })}
-                    placeholder={t('admin.ingredients.unit')}
-                    className={`${inputClass} w-full`}
-                  />
-                  {errorMessages[`unitConversions.${index}.unit`] && (
-                    <p className="mt-1 text-xs text-favorite">{errorMessages[`unitConversions.${index}.unit`]}</p>
-                  )}
-                </div>
-                <div>
-                  <input
-                    value={row.grams}
-                    onChange={(e) => updateUnitConversionRow(index, { grams: e.target.value })}
-                    placeholder={t('admin.ingredients.grams')}
-                    inputMode="decimal"
-                    className={`${inputClass} w-24`}
-                  />
-                  {errorMessages[`unitConversions.${index}.grams`] && (
-                    <p className="mt-1 text-xs text-favorite">{errorMessages[`unitConversions.${index}.grams`]}</p>
-                  )}
-                </div>
-                <button
-                  type="button"
-                  onClick={() => removeUnitConversionRow(index)}
-                  aria-label={t('admin.recipeForm.remove')}
-                  className="flex size-9 items-center justify-center rounded-control border border-border text-favorite hover:bg-favorite/10"
-                >
-                  <Trash2 className="size-3.5" />
-                </button>
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:items-start">
+          <FormCard icon={Lightbulb} title={t('admin.ingredients.factSection')} description={t('admin.ingredients.factSectionSubtitle')}>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div className="flex flex-col gap-1">
+                <label className={labelClass}>{t('admin.ingredients.factSr')}</label>
+                <textarea
+                  value={form.fact_sr}
+                  onChange={(e) => update('fact_sr', e.target.value)}
+                  rows={2}
+                  maxLength={300}
+                  placeholder={t('admin.ingredients.factSrPlaceholder')}
+                  className={inputClass}
+                />
+                <p className="self-end text-xs text-muted-foreground">{form.fact_sr.length}/300</p>
+                {errorMessages.fact_sr && <p className="text-xs text-favorite">{errorMessages.fact_sr}</p>}
               </div>
-            ))}
-            <button
-              type="button"
-              onClick={addUnitConversionRow}
-              className="flex items-center justify-center gap-1.5 rounded-control border border-dashed border-border px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
-            >
-              <Plus className="size-4" />
-              {t('admin.ingredients.addUnitConversion')}
-            </button>
-          </div>
-        </FormCard>
+
+              <div className="flex flex-col gap-1">
+                <label className={labelClass}>{t('admin.ingredients.factEn')}</label>
+                <textarea
+                  value={form.fact_en}
+                  onChange={(e) => update('fact_en', e.target.value)}
+                  rows={2}
+                  maxLength={300}
+                  placeholder={t('admin.ingredients.factEnPlaceholder')}
+                  className={inputClass}
+                />
+                <p className="self-end text-xs text-muted-foreground">{form.fact_en.length}/300</p>
+                {errorMessages.fact_en && <p className="text-xs text-favorite">{errorMessages.fact_en}</p>}
+              </div>
+            </div>
+          </FormCard>
+
+          <FormCard icon={BarChart3} title={t('admin.ingredients.nutritionSection')} description={t('admin.ingredients.nutritionPer100g')}>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
+              <SuffixNumberField
+                label={t('recipeDetail.nutrition.calories')}
+                value={form.calories_kcal}
+                onChange={(v) => update('calories_kcal', v)}
+                suffix="kcal"
+                placeholder={t('admin.ingredients.caloriesPlaceholder')}
+                error={errorMessages.calories_kcal}
+              />
+              <SuffixNumberField
+                label={t('recipeDetail.nutrition.protein')}
+                value={form.protein_g}
+                onChange={(v) => update('protein_g', v)}
+                suffix="g"
+                placeholder={t('admin.ingredients.proteinPlaceholder')}
+                error={errorMessages.protein_g}
+              />
+              <SuffixNumberField
+                label={t('recipeDetail.nutrition.fat')}
+                value={form.fat_g}
+                onChange={(v) => update('fat_g', v)}
+                suffix="g"
+                placeholder={t('admin.ingredients.fatPlaceholder')}
+                error={errorMessages.fat_g}
+              />
+              <SuffixNumberField
+                label={t('recipeDetail.nutrition.carbs')}
+                value={form.carbs_g}
+                onChange={(v) => update('carbs_g', v)}
+                suffix="g"
+                placeholder={t('admin.ingredients.carbsPlaceholder')}
+                error={errorMessages.carbs_g}
+              />
+              <SuffixNumberField
+                label={t('recipeDetail.nutrition.fiber')}
+                value={form.fiber_g}
+                onChange={(v) => update('fiber_g', v)}
+                suffix="g"
+                placeholder={t('admin.ingredients.fiberPlaceholder')}
+                error={errorMessages.fiber_g}
+              />
+            </div>
+          </FormCard>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:items-start">
+          <FormCard icon={Pill} title={t('admin.ingredients.vitaminsSectionTitle')}>
+            <MicronutrientPickerSection
+              label=""
+              addPlaceholder={t('admin.ingredients.addVitaminPlaceholder')}
+              catalog={availableVitamins}
+              entriesById={vitaminsById}
+              rows={form.vitamins.map((r) => ({ id: r.vitamin_id, amount: r.amount }))}
+              lang={lang}
+              errorFor={(i) => errorMessages[`vitamins.${i}.amount`] ?? errorMessages[`vitamins.${i}.vitamin_id`]}
+              onAdd={addVitaminRow}
+              onChangeAmount={updateVitaminRow}
+              onRemove={removeVitaminRow}
+            />
+          </FormCard>
+
+          <FormCard icon={Sparkles} title={t('admin.ingredients.mineralsSectionTitle')}>
+            <MicronutrientPickerSection
+              label=""
+              addPlaceholder={t('admin.ingredients.addMineralPlaceholder')}
+              catalog={availableMinerals}
+              entriesById={mineralsById}
+              rows={form.minerals.map((r) => ({ id: r.mineral_id, amount: r.amount }))}
+              lang={lang}
+              errorFor={(i) => errorMessages[`minerals.${i}.amount`] ?? errorMessages[`minerals.${i}.mineral_id`]}
+              onAdd={addMineralRow}
+              onChangeAmount={updateMineralRow}
+              onRemove={removeMineralRow}
+            />
+          </FormCard>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:items-start">
+          <FormCard icon={Ruler} title={t('admin.ingredients.defaultUnitSection')} description={t('admin.ingredients.defaultUnitSectionSubtitle')}>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div className="flex flex-col gap-1">
+                <label className={labelClass}>{t('admin.ingredients.defaultUnitSr')}</label>
+                <input
+                  value={form.default_unit_sr}
+                  onChange={(e) => update('default_unit_sr', e.target.value)}
+                  placeholder={t('admin.ingredients.defaultUnitPlaceholder')}
+                  className={inputClass}
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className={labelClass}>{t('admin.ingredients.defaultUnitEn')}</label>
+                <input
+                  value={form.default_unit_en}
+                  onChange={(e) => update('default_unit_en', e.target.value)}
+                  placeholder={t('admin.ingredients.defaultUnitPlaceholder')}
+                  className={inputClass}
+                />
+              </div>
+            </div>
+          </FormCard>
+
+          <FormCard icon={ArrowLeftRight} title={t('admin.ingredients.unitsSection')} description={t('admin.ingredients.unitConversionsHelp')}>
+            <div className="flex flex-col gap-2">
+              {form.unitConversions.map((row, index) => (
+                <div key={index} className="grid grid-cols-[1fr_auto_auto] items-start gap-2">
+                  <div>
+                    <input
+                      value={row.unit}
+                      onChange={(e) => updateUnitConversionRow(index, { unit: e.target.value })}
+                      placeholder={t('admin.ingredients.unit')}
+                      className={`${inputClass} w-full`}
+                    />
+                    {errorMessages[`unitConversions.${index}.unit`] && (
+                      <p className="mt-1 text-xs text-favorite">{errorMessages[`unitConversions.${index}.unit`]}</p>
+                    )}
+                  </div>
+                  <div>
+                    <input
+                      value={row.grams}
+                      onChange={(e) => updateUnitConversionRow(index, { grams: e.target.value })}
+                      placeholder={t('admin.ingredients.grams')}
+                      inputMode="decimal"
+                      className={`${inputClass} w-24`}
+                    />
+                    {errorMessages[`unitConversions.${index}.grams`] && (
+                      <p className="mt-1 text-xs text-favorite">{errorMessages[`unitConversions.${index}.grams`]}</p>
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => removeUnitConversionRow(index)}
+                    aria-label={t('admin.recipeForm.remove')}
+                    className="flex size-9 items-center justify-center rounded-control border border-border text-favorite hover:bg-favorite/10"
+                  >
+                    <Trash2 className="size-3.5" />
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={addUnitConversionRow}
+                className="flex items-center justify-center gap-1.5 rounded-control border border-dashed border-border px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
+              >
+                <Plus className="size-4" />
+                {t('admin.ingredients.addUnitConversion')}
+              </button>
+            </div>
+          </FormCard>
+        </div>
 
         {submitError && <p className="text-sm text-favorite">{submitError}</p>}
       </form>
