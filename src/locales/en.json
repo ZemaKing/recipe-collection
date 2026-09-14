@@ -131,6 +131,9 @@
     "tips": {
       "tips": "Tips"
     },
+    "notes": {
+      "title": "Notes"
+    },
     "nutrition": {
       "title": "Nutrition Information",
       "autoCalculated": "Auto-calculated from {{linked}} of {{total}} ingredients",

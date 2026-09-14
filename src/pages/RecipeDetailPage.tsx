@@ -5,6 +5,7 @@ import IngredientList from '@/components/recipes/IngredientList'
 import NutritionPanel from '@/components/recipes/NutritionPanel'
 import RecipeDetailHero from '@/components/recipes/RecipeDetailHero'
 import RecipeMeta from '@/components/recipes/RecipeMeta'
+import RecipeNotesPanel from '@/components/recipes/RecipeNotesPanel'
 import StepList from '@/components/recipes/StepList'
 import TipsPanel from '@/components/recipes/TipsPanel'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -12,12 +13,14 @@ import EmptyState from '@/components/ui/EmptyState'
 import { useAuth } from '@/hooks/useAuth'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useRecipeBySlug } from '@/hooks/useRecipeBySlug'
+import { useRecipeNotes } from '@/hooks/useRecipeNotes'
 
 function RecipeDetailPage() {
   const { t } = useTranslation()
   const { slug = '' } = useParams<{ slug: string }>()
   const { session } = useAuth()
   const { recipe, isLoading, notFound, toggleFavorite } = useRecipeBySlug(slug)
+  const { notes } = useRecipeNotes(recipe?.id ?? null)
   // Tabs are a mobile/tablet space-saving device; desktop has room to show
   // everything at once, matching the pattern used pre-Phase-1.
   const isDesktop = useMediaQuery('(min-width: 1024px)')
@@ -36,6 +39,7 @@ function RecipeDetailPage() {
 
   const hasTips = !!recipe.tips_en
   const hasNutrition = recipe.ingredients.some((ingredient) => ingredient.ingredient)
+  const hasNotes = notes.length > 0
 
   return (
     <div className="flex flex-col gap-6">
@@ -59,6 +63,7 @@ function RecipeDetailPage() {
 
           {hasNutrition && <NutritionPanel recipe={recipe} />}
           {hasTips && <TipsPanel recipe={recipe} />}
+          {hasNotes && <RecipeNotesPanel notes={notes} />}
         </>
       ) : (
         <Tabs defaultValue="ingredients">
@@ -77,6 +82,11 @@ function RecipeDetailPage() {
             {hasTips && (
               <TabsTrigger value="tips" className="whitespace-nowrap">
                 {t('recipeDetail.tips.tips')}
+              </TabsTrigger>
+            )}
+            {hasNotes && (
+              <TabsTrigger value="notes" className="whitespace-nowrap">
+                {t('recipeDetail.notes.title')}
               </TabsTrigger>
             )}
           </TabsList>
@@ -100,6 +110,12 @@ function RecipeDetailPage() {
           {hasTips && (
             <TabsContent value="tips" forceMount>
               <TipsPanel recipe={recipe} />
+            </TabsContent>
+          )}
+
+          {hasNotes && (
+            <TabsContent value="notes" forceMount>
+              <RecipeNotesPanel notes={notes} />
             </TabsContent>
           )}
         </Tabs>

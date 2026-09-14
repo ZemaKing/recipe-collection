@@ -134,6 +134,9 @@
     "tips": {
       "tips": "Saveti"
     },
+    "notes": {
+      "title": "Beleške"
+    },
     "nutrition": {
       "title": "Nutritivne vrednosti",
       "autoCalculated": "Automatski izračunato iz {{linked}} od {{total}} sastojaka",
