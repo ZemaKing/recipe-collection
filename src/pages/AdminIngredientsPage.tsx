@@ -3,6 +3,7 @@ import { ArrowDown, ArrowUp, Pencil, Plus, Search, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import DeleteIngredientDialog from '@/components/admin/DeleteIngredientDialog'
+import IngredientCategoryFilter from '@/components/admin/IngredientCategoryFilter'
 import IngredientImage from '@/components/admin/IngredientImage'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
 import { useDeleteIngredient } from '@/hooks/useDeleteIngredient'
@@ -83,18 +84,13 @@ function AdminIngredientsPage() {
             className={`${inputClass} w-full pl-8`}
           />
         </div>
-        <select
+        <IngredientCategoryFilter
+          categories={categories}
           value={categoryFilter}
-          onChange={(event) => setCategoryFilter(event.target.value)}
-          className={inputClass}
-        >
-          <option value="">{t('admin.ingredients.allCategories')}</option>
-          {categories.map((category) => (
-            <option key={category.id} value={category.id}>
-              {pickLocalized(category.name_en, category.name_sr, lang)}
-            </option>
-          ))}
-        </select>
+          onChange={setCategoryFilter}
+          lang={lang}
+          allLabel={t('admin.ingredients.allCategories')}
+        />
       </div>
 
       <div className="overflow-hidden rounded-card border border-border bg-surface">
