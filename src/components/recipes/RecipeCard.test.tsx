@@ -14,6 +14,7 @@ const baseRecipe: RecipeSummary = {
   cook_time_minutes: 90,
   rating: 4.5,
   is_favorite: false,
+  difficulty: null,
   category: { slug: 'glavna-jela', name_en: 'Main Dishes', name_sr: 'Glavna jela' },
   subcategory: null,
   image: null,

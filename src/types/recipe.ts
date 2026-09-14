@@ -21,6 +21,7 @@ export interface RecipeSummary {
   cook_time_minutes: number | null
   rating: number
   is_favorite: boolean
+  difficulty: 'easy' | 'medium' | 'hard' | null
   category: { slug: string; name_en: string; name_sr: string | null } | null
   subcategory: { slug: string; name_en: string; name_sr: string | null } | null
   image: RecipeImageRef | null

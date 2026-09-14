@@ -12,6 +12,7 @@ function recipe(overrides: Partial<SearchableRecipe>): SearchableRecipe {
     cook_time_minutes: 10,
     rating: 0,
     is_favorite: false,
+    difficulty: null,
     category: null,
     subcategory: null,
     image: null,

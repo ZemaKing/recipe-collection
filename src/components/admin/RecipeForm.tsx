@@ -1,11 +1,9 @@
 import { forwardRef, useImperativeHandle, useMemo, useState } from 'react'
 import {
   Carrot,
-  ChevronDown,
   Clock,
   ClipboardList,
   FileText,
-  Gauge,
   Image as ImageIcon,
   ImageOff,
   LayoutGrid,
@@ -17,6 +15,7 @@ import {
 import type { LucideIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import CategorySelect from '@/components/admin/CategorySelect'
+import DifficultySelect from '@/components/admin/DifficultySelect'
 import FormCard, { RequiredMark } from '@/components/admin/FormCard'
 import ImageManager from '@/components/admin/ImageManager'
 import ImportRecipeJsonDialog from '@/components/admin/ImportRecipeJsonDialog'
@@ -32,7 +31,7 @@ import { useTags } from '@/hooks/useTags'
 import { buildAiRecipePrompt } from '@/lib/aiRecipePrompt'
 import { copyToClipboard } from '@/lib/clipboard'
 import { pickLocalized } from '@/lib/localizedField'
-import { difficultyValues, recipeFormSchema, type RecipeFormValues } from '@/lib/recipeFormSchema'
+import { recipeFormSchema, type RecipeFormValues } from '@/lib/recipeFormSchema'
 import type { RecipeFormState } from '@/lib/recipeFormState'
 import { slugify } from '@/lib/slugify'
 import { getTagColors, getTagIcon } from '@/lib/tagIcons'
@@ -55,12 +54,6 @@ export interface RecipeFormHandle {
 const inputClass =
   'rounded-control border border-border bg-surface-elevated px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground'
 const labelClass = 'text-sm font-medium text-foreground'
-
-const DIFFICULTY_ICON_COLOR: Record<string, string> = {
-  easy: 'text-emerald-400',
-  medium: 'text-amber-400',
-  hard: 'text-rose-400',
-}
 
 function fieldErrorPath(path: PropertyKey[]): string {
   return path.map(String).join('.')
@@ -135,34 +128,6 @@ function IconNumberField({
         className="w-full min-w-0 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
       />
       {suffix && <span className="shrink-0 text-xs text-muted-foreground">{suffix}</span>}
-    </div>
-  )
-}
-
-function IconSelectField({
-  icon: Icon,
-  iconClassName,
-  value,
-  onChange,
-  children,
-}: {
-  icon: LucideIcon
-  iconClassName?: string
-  value: string
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
-  children: React.ReactNode
-}) {
-  return (
-    <div className="relative flex items-center gap-2 rounded-control border border-border bg-surface-elevated px-2.5 py-2">
-      <Icon className={cn('size-4 shrink-0', iconClassName)} />
-      <select
-        value={value}
-        onChange={onChange}
-        className="w-full appearance-none bg-transparent pr-4 text-sm text-foreground outline-none"
-      >
-        {children}
-      </select>
-      <ChevronDown className="pointer-events-none absolute right-2.5 size-3.5 text-muted-foreground" />
     </div>
   )
 }
@@ -528,19 +493,11 @@ const RecipeForm = forwardRef<RecipeFormHandle, RecipeFormProps>(function Recipe
 
               <div className="flex flex-col gap-1">
                 <label className={labelClass}>{t('admin.recipeForm.difficulty')}</label>
-                <IconSelectField
-                  icon={Gauge}
-                  iconClassName={DIFFICULTY_ICON_COLOR[form.difficulty] ?? 'text-muted-foreground'}
+                <DifficultySelect
                   value={form.difficulty}
-                  onChange={(e) => update('difficulty', e.target.value as RecipeFormState['difficulty'])}
-                >
-                  <option value="">—</option>
-                  {difficultyValues.map((value) => (
-                    <option key={value} value={value}>
-                      {t(`recipeDetail.difficulty.${value}`)}
-                    </option>
-                  ))}
-                </IconSelectField>
+                  onChange={(value) => update('difficulty', value as RecipeFormState['difficulty'])}
+                  placeholder="—"
+                />
               </div>
             </div>
           </FormCard>
