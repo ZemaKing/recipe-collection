@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { ArrowDown, ArrowUp, ImageOff, Loader2, RefreshCw, Star, Trash2, Upload } from 'lucide-react'
+import { ArrowDown, ArrowUp, ImageOff, Loader2, RefreshCw, Star, Trash2, UploadCloud } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import type { AdminRecipeImage } from '@/hooks/useRecipeImages'
 import { useRecipeImages } from '@/hooks/useRecipeImages'
@@ -25,6 +25,7 @@ function ImageManager({ recipeId }: ImageManagerProps) {
   const [pending, setPending] = useState<PendingUpload[]>([])
   const [rowErrors, setRowErrors] = useState<Record<string, string>>({})
   const [replacingIds, setReplacingIds] = useState<Set<string>>(new Set())
+  const [isDraggingOver, setIsDraggingOver] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const sorted = [...images].sort((a, b) => a.order_index - b.order_index)
@@ -260,9 +261,27 @@ function ImageManager({ recipeId }: ImageManagerProps) {
         </div>
       ))}
 
-      <label className="flex cursor-pointer flex-col items-center justify-center gap-1.5 rounded-card border border-dashed border-border px-3 py-6 text-sm font-medium text-muted-foreground hover:border-accent hover:text-foreground">
-        <Upload className="size-5" />
-        {t('admin.recipeForm.addImage')}
+      <label
+        onDragOver={(e) => {
+          e.preventDefault()
+          setIsDraggingOver(true)
+        }}
+        onDragLeave={() => setIsDraggingOver(false)}
+        onDrop={(e) => {
+          e.preventDefault()
+          setIsDraggingOver(false)
+          void handleFiles(e.dataTransfer.files)
+        }}
+        className={`flex cursor-pointer flex-col items-center justify-center gap-1.5 rounded-card border border-dashed px-3 py-8 text-center text-sm font-medium transition-colors ${
+          isDraggingOver
+            ? 'border-accent bg-accent-soft text-foreground'
+            : 'border-border text-muted-foreground hover:border-accent hover:text-foreground'
+        }`}
+      >
+        <UploadCloud className="size-6 text-accent" />
+        <span>{t('admin.recipeForm.dropImagesHere')}</span>
+        <span className="text-xs font-normal text-muted-foreground">{t('admin.recipeForm.clickToBrowse')}</span>
+        <span className="text-xs font-normal text-muted-foreground">{t('admin.recipeForm.imageHint')}</span>
         <input
           ref={fileInputRef}
           type="file"

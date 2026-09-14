@@ -9,7 +9,7 @@ interface StepEditorProps {
 }
 
 const textareaClass =
-  'w-full rounded-control border border-border bg-surface-elevated px-2.5 py-1.5 text-sm text-foreground placeholder:text-muted-foreground'
+  'w-full resize-y rounded-control border border-border bg-surface-elevated px-2.5 py-1.5 text-sm text-foreground placeholder:text-muted-foreground'
 
 function StepEditor({ value, onChange, errors }: StepEditorProps) {
   const { t } = useTranslation()
@@ -31,19 +31,19 @@ function StepEditor({ value, onChange, errors }: StepEditorProps) {
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2">
       {value.map((row, index) => (
-        <div key={index} className="flex gap-3 rounded-card border border-border bg-surface p-3">
-          <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-accent text-sm font-semibold text-accent-foreground">
+        <div key={index} className="flex items-start gap-2 rounded-card border border-border bg-surface p-2.5">
+          <span className="mt-1 flex size-7 shrink-0 items-center justify-center rounded-full bg-accent text-sm font-semibold text-accent-foreground">
             {index + 1}
           </span>
 
-          <div className="flex flex-1 flex-col gap-2">
+          <div className="flex flex-1 flex-col gap-1.5">
             <textarea
               value={row.text_en}
               onChange={(e) => updateRow(index, { text_en: e.target.value })}
               placeholder={t('admin.recipeForm.stepTextEn')}
-              rows={2}
+              rows={1}
               className={textareaClass}
             />
             {errors?.[`steps.${index}.text_en`] && (
@@ -53,38 +53,38 @@ function StepEditor({ value, onChange, errors }: StepEditorProps) {
               value={row.text_sr}
               onChange={(e) => updateRow(index, { text_sr: e.target.value })}
               placeholder={t('admin.recipeForm.stepTextSr')}
-              rows={2}
+              rows={1}
               className={textareaClass}
             />
+          </div>
 
-            <div className="flex items-center gap-1 self-end">
-              <button
-                type="button"
-                onClick={() => moveRow(index, -1)}
-                disabled={index === 0}
-                aria-label={t('admin.recipeForm.moveUp')}
-                className="flex size-7 items-center justify-center rounded-control border border-border text-muted-foreground hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                <ArrowUp className="size-3.5" />
-              </button>
-              <button
-                type="button"
-                onClick={() => moveRow(index, 1)}
-                disabled={index === value.length - 1}
-                aria-label={t('admin.recipeForm.moveDown')}
-                className="flex size-7 items-center justify-center rounded-control border border-border text-muted-foreground hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                <ArrowDown className="size-3.5" />
-              </button>
-              <button
-                type="button"
-                onClick={() => removeRow(index)}
-                aria-label={t('admin.recipeForm.remove')}
-                className="flex size-7 items-center justify-center rounded-control border border-border text-favorite hover:bg-favorite/10"
-              >
-                <Trash2 className="size-3.5" />
-              </button>
-            </div>
+          <div className="flex shrink-0 flex-col items-center gap-1">
+            <button
+              type="button"
+              onClick={() => moveRow(index, -1)}
+              disabled={index === 0}
+              aria-label={t('admin.recipeForm.moveUp')}
+              className="flex size-7 items-center justify-center rounded-control text-muted-foreground hover:bg-surface-elevated hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <ArrowUp className="size-3.5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => moveRow(index, 1)}
+              disabled={index === value.length - 1}
+              aria-label={t('admin.recipeForm.moveDown')}
+              className="flex size-7 items-center justify-center rounded-control text-muted-foreground hover:bg-surface-elevated hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <ArrowDown className="size-3.5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => removeRow(index)}
+              aria-label={t('admin.recipeForm.remove')}
+              className="flex size-7 items-center justify-center rounded-control text-favorite hover:bg-favorite/10"
+            >
+              <Trash2 className="size-3.5" />
+            </button>
           </div>
         </div>
       ))}
