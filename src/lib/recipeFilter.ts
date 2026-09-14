@@ -1,3 +1,4 @@
+import { textMatchesQuery } from '@/lib/diacritics'
 import type { SearchableRecipe } from '@/types/recipe'
 
 export type SortOption = 'rating' | 'time' | 'recent'
@@ -13,15 +14,13 @@ export interface RecipeFilterOptions {
 }
 
 function matchesQuery(recipe: SearchableRecipe, query: string): boolean {
-  const nameMatch =
-    recipe.name_en.toLowerCase().includes(query) ||
-    (recipe.name_sr?.toLowerCase().includes(query) ?? false)
+  const nameMatch = textMatchesQuery(recipe.name_en, query) || (recipe.name_sr ? textMatchesQuery(recipe.name_sr, query) : false)
   if (nameMatch) return true
 
   return recipe.ingredients.some(
     (ingredient) =>
-      ingredient.name_en.toLowerCase().includes(query) ||
-      (ingredient.name_sr?.toLowerCase().includes(query) ?? false),
+      textMatchesQuery(ingredient.name_en, query) ||
+      (ingredient.name_sr ? textMatchesQuery(ingredient.name_sr, query) : false),
   )
 }
 
@@ -29,7 +28,7 @@ export function filterAndSortRecipes<T extends SearchableRecipe>(
   recipes: T[],
   options: RecipeFilterOptions = {},
 ): T[] {
-  const query = options.query?.trim().toLowerCase()
+  const query = options.query?.trim()
   const tagSlugs = options.tagSlugs ?? []
 
   const filtered = recipes.filter((recipe) => {

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { expandDiacriticVariants } from '@/lib/diacritics'
 import type { SupportedLanguage } from '@/lib/i18n'
 import { pickPrimaryImage, type RawImageRow } from '@/lib/recipeQueries'
 import { supabase } from '@/lib/supabaseClient'
@@ -75,7 +76,12 @@ export function useAdminRecipes({ search, sort, sortDirection, lang, page, categ
       // text can't be mistaken for multiple conditions.
       const term = search.trim().replace(/,/g, '')
       if (term) {
-        query = query.or(`name_en.ilike.%${term}%,name_sr.ilike.%${term}%`)
+        // Postgres `ilike` can't fold š/č/ć/đ/ž itself, so expand the typed
+        // term into every accented/plain variant and OR them together —
+        // lets "corba" match "čorba" and vice versa.
+        const variants = expandDiacriticVariants(term)
+        const conditions = variants.flatMap((variant) => [`name_en.ilike.%${variant}%`, `name_sr.ilike.%${variant}%`])
+        query = query.or(conditions.join(','))
       }
 
       if (categoryId) {

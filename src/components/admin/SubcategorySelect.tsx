@@ -1,14 +1,15 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import Select, { components, type OptionProps, type SingleValueProps } from 'react-select'
+import Select from 'react-select'
 import type { SubcategoryWithCount } from '@/hooks/useSubcategories'
+import { useCurrentLang } from '@/hooks/useCurrentLang'
+import { textMatchesQuery } from '@/lib/diacritics'
+import { pickLocalized } from '@/lib/localizedField'
 import { createSelectStyles } from '@/lib/selectStyles'
 
 interface SubcategoryOptionData {
   value: string
-  nameEn: string
-  nameSr: string | null
-  recipeCount: number
+  label: string
 }
 
 interface SubcategorySelectProps {
@@ -20,29 +21,6 @@ interface SubcategorySelectProps {
   placeholder: string
 }
 
-function SubcategoryOption(props: OptionProps<SubcategoryOptionData, false>) {
-  const { t } = useTranslation()
-  const { data } = props
-  return (
-    <components.Option {...props}>
-      <div className="flex items-center justify-between gap-2">
-        <div className="min-w-0">
-          <p className="truncate text-sm font-medium text-foreground">{data.nameEn}</p>
-          {data.nameSr && <p className="truncate text-xs text-muted-foreground">{data.nameSr}</p>}
-        </div>
-        <span className="shrink-0 rounded-pill bg-surface px-2 py-0.5 text-xs text-muted-foreground">
-          {t('common.recipeCount', { count: data.recipeCount })}
-        </span>
-      </div>
-    </components.Option>
-  )
-}
-
-function SubcategorySingleValue(props: SingleValueProps<SubcategoryOptionData, false>) {
-  const { data } = props
-  return <components.SingleValue {...props}>{data.nameEn}</components.SingleValue>
-}
-
 function SubcategorySelect({
   subcategories,
   value,
@@ -52,16 +30,15 @@ function SubcategorySelect({
   placeholder,
 }: SubcategorySelectProps) {
   const { t } = useTranslation()
+  const lang = useCurrentLang()
 
   const options = useMemo<SubcategoryOptionData[]>(
     () =>
       subcategories.map((subcategory) => ({
         value: subcategory.id,
-        nameEn: subcategory.name_en,
-        nameSr: subcategory.name_sr,
-        recipeCount: subcategory.recipeCount,
+        label: pickLocalized(subcategory.name_en, subcategory.name_sr, lang),
       })),
-    [subcategories],
+    [subcategories, lang],
   )
 
   const selected = options.find((option) => option.value === value) ?? null
@@ -79,14 +56,7 @@ function SubcategorySelect({
       isDisabled={isDisabled}
       placeholder={placeholder}
       noOptionsMessage={() => t('admin.recipeForm.noOptions')}
-      filterOption={(option, rawInput) => {
-        const query = rawInput.toLowerCase()
-        return (
-          option.data.nameEn.toLowerCase().includes(query) ||
-          (option.data.nameSr?.toLowerCase().includes(query) ?? false)
-        )
-      }}
-      components={{ Option: SubcategoryOption, SingleValue: SubcategorySingleValue }}
+      filterOption={(option, rawInput) => textMatchesQuery(option.data.label, rawInput)}
       styles={styles}
     />
   )

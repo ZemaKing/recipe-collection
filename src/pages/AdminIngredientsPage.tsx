@@ -10,6 +10,7 @@ import { useCurrentLang } from '@/hooks/useCurrentLang'
 import { useDeleteIngredient } from '@/hooks/useDeleteIngredient'
 import { useIngredientCategories } from '@/hooks/useIngredientCategories'
 import { type IngredientWithCategory, useIngredients } from '@/hooks/useIngredients'
+import { textMatchesQuery } from '@/lib/diacritics'
 import { getIngredientCategoryColors } from '@/lib/ingredientCategoryIcons'
 import { pickLocalized } from '@/lib/localizedField'
 import { buildLocalizedPath } from '@/lib/localizedPath'
@@ -31,13 +32,13 @@ function AdminIngredientsPage() {
   const [pendingDelete, setPendingDelete] = useState<IngredientWithCategory | null>(null)
 
   const visible = useMemo(() => {
-    const query = search.trim().toLowerCase()
+    const query = search.trim()
     const filtered = ingredients.filter((ingredient) => {
       if (categoryFilter && ingredient.ingredient_category_id !== categoryFilter) return false
       if (!query) return true
       return (
-        ingredient.name_en.toLowerCase().includes(query) ||
-        (ingredient.name_sr?.toLowerCase().includes(query) ?? false)
+        textMatchesQuery(ingredient.name_en, query) ||
+        (ingredient.name_sr ? textMatchesQuery(ingredient.name_sr, query) : false)
       )
     })
 

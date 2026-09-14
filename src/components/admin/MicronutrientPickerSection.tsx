@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Search, Trash2 } from 'lucide-react'
+import { textMatchesQuery } from '@/lib/diacritics'
 import { pickLocalized } from '@/lib/localizedField'
 
 export interface MicronutrientCatalogEntry {
@@ -47,15 +48,15 @@ function MicronutrientPickerSection({
   const [query, setQuery] = useState('')
   const [isOpen, setIsOpen] = useState(false)
 
-  const normalizedQuery = query.trim().toLowerCase()
+  const trimmedQuery = query.trim()
   const suggestions =
-    isOpen && normalizedQuery.length > 0
+    isOpen && trimmedQuery.length > 0
       ? catalog
           .filter(
             (entry) =>
-              entry.name_en.toLowerCase().includes(normalizedQuery) ||
-              entry.name_sr.toLowerCase().includes(normalizedQuery) ||
-              entry.code.toLowerCase().includes(normalizedQuery),
+              textMatchesQuery(entry.name_en, trimmedQuery) ||
+              textMatchesQuery(entry.name_sr, trimmedQuery) ||
+              textMatchesQuery(entry.code, trimmedQuery),
           )
           .slice(0, 8)
       : []

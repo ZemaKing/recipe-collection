@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { Check, Search } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
+import { textMatchesQuery } from '@/lib/diacritics'
 import { pickLocalized } from '@/lib/localizedField'
 import { getIngredientCategoryColors, getIngredientCategoryIcon } from '@/lib/ingredientCategoryIcons'
 import { cn } from '@/lib/utils'
@@ -19,11 +20,11 @@ function IngredientCategoryPicker({ categories, value, onChange }: IngredientCat
   const [query, setQuery] = useState('')
 
   const visible = useMemo(() => {
-    const normalized = query.trim().toLowerCase()
-    if (!normalized) return categories
+    const trimmed = query.trim()
+    if (!trimmed) return categories
     return categories.filter((category) => {
-      const name = pickLocalized(category.name_en, category.name_sr, lang).toLowerCase()
-      return name.includes(normalized) || category.slug.toLowerCase().includes(normalized)
+      const name = pickLocalized(category.name_en, category.name_sr, lang)
+      return textMatchesQuery(name, trimmed) || textMatchesQuery(category.slug, trimmed)
     })
   }, [categories, query, lang])
 

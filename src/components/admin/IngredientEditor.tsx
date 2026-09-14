@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import type { AdminRecipeIngredient } from '@/hooks/useAdminRecipe'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
 import { type IngredientWithCategory, useIngredients } from '@/hooks/useIngredients'
+import { textMatchesQuery } from '@/lib/diacritics'
 import { pickLocalized } from '@/lib/localizedField'
 import { buildLocalizedPath } from '@/lib/localizedPath'
 import { cn } from '@/lib/utils'
@@ -36,14 +37,14 @@ function IngredientEditor({ value, onChange, errors }: IngredientEditorProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [editingIndex, setEditingIndex] = useState<number | null>(null)
 
-  const trimmedQuery = query.trim().toLowerCase()
+  const trimmedQuery = query.trim()
   const suggestions =
     isOpen && trimmedQuery.length > 0
       ? ingredients
           .filter(
             (ingredient) =>
-              ingredient.name_en.toLowerCase().includes(trimmedQuery) ||
-              ingredient.name_sr?.toLowerCase().includes(trimmedQuery),
+              textMatchesQuery(ingredient.name_en, trimmedQuery) ||
+              (ingredient.name_sr ? textMatchesQuery(ingredient.name_sr, trimmedQuery) : false),
           )
           .slice(0, 6)
       : []

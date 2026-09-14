@@ -6,6 +6,7 @@ import { useCurrentLang } from '@/hooks/useCurrentLang'
 import { getCategoryBadgeColor } from '@/lib/categoryColor'
 import { getCategoryDescription } from '@/lib/categoryDescriptions'
 import { getCategoryIcon } from '@/lib/categoryIcons'
+import { textMatchesQuery } from '@/lib/diacritics'
 import { pickLocalized } from '@/lib/localizedField'
 import { createSelectStyles } from '@/lib/selectStyles'
 
@@ -128,7 +129,7 @@ function CategorySelect({ categories, value, onChange, hasError, inputId, placeh
       isSearchable
       placeholder={placeholder}
       noOptionsMessage={() => t('admin.recipeForm.noOptions')}
-      filterOption={(option, rawInput) => option.data.name.toLowerCase().includes(rawInput.toLowerCase())}
+      filterOption={(option, rawInput) => textMatchesQuery(option.data.name, rawInput)}
       components={{ Option: CategoryOption, SingleValue: CategorySingleValue }}
       styles={styles}
       // @ts-expect-error -- custom prop forwarded to Option via selectProps

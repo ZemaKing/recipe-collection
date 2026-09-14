@@ -37,6 +37,7 @@ import { useSaveTag } from '@/hooks/useSaveTag'
 import { getCategoryBadgeColor } from '@/lib/categoryColor'
 import { getCategoryDescription } from '@/lib/categoryDescriptions'
 import { getCategoryIcon } from '@/lib/categoryIcons'
+import { textMatchesQuery } from '@/lib/diacritics'
 import { pickLocalized } from '@/lib/localizedField'
 import { getTagColors, getTagIcon } from '@/lib/tagIcons'
 import { cn } from '@/lib/utils'
@@ -97,25 +98,25 @@ function AdminCategoriesPage() {
   const totalCategoryRecipes = useMemo(() => categories.reduce((sum, c) => sum + c.recipeCount, 0), [categories])
 
   const visibleCategories = useMemo(() => {
-    const query = categorySearch.trim().toLowerCase()
+    const query = categorySearch.trim()
     if (!query) return categories
     return categories.filter(
       (category) =>
-        category.name_en.toLowerCase().includes(query) ||
-        (category.name_sr?.toLowerCase().includes(query) ?? false) ||
-        category.slug.toLowerCase().includes(query),
+        textMatchesQuery(category.name_en, query) ||
+        (category.name_sr ? textMatchesQuery(category.name_sr, query) : false) ||
+        textMatchesQuery(category.slug, query),
     )
   }, [categories, categorySearch])
 
   const visibleSubcategories = useMemo(() => {
-    const query = subcategorySearch.trim().toLowerCase()
+    const query = subcategorySearch.trim()
     if (!query) return subcategories
     return subcategories.filter(
       (subcategory) =>
-        subcategory.name_en.toLowerCase().includes(query) ||
-        (subcategory.name_sr?.toLowerCase().includes(query) ?? false) ||
-        subcategory.slug.toLowerCase().includes(query) ||
-        subcategory.category?.name_en.toLowerCase().includes(query),
+        textMatchesQuery(subcategory.name_en, query) ||
+        (subcategory.name_sr ? textMatchesQuery(subcategory.name_sr, query) : false) ||
+        textMatchesQuery(subcategory.slug, query) ||
+        (subcategory.category ? textMatchesQuery(subcategory.category.name_en, query) : false),
     )
   }, [subcategories, subcategorySearch])
 
@@ -131,13 +132,13 @@ function AdminCategoriesPage() {
   )
 
   const visibleTags = useMemo(() => {
-    const query = tagSearch.trim().toLowerCase()
+    const query = tagSearch.trim()
     if (!query) return tags
     return tags.filter(
       (tag) =>
-        tag.name_en.toLowerCase().includes(query) ||
-        (tag.name_sr?.toLowerCase().includes(query) ?? false) ||
-        tag.slug.toLowerCase().includes(query),
+        textMatchesQuery(tag.name_en, query) ||
+        (tag.name_sr ? textMatchesQuery(tag.name_sr, query) : false) ||
+        textMatchesQuery(tag.slug, query),
     )
   }, [tags, tagSearch])
 
