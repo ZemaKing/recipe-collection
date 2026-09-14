@@ -103,7 +103,7 @@ function ImportRecipeJsonDialog({
         </DialogHeader>
 
         {warnings ? (
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 max-h-[50vh]">
             <div className="flex items-start gap-2 rounded-control border border-emerald-500/40 bg-emerald-500/10 px-3 py-2.5 text-sm text-emerald-400">
               <CheckCircle2 className="mt-0.5 size-4 shrink-0" />
               <div className="flex flex-col gap-1">
@@ -128,8 +128,13 @@ function ImportRecipeJsonDialog({
             </div>
           </div>
         ) : (
-          <div className="flex flex-col gap-4">
-            <JsonEditorField value={jsonText} onChange={setJsonText} hasError={!!error} placeholder={PLACEHOLDER_JSON} />
+          <div className="flex flex-col gap-4 max-h-[50vh]">
+            <JsonEditorField
+              value={jsonText}
+              onChange={setJsonText}
+              hasError={!!error}
+              placeholder={PLACEHOLDER_JSON}
+            />
 
             {error && (
               <p className="flex items-start gap-1.5 text-xs text-favorite">
@@ -143,7 +148,9 @@ function ImportRecipeJsonDialog({
                 <Info className="size-3" />
               </span>
               <div className="flex flex-col gap-0.5">
-                <p className="text-sm font-medium text-sky-300">{t('admin.recipeForm.importTip')}</p>
+                <p className="text-sm font-medium text-sky-300">
+                  {t('admin.recipeForm.importTip')}
+                </p>
                 <p className="text-xs text-sky-300/80">{t('admin.recipeForm.importTipText')}</p>
               </div>
             </div>
