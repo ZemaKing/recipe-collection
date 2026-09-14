@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react'
 import {
   ChevronDown,
-  ChevronRight,
   LayoutGrid,
   MoreVertical,
   Pencil,
@@ -243,7 +242,6 @@ function AdminCategoriesPage() {
                   <thead>
                     <tr className="border-b border-border text-xs text-muted-foreground uppercase">
                       <th className="px-4 py-3 font-medium">{t('admin.categories.columnCategory')}</th>
-                      <th className="px-4 py-3 font-medium">{t('admin.categories.columnSlug')}</th>
                       <th className="px-4 py-3 font-medium">{t('admin.categories.columnRecipes')}</th>
                       <th className="px-4 py-3 text-right font-medium">{t('admin.categories.columnActions')}</th>
                     </tr>
@@ -267,11 +265,6 @@ function AdminCategoriesPage() {
                                 {pickLocalized(category.name_en, category.name_sr, lang)}
                               </span>
                             </button>
-                          </td>
-                          <td className="px-4 py-3">
-                            <span className="rounded-pill bg-surface-elevated px-2.5 py-1 text-xs text-muted-foreground">
-                              {category.slug}
-                            </span>
                           </td>
                           <td className="px-4 py-3">
                             <span className="rounded-pill bg-surface-elevated px-2.5 py-1 text-xs font-medium text-foreground">
@@ -322,24 +315,18 @@ function AdminCategoriesPage() {
                         key={category.id}
                         className="flex flex-col gap-3 rounded-card border border-border bg-surface-elevated p-4 transition-colors hover:border-accent/50"
                       >
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="flex items-start gap-3">
-                            <div className={`flex size-12 shrink-0 items-center justify-center rounded-full ${colors.bg} ${colors.text}`}>
-                              <Icon className="size-6" />
-                            </div>
-                            <div className="flex flex-col items-start gap-1.5">
-                              <p className="text-sm font-semibold text-foreground">
-                                {pickLocalized(category.name_en, category.name_sr, lang)}
-                              </p>
-                              <span className="rounded-pill bg-surface px-2 py-0.5 text-xs text-muted-foreground">
-                                {category.slug}
-                              </span>
-                              <span className="rounded-pill bg-surface px-2 py-0.5 text-xs font-medium text-foreground">
-                                {t('common.recipeCount', { count: category.recipeCount })}
-                              </span>
-                            </div>
+                        <div className="flex items-start gap-3">
+                          <div className={`flex size-12 shrink-0 items-center justify-center rounded-full ${colors.bg} ${colors.text}`}>
+                            <Icon className="size-6" />
                           </div>
-                          <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
+                          <div className="flex flex-col items-start gap-1.5">
+                            <p className="text-sm font-semibold text-foreground">
+                              {pickLocalized(category.name_en, category.name_sr, lang)}
+                            </p>
+                            <span className="rounded-pill bg-surface px-2 py-0.5 text-xs font-medium text-foreground">
+                              {t('common.recipeCount', { count: category.recipeCount })}
+                            </span>
+                          </div>
                         </div>
 
                         {description && <p className="text-xs text-muted-foreground">{description}</p>}
@@ -413,7 +400,6 @@ function AdminCategoriesPage() {
                     className={`${inputClass} w-full pl-8`}
                   />
                 </div>
-                <ViewModeToggle value={viewMode} onChange={setViewMode} />
                 <button
                   type="button"
                   onClick={() => setEditingSubcategory(null)}
@@ -445,7 +431,6 @@ function AdminCategoriesPage() {
                               <p className="truncate text-sm font-semibold text-foreground">
                                 {pickLocalized(category.name_en, category.name_sr, lang)}
                               </p>
-                              <p className="truncate text-xs text-muted-foreground">{category.slug}</p>
                             </div>
                           </div>
                           <div className="flex shrink-0 items-center gap-2">
@@ -467,10 +452,9 @@ function AdminCategoriesPage() {
                           {items.map((subcategory) => (
                             <div key={subcategory.id} className="flex items-center justify-between gap-3 px-4 py-3">
                               <div className="min-w-0">
-                                <p className="truncate text-sm font-medium text-foreground">{subcategory.name_en}</p>
-                                {subcategory.name_sr && (
-                                  <p className="truncate text-xs text-muted-foreground">{subcategory.name_sr}</p>
-                                )}
+                                <p className="truncate text-sm font-medium text-foreground">
+                                  {pickLocalized(subcategory.name_en, subcategory.name_sr, lang)}
+                                </p>
                               </div>
                               <div className="flex shrink-0 items-center gap-3">
                                 <span className="text-xs text-muted-foreground">
