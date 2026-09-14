@@ -234,7 +234,7 @@ function AdminRecipesPage() {
 
       {viewMode === 'grid' && (
         <div className="rounded-card border border-border bg-surface p-4">
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-3">
             {recipes.map((recipe) => {
               const name = pickLocalized(recipe.name_en, recipe.name_sr, lang)
               const categoryName = recipe.category
@@ -251,39 +251,39 @@ function AdminRecipesPage() {
                   <Link to={editHref}>
                     <RecipeImage image={recipe.image} alt={name} className="aspect-[3/2] w-full" />
                   </Link>
-                  <div className="flex flex-1 items-center justify-between gap-2 p-3">
-                    <div className="flex min-w-0 flex-col gap-2">
+                  <div className="flex flex-1 flex-col gap-2 p-3">
+                    <div className="flex items-start justify-between gap-2">
                       <Link
                         to={editHref}
-                        className="line-clamp-2 text-sm font-medium text-foreground transition-colors hover:text-accent"
+                        className="line-clamp-2 min-w-0 text-sm font-medium text-foreground transition-colors hover:text-accent"
                       >
                         {name}
                       </Link>
-                      {categoryName && badgeColor && (
-                        <span
-                          className={`inline-flex w-fit items-center rounded-pill px-2 py-0.5 text-xs font-medium ${badgeColor.bg} ${badgeColor.text}`}
+                      <div className="flex shrink-0 items-center gap-1">
+                        <Link
+                          to={editHref}
+                          aria-label={t('admin.recipesList.edit')}
+                          className="flex size-7 shrink-0 items-center justify-center rounded-control border border-border text-muted-foreground hover:bg-surface hover:text-foreground"
                         >
-                          {categoryName}
-                        </span>
-                      )}
+                          <Pencil className="size-3.5" />
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => setPendingDelete(recipe)}
+                          aria-label={t('admin.recipesList.delete')}
+                          className="flex size-7 shrink-0 items-center justify-center rounded-control border border-border text-favorite hover:bg-favorite/10"
+                        >
+                          <Trash2 className="size-3.5" />
+                        </button>
+                      </div>
                     </div>
-                    <div className="flex shrink-0 items-center gap-1">
-                      <Link
-                        to={editHref}
-                        aria-label={t('admin.recipesList.edit')}
-                        className="flex size-8 shrink-0 items-center justify-center rounded-control border border-border text-muted-foreground hover:bg-surface hover:text-foreground"
+                    {categoryName && badgeColor && (
+                      <span
+                        className={`mt-auto block w-fit max-w-full truncate rounded-pill px-2 py-0.5 text-xs font-medium ${badgeColor.bg} ${badgeColor.text}`}
                       >
-                        <Pencil className="size-3.5" />
-                      </Link>
-                      <button
-                        type="button"
-                        onClick={() => setPendingDelete(recipe)}
-                        aria-label={t('admin.recipesList.delete')}
-                        className="flex size-8 shrink-0 items-center justify-center rounded-control border border-border text-favorite hover:bg-favorite/10"
-                      >
-                        <Trash2 className="size-3.5" />
-                      </button>
-                    </div>
+                        {categoryName}
+                      </span>
+                    )}
                   </div>
                 </div>
               )
