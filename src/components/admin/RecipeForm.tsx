@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { forwardRef, useImperativeHandle, useMemo, useState } from 'react'
 import {
   Carrot,
   ChevronDown,
@@ -18,14 +18,18 @@ import type { LucideIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import CategorySelect from '@/components/admin/CategorySelect'
 import ImageManager from '@/components/admin/ImageManager'
+import ImportRecipeJsonDialog from '@/components/admin/ImportRecipeJsonDialog'
 import IngredientEditor from '@/components/admin/IngredientEditor'
 import StepEditor from '@/components/admin/StepEditor'
 import SubcategorySelect from '@/components/admin/SubcategorySelect'
 import type { AdminRecipeIngredient, AdminRecipeStep } from '@/hooks/useAdminRecipe'
 import { useCategories } from '@/hooks/useCategories'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
+import { useIngredients } from '@/hooks/useIngredients'
 import { useSubcategories } from '@/hooks/useSubcategories'
 import { useTags } from '@/hooks/useTags'
+import { buildAiRecipePrompt } from '@/lib/aiRecipePrompt'
+import { copyToClipboard } from '@/lib/clipboard'
 import { pickLocalized } from '@/lib/localizedField'
 import { difficultyValues, recipeFormSchema, type RecipeFormValues } from '@/lib/recipeFormSchema'
 import type { RecipeFormState } from '@/lib/recipeFormState'
@@ -40,6 +44,11 @@ interface RecipeFormProps {
   initialValues: RecipeFormState
   submitError: string | null
   onSubmit: (values: RecipeFormValues) => void
+}
+
+export interface RecipeFormHandle {
+  openImportDialog: () => void
+  copyAiPrompt: () => Promise<void>
 }
 
 const inputClass =
@@ -198,16 +207,36 @@ function IconSelectField({
   )
 }
 
-function RecipeForm({ formId, mode, recipeId, initialValues, submitError, onSubmit }: RecipeFormProps) {
+const RecipeForm = forwardRef<RecipeFormHandle, RecipeFormProps>(function RecipeForm(
+  { formId, mode, recipeId, initialValues, submitError, onSubmit },
+  ref,
+) {
   const { t } = useTranslation()
   const lang = useCurrentLang()
   const { categories } = useCategories()
   const { subcategories } = useSubcategories()
   const { tags } = useTags()
+  const { ingredients } = useIngredients()
 
   const [form, setForm] = useState<RecipeFormState>(initialValues)
   const [slugTouched, setSlugTouched] = useState(mode === 'edit')
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [isImportOpen, setIsImportOpen] = useState(false)
+
+  useImperativeHandle(ref, () => ({
+    openImportDialog: () => setIsImportOpen(true),
+    copyAiPrompt: async () => {
+      const prompt = buildAiRecipePrompt({
+        lang,
+        categories,
+        subcategories,
+        tags,
+        nameSr: form.name_sr,
+        nameEn: form.name_en,
+      })
+      await copyToClipboard(prompt)
+    },
+  }))
 
   const availableSubcategories = useMemo(
     () => subcategories.filter((subcategory) => subcategory.category_id === form.category_id),
@@ -266,7 +295,14 @@ function RecipeForm({ formId, mode, recipeId, initialValues, submitError, onSubm
     onSubmit(result.data)
   }
 
+  function handleImport(imported: RecipeFormState) {
+    setForm(imported)
+    setSlugTouched(true)
+    setErrors({})
+  }
+
   return (
+    <>
     <form id={formId} onSubmit={handleSubmit} className="flex flex-col gap-4">
       {Object.keys(errors).length > 0 && (
         <p className="rounded-control border border-favorite/40 bg-favorite/10 px-3 py-2 text-sm text-favorite">
@@ -576,7 +612,18 @@ function RecipeForm({ formId, mode, recipeId, initialValues, submitError, onSubm
         </div>
       </div>
     </form>
+
+    <ImportRecipeJsonDialog
+      open={isImportOpen}
+      onOpenChange={setIsImportOpen}
+      categories={categories}
+      subcategories={subcategories}
+      tags={tags}
+      ingredients={ingredients}
+      onImport={handleImport}
+    />
+    </>
   )
-}
+})
 
 export default RecipeForm

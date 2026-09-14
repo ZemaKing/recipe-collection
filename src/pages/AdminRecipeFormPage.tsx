@@ -1,7 +1,8 @@
-import { FileX } from 'lucide-react'
+import { useRef, useState } from 'react'
+import { Check, FileText, FileX, Upload } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import RecipeForm from '@/components/admin/RecipeForm'
+import RecipeForm, { type RecipeFormHandle } from '@/components/admin/RecipeForm'
 import EmptyState from '@/components/ui/EmptyState'
 import { useAdminRecipe } from '@/hooks/useAdminRecipe'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
@@ -21,6 +22,8 @@ function AdminRecipeFormPage() {
 
   const { recipe, isLoading, notFound } = useAdminRecipe(slug)
   const { save, isSaving, error } = useSaveRecipe()
+  const formRef = useRef<RecipeFormHandle>(null)
+  const [promptCopied, setPromptCopied] = useState(false)
 
   if (mode === 'edit' && isLoading) return null
 
@@ -71,6 +74,12 @@ function AdminRecipeFormPage() {
     }
   }
 
+  async function handleCopyAiPrompt() {
+    await formRef.current?.copyAiPrompt()
+    setPromptCopied(true)
+    setTimeout(() => setPromptCopied(false), 2000)
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -78,7 +87,23 @@ function AdminRecipeFormPage() {
           {mode === 'create' ? t('pages.addRecipe') : t('admin.recipeForm.editTitle')}
         </h1>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => void handleCopyAiPrompt()}
+            className="flex items-center gap-1.5 rounded-control border border-border px-3 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-surface-hover"
+          >
+            {promptCopied ? <Check className="size-4 text-emerald-400" /> : <FileText className="size-4" />}
+            {promptCopied ? t('admin.recipeForm.copyAiPromptCopied') : t('admin.recipeForm.copyAiPrompt')}
+          </button>
+          <button
+            type="button"
+            onClick={() => formRef.current?.openImportDialog()}
+            className="flex items-center gap-1.5 rounded-control border border-border px-3 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-surface-hover"
+          >
+            <Upload className="size-4" />
+            {t('admin.recipeForm.importJson')}
+          </button>
           <Link
             to={buildLocalizedPath(lang, '/admin/recepti')}
             className="rounded-control border border-border px-3 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-surface-hover"
@@ -102,6 +127,7 @@ function AdminRecipeFormPage() {
 
       <RecipeForm
         key={slug ?? 'create'}
+        ref={formRef}
         formId={RECIPE_FORM_ID}
         mode={mode}
         recipeId={mode === 'edit' && recipe ? recipe.id : null}
