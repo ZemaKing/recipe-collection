@@ -1,5 +1,5 @@
 import { Fragment, useMemo } from 'react'
-import { SearchX, X } from 'lucide-react'
+import { Heart, SearchX, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import CategoryFilterSelect from '@/components/recipes/CategoryFilterSelect'
@@ -128,10 +128,11 @@ function AllRecipesPage() {
         <button
           type="button"
           onClick={() => updateParam(FAVORITE_PARAM, favoritesOnly ? null : '1')}
-          className={`rounded-pill border border-border px-3 py-2 text-sm font-medium transition-colors ${
-            favoritesOnly ? 'border-accent bg-accent-soft text-accent' : 'text-muted-foreground hover:text-foreground'
+          className={`flex items-center gap-1.5 rounded-pill border px-3 py-2 text-sm font-medium transition-colors ${
+            favoritesOnly ? 'border-favorite bg-favorite/10 text-favorite' : 'border-border text-muted-foreground hover:text-foreground'
           }`}
         >
+          <Heart className={favoritesOnly ? 'size-4 fill-favorite text-favorite' : 'size-4 text-muted-foreground'} />
           {t('browse.favoritesOnly')}
         </button>
 
