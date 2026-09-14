@@ -4,6 +4,7 @@ import { NavLink, useLocation, useNavigate, useSearchParams } from 'react-router
 import { useCategories } from '@/hooks/useCategories'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
 import { useTags } from '@/hooks/useTags'
+import { getCategoryBadgeColor } from '@/lib/categoryColor'
 import { getCategoryIcon } from '@/lib/categoryIcons'
 import { pickLocalized } from '@/lib/localizedField'
 import { buildLocalizedPath, stripLangPrefix } from '@/lib/localizedPath'
@@ -96,14 +97,29 @@ function Sidebar() {
             {t('nav.categories')}
           </p>
           <div className="flex flex-col gap-1">
-            {categories.map((category) => (
-              <NavRow
-                key={category.slug}
-                path={`/kategorije/${category.slug}`}
-                icon={getCategoryIcon(category.slug)}
-                label={pickLocalized(category.name_en, category.name_sr, lang)}
-              />
-            ))}
+            {categories.map((category) => {
+              const Icon = getCategoryIcon(category.slug)
+              const colors = getCategoryBadgeColor(category.slug)
+              const label = pickLocalized(category.name_en, category.name_sr, lang)
+              const to = buildLocalizedPath(lang, `/kategorije/${category.slug}`)
+              return (
+                <NavLink
+                  key={category.slug}
+                  to={to}
+                  className={({ isActive }) =>
+                    cn(
+                      'flex items-center gap-3 rounded-control px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-surface-hover hover:text-foreground md:justify-center lg:justify-start',
+                      isActive && cn(colors.bg, colors.text, colors.hoverBg, colors.hoverText),
+                    )
+                  }
+                  title={label}
+                  aria-label={label}
+                >
+                  <Icon className="size-5 shrink-0" />
+                  <span className="hidden lg:inline">{label}</span>
+                </NavLink>
+              )
+            })}
           </div>
         </div>
 

@@ -200,6 +200,7 @@
       "next": "Sledeća",
       "pageOf": "Strana {{page}} od {{pageCount}}"
     },
+
     "recipeForm": {
       "basics": "Osnovne informacije",
       "basicsSubtitle": "Naziv, opis i osnovni detalji",

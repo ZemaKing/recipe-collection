@@ -2,6 +2,7 @@ import type { LucideIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
+import { getCategoryBadgeColor } from '@/lib/categoryColor'
 import { pickLocalized } from '@/lib/localizedField'
 import { buildLocalizedPath } from '@/lib/localizedPath'
 
@@ -17,13 +18,14 @@ function CategoryCard({ slug, name_en, name_sr, recipeCount, icon: Icon }: Categ
   const { t } = useTranslation()
   const lang = useCurrentLang()
   const name = pickLocalized(name_en, name_sr, lang)
+  const colors = getCategoryBadgeColor(slug)
 
   return (
     <Link
       to={buildLocalizedPath(lang, `/kategorije/${slug}`)}
       className="flex items-center gap-3 rounded-card border border-border bg-surface px-3 py-2.5 text-left transition-colors hover:border-accent/50 sm:flex-col sm:gap-2 sm:p-4 sm:text-center"
     >
-      <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent">
+      <div className={`flex size-12 shrink-0 items-center justify-center rounded-full ${colors.bg} ${colors.text}`}>
         <Icon className="size-6" />
       </div>
       <div className="flex min-w-0 flex-col sm:contents">

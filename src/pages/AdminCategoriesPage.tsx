@@ -3,7 +3,6 @@ import {
   ChevronDown,
   ChevronRight,
   LayoutGrid,
-  List,
   MoreVertical,
   Pencil,
   Plus,
@@ -18,6 +17,7 @@ import DeleteSubcategoryDialog from '@/components/admin/DeleteSubcategoryDialog'
 import DeleteTagDialog from '@/components/admin/DeleteTagDialog'
 import SubcategoryFormDialog, { type SubcategoryFormValues } from '@/components/admin/SubcategoryFormDialog'
 import TagFormDialog, { type TagFormValues } from '@/components/admin/TagFormDialog'
+import ViewModeToggle, { type ViewMode } from '@/components/admin/ViewModeToggle'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
   DropdownMenu,
@@ -35,6 +35,7 @@ import { useDeleteTag } from '@/hooks/useDeleteTag'
 import { useSaveCategory } from '@/hooks/useSaveCategory'
 import { useSaveSubcategory } from '@/hooks/useSaveSubcategory'
 import { useSaveTag } from '@/hooks/useSaveTag'
+import { getCategoryBadgeColor } from '@/lib/categoryColor'
 import { getCategoryDescription } from '@/lib/categoryDescriptions'
 import { getCategoryIcon } from '@/lib/categoryIcons'
 import { pickLocalized } from '@/lib/localizedField'
@@ -45,42 +46,6 @@ const inputClass =
   'rounded-control border border-border bg-surface-elevated px-2.5 py-1.5 text-sm text-foreground placeholder:text-muted-foreground'
 
 type TabValue = 'categories' | 'subcategories' | 'tags'
-type ViewMode = 'grid' | 'list'
-
-interface ViewModeToggleProps {
-  value: ViewMode
-  onChange: (mode: ViewMode) => void
-}
-
-function ViewModeToggle({ value, onChange }: ViewModeToggleProps) {
-  const { t } = useTranslation()
-  return (
-    <div className="flex items-center overflow-hidden rounded-control border border-border">
-      <button
-        type="button"
-        onClick={() => onChange('grid')}
-        aria-label={t('admin.categories.gridView')}
-        className={cn(
-          'flex size-9 items-center justify-center',
-          value === 'grid' ? 'bg-accent text-accent-foreground' : 'bg-surface-elevated text-muted-foreground hover:text-foreground',
-        )}
-      >
-        <LayoutGrid className="size-4" />
-      </button>
-      <button
-        type="button"
-        onClick={() => onChange('list')}
-        aria-label={t('admin.categories.listView')}
-        className={cn(
-          'flex size-9 items-center justify-center border-l border-border',
-          value === 'list' ? 'bg-accent text-accent-foreground' : 'bg-surface-elevated text-muted-foreground hover:text-foreground',
-        )}
-      >
-        <List className="size-4" />
-      </button>
-    </div>
-  )
-}
 
 function AdminCategoriesPage() {
   const { t } = useTranslation()
@@ -286,6 +251,7 @@ function AdminCategoriesPage() {
                   <tbody className="divide-y divide-border">
                     {visibleCategories.map((category) => {
                       const Icon = getCategoryIcon(category.slug)
+                      const colors = getCategoryBadgeColor(category.slug)
                       return (
                         <tr key={category.id} className="transition-colors hover:bg-surface-hover">
                           <td className="px-4 py-3">
@@ -294,8 +260,8 @@ function AdminCategoriesPage() {
                               onClick={() => setEditingCategory(category)}
                               className="flex items-center gap-2.5 text-left transition-colors hover:text-accent"
                             >
-                              <span className="flex size-8 shrink-0 items-center justify-center rounded-control bg-accent-soft">
-                                <Icon className="size-4 text-accent" />
+                              <span className={`flex size-8 shrink-0 items-center justify-center rounded-control ${colors.bg}`}>
+                                <Icon className={`size-4 ${colors.text}`} />
                               </span>
                               <span className="font-medium text-foreground">
                                 {pickLocalized(category.name_en, category.name_sr, lang)}
@@ -349,6 +315,7 @@ function AdminCategoriesPage() {
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
                   {visibleCategories.map((category) => {
                     const Icon = getCategoryIcon(category.slug)
+                    const colors = getCategoryBadgeColor(category.slug)
                     const description = getCategoryDescription(category.slug, lang)
                     return (
                       <div
@@ -357,7 +324,7 @@ function AdminCategoriesPage() {
                       >
                         <div className="flex items-start justify-between gap-2">
                           <div className="flex items-start gap-3">
-                            <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent">
+                            <div className={`flex size-12 shrink-0 items-center justify-center rounded-full ${colors.bg} ${colors.text}`}>
                               <Icon className="size-6" />
                             </div>
                             <div className="flex flex-col items-start gap-1.5">
