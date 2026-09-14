@@ -1,10 +1,15 @@
 import { useEffect, useState } from 'react'
-import { ArrowUpDown, Pencil, Plus, Search, Trash2 } from 'lucide-react'
+import { ArrowDown, ArrowUp, ArrowUpDown, Pencil, Plus, Search, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import DeleteRecipeDialog from '@/components/admin/DeleteRecipeDialog'
 import RecipeImage from '@/components/recipes/RecipeImage'
-import { useAdminRecipes, type AdminRecipeListItem, type AdminRecipeSort } from '@/hooks/useAdminRecipes'
+import {
+  useAdminRecipes,
+  type AdminRecipeListItem,
+  type AdminRecipeSort,
+  type SortDirection,
+} from '@/hooks/useAdminRecipes'
 import { useCategories } from '@/hooks/useCategories'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
 import { useDeleteRecipe } from '@/hooks/useDeleteRecipe'
@@ -15,6 +20,12 @@ import { buildLocalizedPath } from '@/lib/localizedPath'
 const inputClass =
   'rounded-control border border-border bg-surface-elevated px-2.5 py-1.5 text-sm text-foreground placeholder:text-muted-foreground'
 
+const DEFAULT_SORT_DIRECTION: Record<AdminRecipeSort, SortDirection> = {
+  name: 'asc',
+  rating: 'desc',
+  recent: 'desc',
+}
+
 function AdminRecipesPage() {
   const { t } = useTranslation()
   const lang = useCurrentLang()
@@ -22,6 +33,7 @@ function AdminRecipesPage() {
   const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
   const [sort, setSort] = useState<AdminRecipeSort>('name')
+  const [sortDirection, setSortDirection] = useState<SortDirection>('asc')
   const [categoryId, setCategoryId] = useState('')
   const [page, setPage] = useState(0)
   const [pendingDelete, setPendingDelete] = useState<AdminRecipeListItem | null>(null)
@@ -40,12 +52,29 @@ function AdminRecipesPage() {
   const { recipes, total, isLoading, error, pageSize, refetch } = useAdminRecipes({
     search,
     sort,
+    sortDirection,
+    lang,
     page,
     categoryId,
   })
   const { deleteRecipe, isDeleting, error: deleteError } = useDeleteRecipe()
 
   const pageCount = Math.max(1, Math.ceil(total / pageSize))
+
+  function handleSortChange(nextSort: AdminRecipeSort) {
+    setSort(nextSort)
+    setSortDirection(DEFAULT_SORT_DIRECTION[nextSort])
+    setPage(0)
+  }
+
+  function handleNameHeaderClick() {
+    if (sort === 'name') {
+      setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'))
+    } else {
+      handleSortChange('name')
+    }
+    setPage(0)
+  }
 
   async function handleConfirmDelete() {
     if (!pendingDelete) return
@@ -97,10 +126,7 @@ function AdminRecipesPage() {
         </select>
         <select
           value={sort}
-          onChange={(e) => {
-            setSort(e.target.value as AdminRecipeSort)
-            setPage(0)
-          }}
+          onChange={(e) => handleSortChange(e.target.value as AdminRecipeSort)}
           className={inputClass}
         >
           <option value="name">{t('admin.recipesList.sortName')}</option>
@@ -117,10 +143,22 @@ function AdminRecipesPage() {
             <tr className="border-b border-border text-left text-xs font-medium tracking-wide text-muted-foreground uppercase">
               <th className="w-16 px-4 py-3 font-medium">{t('admin.recipesList.columnImage')}</th>
               <th className="px-2 py-3 font-medium">
-                <span className="inline-flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={handleNameHeaderClick}
+                  className="inline-flex items-center gap-1.5 uppercase text-muted-foreground transition-colors hover:text-foreground"
+                >
                   {t('admin.recipesList.columnName')}
-                  <ArrowUpDown className="size-3.5" />
-                </span>
+                  {sort === 'name' ? (
+                    sortDirection === 'asc' ? (
+                      <ArrowUp className="size-3.5" />
+                    ) : (
+                      <ArrowDown className="size-3.5" />
+                    )
+                  ) : (
+                    <ArrowUpDown className="size-3.5" />
+                  )}
+                </button>
               </th>
               <th className="px-2 py-3 font-medium">{t('admin.recipesList.columnCategory')}</th>
               <th className="px-4 py-3 text-right font-medium">{t('admin.recipesList.columnActions')}</th>
@@ -137,11 +175,13 @@ function AdminRecipesPage() {
               return (
                 <tr key={recipe.id} className="transition-colors hover:bg-surface-hover">
                   <td className="px-4 py-2.5">
-                    <RecipeImage
-                      image={recipe.image}
-                      alt={name}
-                      className="aspect-[3/2] w-15 shrink-0 rounded-control"
-                    />
+                    <Link to={buildLocalizedPath(lang, `/admin/recepti/${recipe.slug}/izmeni`)}>
+                      <RecipeImage
+                        image={recipe.image}
+                        alt={name}
+                        className="aspect-[3/2] w-15 shrink-0 rounded-control"
+                      />
+                    </Link>
                   </td>
                   <td className="px-2 py-2.5">
                     <Link

@@ -3,43 +3,38 @@ import { AlertCircle, CheckCircle2, Info, Upload } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import JsonEditorField from '@/components/admin/JsonEditorField'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import type { CategoryWithCount } from '@/hooks/useCategories'
-import type { IngredientWithCategory } from '@/hooks/useIngredients'
-import type { SubcategoryWithCount } from '@/hooks/useSubcategories'
-import type { Tag } from '@/hooks/useTags'
-import { recipeImportSchema, resolveRecipeImport, RecipeImportError, type RecipeImportWarning } from '@/lib/recipeImport'
-import type { RecipeFormState } from '@/lib/recipeFormState'
+import { ingredientImportSchema, resolveIngredientImport, type IngredientImportWarning } from '@/lib/ingredientImport'
+import type { IngredientFormState } from '@/lib/ingredientFormState'
+import type { IngredientCategory, Mineral, Vitamin } from '@/types/ingredient'
 
 const PLACEHOLDER_JSON = `{
-  "name_sr": "Pileća supa",
-  "name_en": "Chicken Soup",
-  "description_sr": "...",
-  "description_en": "..."
+  "name_sr": "Mleko",
+  "name_en": "Milk",
+  "category": "mleko-i-mlecni-proizvodi",
+  "calories_kcal": 62
 }`
 
-interface ImportRecipeJsonDialogProps {
+interface ImportIngredientJsonDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  categories: CategoryWithCount[]
-  subcategories: SubcategoryWithCount[]
-  tags: Tag[]
-  ingredients: IngredientWithCategory[]
-  onImport: (formState: RecipeFormState) => void
+  categories: IngredientCategory[]
+  vitamins: Vitamin[]
+  minerals: Mineral[]
+  onImport: (formState: IngredientFormState) => void
 }
 
-function ImportRecipeJsonDialog({
+function ImportIngredientJsonDialog({
   open,
   onOpenChange,
   categories,
-  subcategories,
-  tags,
-  ingredients,
+  vitamins,
+  minerals,
   onImport,
-}: ImportRecipeJsonDialogProps) {
+}: ImportIngredientJsonDialogProps) {
   const { t } = useTranslation()
   const [jsonText, setJsonText] = useState('')
   const [error, setError] = useState<string | null>(null)
-  const [warnings, setWarnings] = useState<RecipeImportWarning[] | null>(null)
+  const [warnings, setWarnings] = useState<IngredientImportWarning[] | null>(null)
 
   function reset() {
     setJsonText('')
@@ -63,7 +58,7 @@ function ImportRecipeJsonDialog({
       return
     }
 
-    const parseResult = recipeImportSchema.safeParse(parsed)
+    const parseResult = ingredientImportSchema.safeParse(parsed)
     if (!parseResult.success) {
       const [firstIssue] = parseResult.error.issues
       const path = firstIssue.path.join('.')
@@ -72,25 +67,16 @@ function ImportRecipeJsonDialog({
       return
     }
 
-    try {
-      const { formState, warnings: resolvedWarnings } = resolveRecipeImport(parseResult.data, {
-        categories,
-        subcategories,
-        tags,
-        ingredients,
-      })
-      onImport(formState)
-      if (resolvedWarnings.length > 0) {
-        setWarnings(resolvedWarnings)
-      } else {
-        handleOpenChange(false)
-      }
-    } catch (err) {
-      if (err instanceof RecipeImportError) {
-        setError(t(err.messageKey, err.params))
-      } else {
-        setError(err instanceof Error ? err.message : String(err))
-      }
+    const { formState, warnings: resolvedWarnings } = resolveIngredientImport(parseResult.data, {
+      categories,
+      vitamins,
+      minerals,
+    })
+    onImport(formState)
+    if (resolvedWarnings.length > 0) {
+      setWarnings(resolvedWarnings)
+    } else {
+      handleOpenChange(false)
     }
   }
 
@@ -98,8 +84,8 @@ function ImportRecipeJsonDialog({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="max-w-lg">
         <DialogHeader>
-          <DialogTitle>{t('admin.recipeForm.importDialogTitle')}</DialogTitle>
-          <DialogDescription>{t('admin.recipeForm.importDialogDescription')}</DialogDescription>
+          <DialogTitle>{t('admin.ingredients.importDialogTitle')}</DialogTitle>
+          <DialogDescription>{t('admin.ingredients.importDialogDescription')}</DialogDescription>
         </DialogHeader>
 
         {warnings ? (
@@ -144,7 +130,7 @@ function ImportRecipeJsonDialog({
               </span>
               <div className="flex flex-col gap-0.5">
                 <p className="text-sm font-medium text-sky-300">{t('admin.recipeForm.importTip')}</p>
-                <p className="text-xs text-sky-300/80">{t('admin.recipeForm.importTipText')}</p>
+                <p className="text-xs text-sky-300/80">{t('admin.ingredients.importTipText')}</p>
               </div>
             </div>
 
@@ -173,4 +159,4 @@ function ImportRecipeJsonDialog({
   )
 }
 
-export default ImportRecipeJsonDialog
+export default ImportIngredientJsonDialog

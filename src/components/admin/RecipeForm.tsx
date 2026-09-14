@@ -17,6 +17,7 @@ import {
 import type { LucideIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import CategorySelect from '@/components/admin/CategorySelect'
+import FormCard, { RequiredMark } from '@/components/admin/FormCard'
 import ImageManager from '@/components/admin/ImageManager'
 import ImportRecipeJsonDialog from '@/components/admin/ImportRecipeJsonDialog'
 import IngredientEditor from '@/components/admin/IngredientEditor'
@@ -63,47 +64,6 @@ const DIFFICULTY_ICON_COLOR: Record<string, string> = {
 
 function fieldErrorPath(path: PropertyKey[]): string {
   return path.map(String).join('.')
-}
-
-function RequiredMark() {
-  return (
-    <span aria-hidden="true" className="text-favorite">
-      {' '}
-      *
-    </span>
-  )
-}
-
-function FormCard({
-  icon: Icon,
-  title,
-  description,
-  action,
-  children,
-}: {
-  icon: LucideIcon
-  title: string
-  description?: string
-  action?: React.ReactNode
-  children: React.ReactNode
-}) {
-  return (
-    <section className="overflow-hidden rounded-card border border-border bg-surface">
-      <div className="flex items-center justify-between gap-2 px-4 py-3">
-        <div className="flex items-center gap-3">
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-2xl bg-accent-soft text-accent">
-            <Icon className="size-4" />
-          </span>
-          <div>
-            <h2 className="text-sm font-semibold text-foreground">{title}</h2>
-            {description && <p className="text-xs text-muted-foreground">{description}</p>}
-          </div>
-        </div>
-        {action}
-      </div>
-      <div className="flex flex-col gap-3 p-4">{children}</div>
-    </section>
-  )
 }
 
 function AddButton({ label, onClick }: { label: string; onClick: () => void }) {

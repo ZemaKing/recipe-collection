@@ -6,6 +6,13 @@ const optionalText = z
   .optional()
   .transform((value) => (value ? value : undefined))
 
+const optionalFactText = z
+  .string()
+  .trim()
+  .max(300, 'errors.factTooLong')
+  .optional()
+  .transform((value) => (value ? value : undefined))
+
 const optionalNonNegativeNumber = z.preprocess(
   (value) => (value === '' || value === null || value === undefined ? undefined : Number(value)),
   z.number('errors.mustBeNumber').nonnegative('errors.mustBeNonNegative').optional(),
@@ -45,8 +52,8 @@ export const ingredientFormSchema = z
     name_sr: optionalText,
     latin_name: optionalText,
     regional_names: optionalText,
-    fact_en: optionalText,
-    fact_sr: optionalText,
+    fact_en: optionalFactText,
+    fact_sr: optionalFactText,
     default_unit_en: optionalText,
     default_unit_sr: optionalText,
     ingredient_category_id: optionalText,

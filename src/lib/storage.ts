@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabaseClient'
 
 const RECIPE_IMAGES_BUCKET = 'recipe-images'
+const INGREDIENT_IMAGES_BUCKET = 'ingredient-images'
 
 export const MAX_RECIPE_IMAGE_BYTES = 5 * 1024 * 1024
 export const ACCEPTED_RECIPE_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const
@@ -17,8 +18,25 @@ export function validateRecipeImageFile(file: File): RecipeImageValidationError 
   return null
 }
 
+// Same size/type limits as recipe photos — kept as its own function (rather
+// than sharing validateRecipeImageFile) so ingredient-specific error copy can
+// diverge later without touching the recipe path.
+export function validateIngredientImageFile(file: File): RecipeImageValidationError | null {
+  if (!ACCEPTED_RECIPE_IMAGE_TYPES.includes(file.type as (typeof ACCEPTED_RECIPE_IMAGE_TYPES)[number])) {
+    return 'invalidType'
+  }
+  if (file.size > MAX_RECIPE_IMAGE_BYTES) {
+    return 'tooLarge'
+  }
+  return null
+}
+
 export function getRecipeImageUrl(storagePath: string): string {
   return supabase.storage.from(RECIPE_IMAGES_BUCKET).getPublicUrl(storagePath).data.publicUrl
+}
+
+export function getIngredientImageUrl(storagePath: string): string {
+  return supabase.storage.from(INGREDIENT_IMAGES_BUCKET).getPublicUrl(storagePath).data.publicUrl
 }
 
 function extensionFor(file: File): string {
@@ -74,6 +92,36 @@ export async function uploadRecipeImage(recipeId: string, file: File): Promise<s
 
 export async function deleteRecipeImageFile(storagePath: string): Promise<void> {
   const { error } = await supabase.storage.from(RECIPE_IMAGES_BUCKET).remove([storagePath])
+  if (error) throw error
+}
+
+export async function uploadIngredientImage(ingredientId: string, file: File): Promise<string> {
+  const resized = await resizeImageIfNeeded(file)
+  const storagePath = `${ingredientId}/${crypto.randomUUID()}.${extensionFor(resized)}`
+  const { error } = await supabase.storage.from(INGREDIENT_IMAGES_BUCKET).upload(storagePath, resized, {
+    cacheControl: '3600',
+    upsert: false,
+  })
+  if (error) throw error
+  return storagePath
+}
+
+export async function deleteIngredientImageFile(storagePath: string): Promise<void> {
+  const { error } = await supabase.storage.from(INGREDIENT_IMAGES_BUCKET).remove([storagePath])
+  if (error) throw error
+}
+
+// Same folder-listing cleanup as deleteRecipeImageFolder, used when the whole
+// ingredient row is deleted rather than just its photo replaced/removed.
+export async function deleteIngredientImageFolder(ingredientId: string): Promise<void> {
+  const { data: files, error: listError } = await supabase.storage
+    .from(INGREDIENT_IMAGES_BUCKET)
+    .list(ingredientId)
+  if (listError) throw listError
+  if (!files || files.length === 0) return
+
+  const paths = files.map((file) => `${ingredientId}/${file.name}`)
+  const { error } = await supabase.storage.from(INGREDIENT_IMAGES_BUCKET).remove(paths)
   if (error) throw error
 }
 

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { deleteIngredientImageFolder } from '@/lib/storage'
 import { supabase } from '@/lib/supabaseClient'
 
 export function useDeleteIngredient() {
@@ -11,6 +12,10 @@ export function useDeleteIngredient() {
     setError(null)
 
     try {
+      // Storage cleanup first: if it fails, the ingredient row is left
+      // untouched, so the delete can simply be retried.
+      await deleteIngredientImageFolder(ingredientId)
+
       // recipe_ingredients.ingredient_id is `on delete set null`, so recipes
       // referencing this ingredient simply lose the catalog link (and drop
       // out of nutrition calculations) rather than blocking the delete.

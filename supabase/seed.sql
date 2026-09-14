@@ -769,16 +769,18 @@ values (
 -- Matches the reference-library folder structure (Phase 1: ingredient catalog).
 
 insert into ingredient_categories (slug, name_en, name_sr) values
-  ('dairy', 'Dairy', 'Mleko i mlečni proizvodi'),
-  ('vegetables', 'Vegetables', 'Povrće'),
-  ('misc-additives', 'Misc / Additives', 'Prilozi i dodaci'),
-  ('fish-and-meat', 'Fish & Meat', 'Riba i meso'),
-  ('sweets', 'Sweets', 'Slatkiši i poslastice'),
-  ('oils-and-fats', 'Oils & Fats', 'Ulja i masti'),
-  ('vitamins-and-minerals', 'Vitamins & Minerals', 'Vitamini i minerali'),
-  ('fruit', 'Fruit', 'Voće'),
-  ('herbs-and-spices', 'Herbs & Spices', 'Začini i bilje'),
-  ('grains', 'Grains', 'Žitarice')
+  ('mleko-i-mlecni-proizvodi', 'Dairy & Milk Products', 'Mleko i mlečni proizvodi'),
+  ('meso-i-mesne-preradjevine', 'Meat & Meat Products', 'Meso i mesne prerađevine'),
+  ('riba-i-morski-plodovi', 'Fish & Seafood', 'Riba i morski plodovi'),
+  ('jaja', 'Eggs', 'Jaja'),
+  ('povrce', 'Vegetables', 'Povrće'),
+  ('voce', 'Fruit', 'Voće'),
+  ('pecurke', 'Mushrooms', 'Pečurke'),
+  ('zitarice-testenine-i-peciva', 'Grains, Pasta & Baked Goods', 'Žitarice, testenine i peciva'),
+  ('zacini-i-zacinsko-bilje', 'Herbs & Spices', 'Začini i začinsko bilje'),
+  ('ulja-i-masti', 'Oils & Fats', 'Ulja i masti'),
+  ('seceri-i-zasladjivaci', 'Sugars & Sweeteners', 'Šećeri i zaslađivači'),
+  ('pica-i-tecnosti', 'Beverages & Liquids', 'Pića i tečnosti')
 on conflict (slug) do update set
   name_en = excluded.name_en,
   name_sr = excluded.name_sr;
@@ -793,7 +795,7 @@ declare
   v_ing_cat_id uuid;
 begin
 
-  select id into v_ing_cat_id from ingredient_categories where slug = 'vegetables';
+  select id into v_ing_cat_id from ingredient_categories where slug = 'povrce';
   insert into ingredients (
     slug, ingredient_category_id, name_en, name_sr, latin_name,
     fact_en, fact_sr, default_unit_en, default_unit_sr,
@@ -848,7 +850,7 @@ begin
     carbs_g = excluded.carbs_g, fiber_g = excluded.fiber_g,
     micronutrients = excluded.micronutrients, unit_conversions = excluded.unit_conversions;
 
-  select id into v_ing_cat_id from ingredient_categories where slug = 'dairy';
+  select id into v_ing_cat_id from ingredient_categories where slug = 'mleko-i-mlecni-proizvodi';
   insert into ingredients (
     slug, ingredient_category_id, name_en, name_sr, latin_name,
     fact_en, fact_sr, default_unit_en, default_unit_sr,
@@ -870,7 +872,7 @@ begin
     carbs_g = excluded.carbs_g, fiber_g = excluded.fiber_g,
     micronutrients = excluded.micronutrients, unit_conversions = excluded.unit_conversions;
 
-  select id into v_ing_cat_id from ingredient_categories where slug = 'oils-and-fats';
+  select id into v_ing_cat_id from ingredient_categories where slug = 'ulja-i-masti';
   insert into ingredients (
     slug, ingredient_category_id, name_en, name_sr, latin_name,
     fact_en, fact_sr, default_unit_en, default_unit_sr,

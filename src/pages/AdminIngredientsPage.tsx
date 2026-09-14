@@ -1,12 +1,14 @@
 import { useMemo, useState } from 'react'
-import { Pencil, Plus, Search, Trash2 } from 'lucide-react'
+import { ArrowDown, ArrowUp, Pencil, Plus, Search, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import DeleteIngredientDialog from '@/components/admin/DeleteIngredientDialog'
+import IngredientImage from '@/components/admin/IngredientImage'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
 import { useDeleteIngredient } from '@/hooks/useDeleteIngredient'
 import { useIngredientCategories } from '@/hooks/useIngredientCategories'
 import { type IngredientWithCategory, useIngredients } from '@/hooks/useIngredients'
+import { getIngredientCategoryColors } from '@/lib/ingredientCategoryIcons'
 import { pickLocalized } from '@/lib/localizedField'
 import { buildLocalizedPath } from '@/lib/localizedPath'
 
@@ -22,11 +24,12 @@ function AdminIngredientsPage() {
 
   const [search, setSearch] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('')
+  const [nameSortDirection, setNameSortDirection] = useState<'asc' | 'desc'>('asc')
   const [pendingDelete, setPendingDelete] = useState<IngredientWithCategory | null>(null)
 
   const visible = useMemo(() => {
     const query = search.trim().toLowerCase()
-    return ingredients.filter((ingredient) => {
+    const filtered = ingredients.filter((ingredient) => {
       if (categoryFilter && ingredient.ingredient_category_id !== categoryFilter) return false
       if (!query) return true
       return (
@@ -34,7 +37,18 @@ function AdminIngredientsPage() {
         (ingredient.name_sr?.toLowerCase().includes(query) ?? false)
       )
     })
-  }, [ingredients, search, categoryFilter])
+
+    // Sorts by whichever language is active in the UI rather than a fixed
+    // column, so switching languages re-sorts the list accordingly.
+    const direction = nameSortDirection === 'asc' ? 1 : -1
+    return [...filtered].sort(
+      (a, b) => pickLocalized(a.name_en, a.name_sr, lang).localeCompare(pickLocalized(b.name_en, b.name_sr, lang)) * direction,
+    )
+  }, [ingredients, search, categoryFilter, nameSortDirection, lang])
+
+  function handleNameHeaderClick() {
+    setNameSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'))
+  }
 
   async function handleConfirmDelete() {
     if (!pendingDelete) return
@@ -83,55 +97,91 @@ function AdminIngredientsPage() {
         </select>
       </div>
 
-      <div className="overflow-x-auto rounded-card border border-border bg-surface">
-        <table className="w-full min-w-[640px] text-left text-sm">
+      <div className="overflow-hidden rounded-card border border-border bg-surface">
+        <table className="w-full border-collapse text-sm">
           <thead>
-            <tr className="border-b border-border text-xs text-muted-foreground uppercase">
-              <th className="px-4 py-3 font-medium">{t('admin.ingredients.columnNameEn')}</th>
-              <th className="px-4 py-3 font-medium">{t('admin.ingredients.columnNameSr')}</th>
-              <th className="px-4 py-3 font-medium">{t('admin.ingredients.columnCategory')}</th>
-              <th className="px-4 py-3 font-medium">{t('admin.ingredients.columnCalories')}</th>
-              <th className="px-4 py-3 font-medium">{t('admin.ingredients.columnActions')}</th>
+            <tr className="border-b border-border text-left text-xs font-medium tracking-wide text-muted-foreground uppercase">
+              <th className="w-16 px-4 py-3 font-medium">{t('admin.ingredients.columnImage')}</th>
+              <th className="px-2 py-3 font-medium">
+                <button
+                  type="button"
+                  onClick={handleNameHeaderClick}
+                  className="inline-flex items-center gap-1.5 uppercase text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {t('admin.ingredients.columnName')}
+                  {nameSortDirection === 'asc' ? (
+                    <ArrowUp className="size-3.5" />
+                  ) : (
+                    <ArrowDown className="size-3.5" />
+                  )}
+                </button>
+              </th>
+              <th className="px-2 py-3 font-medium">{t('admin.ingredients.columnCategory')}</th>
+              <th className="px-2 py-3 font-medium">{t('admin.ingredients.columnCalories')}</th>
+              <th className="px-4 py-3 text-right font-medium">{t('admin.ingredients.columnActions')}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border">
-            {visible.map((ingredient) => (
-              <tr key={ingredient.id}>
-                <td className="px-4 py-3 font-medium text-foreground">{ingredient.name_en}</td>
-                <td className="px-4 py-3 text-muted-foreground">{ingredient.name_sr ?? '—'}</td>
-                <td className="px-4 py-3 text-muted-foreground">
-                  {ingredient.ingredient_category
-                    ? pickLocalized(
-                        ingredient.ingredient_category.name_en,
-                        ingredient.ingredient_category.name_sr,
-                        lang,
-                      )
-                    : '—'}
-                </td>
-                <td className="px-4 py-3 text-muted-foreground">
-                  {ingredient.calories_kcal != null ? ingredient.calories_kcal : '—'}
-                </td>
-                <td className="px-4 py-3">
-                  <div className="flex items-center gap-1">
-                    <Link
-                      to={buildLocalizedPath(lang, `/admin/sastojci/${ingredient.slug}/izmeni`)}
-                      aria-label={t('admin.ingredients.edit')}
-                      className="flex size-8 items-center justify-center rounded-control border border-border text-muted-foreground hover:text-foreground"
-                    >
-                      <Pencil className="size-3.5" />
+            {visible.map((ingredient) => {
+              const name = pickLocalized(ingredient.name_en, ingredient.name_sr, lang)
+              const categoryName = ingredient.ingredient_category
+                ? pickLocalized(ingredient.ingredient_category.name_en, ingredient.ingredient_category.name_sr, lang)
+                : null
+              const badgeColor = ingredient.ingredient_category
+                ? getIngredientCategoryColors(ingredient.ingredient_category.slug)
+                : null
+              const editHref = buildLocalizedPath(lang, `/admin/sastojci/${ingredient.slug}/izmeni`)
+
+              return (
+                <tr key={ingredient.id} className="transition-colors hover:bg-surface-hover">
+                  <td className="px-4 py-2.5">
+                    <Link to={editHref}>
+                      <IngredientImage
+                        storagePath={ingredient.image_storage_path}
+                        alt={name}
+                        className="aspect-[3/2] w-15 shrink-0 rounded-control"
+                      />
                     </Link>
-                    <button
-                      type="button"
-                      onClick={() => setPendingDelete(ingredient)}
-                      aria-label={t('admin.ingredients.delete')}
-                      className="flex size-8 items-center justify-center rounded-control border border-border text-favorite hover:bg-favorite/10"
-                    >
-                      <Trash2 className="size-3.5" />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+                  </td>
+                  <td className="px-2 py-2.5">
+                    <Link to={editHref} className="font-medium text-foreground transition-colors hover:text-accent">
+                      {name}
+                    </Link>
+                  </td>
+                  <td className="px-2 py-2.5">
+                    {categoryName && badgeColor && (
+                      <span
+                        className={`inline-flex items-center rounded-pill px-2.5 py-1 text-xs font-medium ${badgeColor.bgSoft} ${badgeColor.text}`}
+                      >
+                        {categoryName}
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-2 py-2.5 text-muted-foreground">
+                    {ingredient.calories_kcal != null ? ingredient.calories_kcal : '—'}
+                  </td>
+                  <td className="px-4 py-2.5">
+                    <div className="flex items-center justify-end gap-2">
+                      <Link
+                        to={editHref}
+                        aria-label={t('admin.ingredients.edit')}
+                        className="flex size-8 shrink-0 items-center justify-center rounded-control border border-border text-muted-foreground hover:bg-surface-elevated hover:text-foreground"
+                      >
+                        <Pencil className="size-3.5" />
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => setPendingDelete(ingredient)}
+                        aria-label={t('admin.ingredients.delete')}
+                        className="flex size-8 shrink-0 items-center justify-center rounded-control border border-border text-favorite hover:bg-favorite/10"
+                      >
+                        <Trash2 className="size-3.5" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
 

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Trash2 } from 'lucide-react'
+import { Search, Trash2 } from 'lucide-react'
 import { pickLocalized } from '@/lib/localizedField'
 
 export interface MicronutrientCatalogEntry {
@@ -100,6 +100,7 @@ function MicronutrientPickerSection({
       })}
 
       <div className="relative">
+        <Search className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
         <input
           value={query}
           onChange={(e) => {
@@ -110,7 +111,7 @@ function MicronutrientPickerSection({
           onBlur={() => setTimeout(() => setIsOpen(false), 150)}
           placeholder={addPlaceholder}
           autoComplete="off"
-          className={`${inputClass} w-full`}
+          className={`${inputClass} w-full pl-8`}
         />
 
         {suggestions.length > 0 && (

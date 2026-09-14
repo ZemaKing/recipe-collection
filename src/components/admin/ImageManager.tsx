@@ -148,19 +148,19 @@ function ImageManager({ recipeId }: ImageManagerProps) {
           <div className="flex flex-1 flex-col gap-2">
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               <input
-                defaultValue={image.alt_en}
-                onBlur={(e) =>
-                  void runAction(image.id, () => updateAlt(image.id, e.target.value, image.alt_sr))
-                }
-                placeholder={t('admin.recipeForm.altEn')}
-                className={inputClass}
-              />
-              <input
                 defaultValue={image.alt_sr}
                 onBlur={(e) =>
                   void runAction(image.id, () => updateAlt(image.id, image.alt_en, e.target.value))
                 }
                 placeholder={t('admin.recipeForm.altSr')}
+                className={inputClass}
+              />
+              <input
+                defaultValue={image.alt_en}
+                onBlur={(e) =>
+                  void runAction(image.id, () => updateAlt(image.id, e.target.value, image.alt_sr))
+                }
+                placeholder={t('admin.recipeForm.altEn')}
                 className={inputClass}
               />
             </div>

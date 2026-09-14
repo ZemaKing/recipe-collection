@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import type { SupportedLanguage } from '@/lib/i18n'
 import { pickPrimaryImage, type RawImageRow } from '@/lib/recipeQueries'
 import { supabase } from '@/lib/supabaseClient'
 import type { RecipeImageRef } from '@/types/recipe'
@@ -22,23 +23,25 @@ interface AdminRecipeRow {
 }
 
 export type AdminRecipeSort = 'name' | 'rating' | 'recent'
+export type SortDirection = 'asc' | 'desc'
 
 export const ADMIN_RECIPES_PAGE_SIZE = 20
 
-const SORT_COLUMNS: Record<AdminRecipeSort, { column: string; ascending: boolean }> = {
-  name: { column: 'name_en', ascending: true },
-  rating: { column: 'rating', ascending: false },
-  recent: { column: 'created_at', ascending: false },
+const FIXED_SORT_COLUMNS: Record<Exclude<AdminRecipeSort, 'name'>, string> = {
+  rating: 'rating',
+  recent: 'created_at',
 }
 
 interface UseAdminRecipesOptions {
   search: string
   sort: AdminRecipeSort
+  sortDirection: SortDirection
+  lang: SupportedLanguage
   page: number
   categoryId?: string | null
 }
 
-export function useAdminRecipes({ search, sort, page, categoryId }: UseAdminRecipesOptions) {
+export function useAdminRecipes({ search, sort, sortDirection, lang, page, categoryId }: UseAdminRecipesOptions) {
   const [recipes, setRecipes] = useState<AdminRecipeListItem[]>([])
   const [total, setTotal] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
@@ -50,7 +53,10 @@ export function useAdminRecipes({ search, sort, page, categoryId }: UseAdminReci
 
     async function load() {
       setIsLoading(true)
-      const { column, ascending } = SORT_COLUMNS[sort]
+      // "Name" sorts by whichever language is active in the UI rather than a
+      // fixed column, so switching languages re-sorts the list accordingly.
+      const column = sort === 'name' ? (lang === 'sr' ? 'name_sr' : 'name_en') : FIXED_SORT_COLUMNS[sort]
+      const ascending = sortDirection === 'asc'
       const from = page * ADMIN_RECIPES_PAGE_SIZE
       const to = from + ADMIN_RECIPES_PAGE_SIZE - 1
 
@@ -97,7 +103,7 @@ export function useAdminRecipes({ search, sort, page, categoryId }: UseAdminReci
     return () => {
       cancelled = true
     }
-  }, [search, sort, page, categoryId, refetchToken])
+  }, [search, sort, sortDirection, lang, page, categoryId, refetchToken])
 
   function refetch() {
     setRefetchToken((token) => token + 1)
