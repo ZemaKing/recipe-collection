@@ -56,6 +56,7 @@ export const recipeFormSchema = z.object({
   tips_en: optionalText,
   tips_sr: optionalText,
   category_id: z.string().trim().min(1, 'errors.categoryRequired'),
+  subcategory_id: optionalText,
   prep_time_minutes: optionalNonNegativeInt,
   cook_time_minutes: optionalNonNegativeInt,
   servings: optionalNonNegativeInt,

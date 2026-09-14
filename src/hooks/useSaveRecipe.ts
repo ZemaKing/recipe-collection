@@ -14,6 +14,7 @@ export function useSaveRecipe() {
       const payload = {
         slug: values.slug,
         category_id: values.category_id,
+        subcategory_id: values.subcategory_id ?? null,
         name_en: values.name_en,
         name_sr: values.name_sr ?? null,
         description_en: values.description_en ?? null,

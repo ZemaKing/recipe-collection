@@ -11,8 +11,8 @@ export const CATEGORY_SLUG_ORDER = [
   'salate',
   'peciva',
   'deserti',
+  'sosovi-prelivi-i-namazi',
   'pica-i-napici',
-  'ostalo',
 ]
 
 export function compareCategoryOrder(slugA: string, slugB: string): number {

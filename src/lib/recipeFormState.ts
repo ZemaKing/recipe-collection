@@ -20,6 +20,7 @@ export const EMPTY_RECIPE_FORM_STATE: RecipeFormState = {
   tips_en: '',
   tips_sr: '',
   category_id: '',
+  subcategory_id: '',
   prep_time_minutes: '',
   cook_time_minutes: '',
   servings: '',

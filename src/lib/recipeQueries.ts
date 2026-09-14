@@ -2,7 +2,7 @@ import type { RecipeImageRef, RecipeSummary } from '@/types/recipe'
 
 // Shared select fragment for any query returning RecipeSummary-shaped rows.
 export const RECIPE_SUMMARY_SELECT =
-  'id, slug, name_en, name_sr, prep_time_minutes, cook_time_minutes, rating, is_favorite, category:categories(slug, name_en, name_sr), images:recipe_images(storage_path, alt_en, alt_sr, is_primary)'
+  'id, slug, name_en, name_sr, prep_time_minutes, cook_time_minutes, rating, is_favorite, category:categories(slug, name_en, name_sr), subcategory:subcategories(slug, name_en, name_sr), images:recipe_images(storage_path, alt_en, alt_sr, is_primary)'
 
 // Superset used by the browse/search page: adds ingredient names (search
 // matching), tag slugs (quick-filter chips), and created_at (recent sort).

@@ -15,6 +15,7 @@ const baseRecipe: RecipeSummary = {
   rating: 4.5,
   is_favorite: false,
   category: { slug: 'glavna-jela', name_en: 'Main Dishes', name_sr: 'Glavna jela' },
+  subcategory: null,
   image: null,
 }
 

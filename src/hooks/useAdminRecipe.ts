@@ -26,6 +26,7 @@ export interface AdminRecipeDetail {
   tips_en: string
   tips_sr: string
   category_id: string
+  subcategory_id: string
   prep_time_minutes: string
   cook_time_minutes: string
   servings: string
@@ -39,7 +40,7 @@ export interface AdminRecipeDetail {
 
 const ADMIN_RECIPE_SELECT = `
   id, slug, name_en, name_sr, description_en, description_sr, tips_en, tips_sr,
-  category_id, prep_time_minutes, cook_time_minutes, servings, weight_grams, difficulty, rating,
+  category_id, subcategory_id, prep_time_minutes, cook_time_minutes, servings, weight_grams, difficulty, rating,
   ingredients:recipe_ingredients(order_index, name_en, name_sr, quantity, unit_en, unit_sr, ingredient_id),
   steps:recipe_steps(step_number, text_en, text_sr),
   recipe_tags(tag_id)
@@ -91,6 +92,7 @@ export function useAdminRecipe(slug: string | undefined) {
           tips_en: data.tips_en ?? '',
           tips_sr: data.tips_sr ?? '',
           category_id: data.category_id,
+          subcategory_id: data.subcategory_id ?? '',
           prep_time_minutes: toStr(data.prep_time_minutes),
           cook_time_minutes: toStr(data.cook_time_minutes),
           servings: toStr(data.servings),

@@ -45,6 +45,7 @@ function AdminRecipeFormPage() {
           tips_en: recipe.tips_en,
           tips_sr: recipe.tips_sr,
           category_id: recipe.category_id,
+          subcategory_id: recipe.subcategory_id,
           prep_time_minutes: recipe.prep_time_minutes,
           cook_time_minutes: recipe.cook_time_minutes,
           servings: recipe.servings,

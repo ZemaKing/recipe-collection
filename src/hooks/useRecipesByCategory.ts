@@ -10,7 +10,7 @@ interface CategoryInfo {
   name_sr: string | null
 }
 
-export function useRecipesByCategory(slug: string) {
+export function useRecipesByCategory(slug: string, subcategorySlug?: string) {
   const [category, setCategory] = useState<CategoryInfo | null>(null)
   const [recipes, setRecipes] = useState<RecipeSummary[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -48,11 +48,39 @@ export function useRecipesByCategory(slug: string) {
 
       setCategory(categoryRow)
 
-      const { data: recipeRows, error: recipesError } = await supabase
+      let subcategoryId: string | null = null
+      if (subcategorySlug) {
+        const { data: subcategoryRow, error: subcategoryError } = await supabase
+          .from('subcategories')
+          .select('id')
+          .eq('category_id', categoryRow.id)
+          .eq('slug', subcategorySlug)
+          .maybeSingle()
+
+        if (cancelled) return
+        if (subcategoryError) {
+          setError(subcategoryError.message)
+          setIsLoading(false)
+          return
+        }
+        if (!subcategoryRow) {
+          setRecipes([])
+          setNotFound(true)
+          setIsLoading(false)
+          return
+        }
+        subcategoryId = subcategoryRow.id
+      }
+
+      let query = supabase
         .from('recipes')
         .select(RECIPE_SUMMARY_SELECT)
         .eq('category_id', categoryRow.id)
         .order('created_at', { ascending: false })
+      if (subcategoryId) {
+        query = query.eq('subcategory_id', subcategoryId)
+      }
+      const { data: recipeRows, error: recipesError } = await query
 
       if (cancelled) return
       if (recipesError) {
@@ -70,7 +98,7 @@ export function useRecipesByCategory(slug: string) {
     return () => {
       cancelled = true
     }
-  }, [slug])
+  }, [slug, subcategorySlug])
 
   async function toggleFavorite(recipeId: string) {
     const current = recipes.find((recipe) => recipe.id === recipeId)
