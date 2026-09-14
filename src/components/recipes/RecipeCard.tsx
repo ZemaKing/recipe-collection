@@ -5,6 +5,7 @@ import FavoriteButton from '@/components/recipes/FavoriteButton'
 import RecipeImage from '@/components/recipes/RecipeImage'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
 import { getCategoryBadgeColor } from '@/lib/categoryColor'
+import { getCategoryIcon } from '@/lib/categoryIcons'
 import { formatDuration } from '@/lib/format'
 import { pickLocalized } from '@/lib/localizedField'
 import { buildLocalizedPath } from '@/lib/localizedPath'
@@ -24,6 +25,12 @@ function RecipeCard({ recipe, onToggleFavorite }: RecipeCardProps) {
     ? pickLocalized(recipe.category.name_en, recipe.category.name_sr, lang)
     : null
   const categoryColors = recipe.category ? getCategoryBadgeColor(recipe.category.slug) : null
+  const categoryIconNode = recipe.category
+    ? [recipe.category].map((category) => {
+        const Icon = getCategoryIcon(category.slug)
+        return <Icon key={category.slug} className="size-3" />
+      })[0]
+    : null
   const duration = formatDuration(
     (recipe.prep_time_minutes ?? 0) + (recipe.cook_time_minutes ?? 0) || null,
   )
@@ -53,9 +60,10 @@ function RecipeCard({ recipe, onToggleFavorite }: RecipeCardProps) {
         <p className="truncate text-sm font-semibold text-foreground">{name}</p>
         {categoryName && categoryColors && (
           <span
-            className={`w-fit truncate rounded-pill px-2 py-0.5 text-xs font-medium ${categoryColors.bg} ${categoryColors.text}`}
+            className={`flex w-fit items-center gap-1 truncate rounded-pill px-2 py-0.5 text-xs font-medium ${categoryColors.bg} ${categoryColors.text}`}
           >
-            {categoryName}
+            {categoryIconNode}
+            <span className="truncate">{categoryName}</span>
           </span>
         )}
         {duration && (

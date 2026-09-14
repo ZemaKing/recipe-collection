@@ -7,6 +7,10 @@ const categoryDescriptionBySlug: Record<string, { en: string; sr: string }> = {
   salate: { en: 'Fresh, healthy and flavorful salad recipes.', sr: 'Sveži, zdravi i ukusni recepti za salate.' },
   peciva: { en: 'Bread, rolls and homemade pastries.', sr: 'Hleb, zemičke i domaće pecivo.' },
   deserti: { en: 'Sweet treats for every occasion.', sr: 'Slatki zalogaji za svaku priliku.' },
+  'sosovi-prelivi-i-namazi': {
+    en: 'Sauces, dressings and spreads to top off any dish.',
+    sr: 'Sosovi, prelivi i namazi za svako jelo.',
+  },
   'pica-i-napici': { en: 'Refreshing drinks for any time.', sr: 'Osvežavajuća pića za svaki trenutak.' },
   ostalo: { en: 'Everything else.', sr: 'Sve ostalo.' },
 }
