@@ -56,7 +56,7 @@ function IngredientImageManager({ ingredientId }: IngredientImageManagerProps) {
   if (image.storagePath) {
     return (
       <div className="flex flex-col gap-3 rounded-card border border-border bg-surface p-3 sm:flex-row">
-        <div className="relative aspect-video w-full shrink-0 overflow-hidden rounded-control bg-surface-elevated sm:w-40">
+        <div className="relative aspect-[3/2] w-full shrink-0 overflow-hidden rounded-control bg-surface-elevated sm:w-40">
           <img
             src={getIngredientImageUrl(image.storagePath)}
             alt=""
