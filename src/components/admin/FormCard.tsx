@@ -19,8 +19,8 @@ interface FormCardProps {
 
 function FormCard({ icon: Icon, title, description, action, children }: FormCardProps) {
   return (
-    <section className="overflow-hidden rounded-card border border-border bg-surface">
-      <div className="flex items-center justify-between gap-2 px-4 py-3">
+    <section className="rounded-card border border-border bg-surface">
+      <div className="flex items-center justify-between gap-2 rounded-t-card px-4 py-3">
         <div className="flex items-center gap-3">
           <span className="flex size-9 shrink-0 items-center justify-center rounded-2xl bg-accent-soft text-accent">
             <Icon className="size-4" />
@@ -32,7 +32,7 @@ function FormCard({ icon: Icon, title, description, action, children }: FormCard
         </div>
         {action}
       </div>
-      <div className="flex flex-col gap-3 p-4">{children}</div>
+      <div className="flex flex-col gap-3 rounded-b-card p-4">{children}</div>
     </section>
   )
 }
