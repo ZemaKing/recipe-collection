@@ -2,7 +2,10 @@ import { Fragment, useMemo } from 'react'
 import { SearchX, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
+import CategoryFilterSelect from '@/components/recipes/CategoryFilterSelect'
 import RecipeCard from '@/components/recipes/RecipeCard'
+import SortFilterSelect from '@/components/recipes/SortFilterSelect'
+import SubcategoryFilterSelect from '@/components/recipes/SubcategoryFilterSelect'
 import EmptyState from '@/components/ui/EmptyState'
 import { useAllRecipes } from '@/hooks/useAllRecipes'
 import { useAuth } from '@/hooks/useAuth'
@@ -11,7 +14,7 @@ import { useCurrentLang } from '@/hooks/useCurrentLang'
 import { useSubcategories } from '@/hooks/useSubcategories'
 import { useTags } from '@/hooks/useTags'
 import { pickLocalized } from '@/lib/localizedField'
-import { filterAndSortRecipes, type SortOption } from '@/lib/recipeFilter'
+import { filterAndSortRecipes } from '@/lib/recipeFilter'
 import {
   CATEGORY_PARAM,
   FAVORITE_PARAM,
@@ -94,43 +97,33 @@ function AllRecipesPage() {
       </h1>
 
       <div className="flex flex-wrap items-center gap-2">
-        <select
-          value={categorySlug ?? ''}
-          onChange={(event) => handleCategoryChange(event.target.value || null)}
-          className="rounded-control border border-border bg-surface-elevated px-3 py-2 text-sm text-foreground"
-        >
-          <option value="">{t('browse.categoryAll')}</option>
-          {categories.map((category) => (
-            <option key={category.id} value={category.slug}>
-              {pickLocalized(category.name_en, category.name_sr, lang)}
-            </option>
-          ))}
-        </select>
+        <CategoryFilterSelect
+          categories={categories}
+          value={categorySlug}
+          onChange={handleCategoryChange}
+          lang={lang}
+          allLabel={t('browse.categoryAll')}
+        />
 
         {selectedCategory && availableSubcategories.length > 0 && (
-          <select
-            value={subcategorySlug ?? ''}
-            onChange={(event) => updateParam(SUBCATEGORY_PARAM, event.target.value || null)}
-            className="rounded-control border border-border bg-surface-elevated px-3 py-2 text-sm text-foreground"
-          >
-            <option value="">{t('browse.subcategoryAll')}</option>
-            {availableSubcategories.map((subcategory) => (
-              <option key={subcategory.id} value={subcategory.slug}>
-                {pickLocalized(subcategory.name_en, subcategory.name_sr, lang)}
-              </option>
-            ))}
-          </select>
+          <SubcategoryFilterSelect
+            subcategories={availableSubcategories}
+            value={subcategorySlug}
+            onChange={(slug) => updateParam(SUBCATEGORY_PARAM, slug)}
+            lang={lang}
+            allLabel={t('browse.subcategoryAll')}
+          />
         )}
 
-        <select
+        <SortFilterSelect
           value={sort}
-          onChange={(event) => updateParam(SORT_PARAM, event.target.value as SortOption)}
-          className="rounded-control border border-border bg-surface-elevated px-3 py-2 text-sm text-foreground"
-        >
-          <option value="recent">{t('browse.sort.recent')}</option>
-          <option value="rating">{t('browse.sort.rating')}</option>
-          <option value="time">{t('browse.sort.time')}</option>
-        </select>
+          onChange={(value) => updateParam(SORT_PARAM, value)}
+          labels={{
+            recent: t('browse.sort.recent'),
+            rating: t('browse.sort.rating'),
+            time: t('browse.sort.time'),
+          }}
+        />
 
         <button
           type="button"
