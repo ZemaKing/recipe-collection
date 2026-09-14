@@ -10,6 +10,7 @@ export interface AdminRecipeListItem {
   name_en: string
   name_sr: string | null
   category: { slug: string; name_en: string; name_sr: string | null } | null
+  subcategory: { slug: string; name_en: string; name_sr: string | null } | null
   image: RecipeImageRef | null
 }
 
@@ -19,6 +20,7 @@ interface AdminRecipeRow {
   name_en: string
   name_sr: string | null
   category: { slug: string; name_en: string; name_sr: string | null } | null
+  subcategory: { slug: string; name_en: string; name_sr: string | null } | null
   images: RawImageRow[]
 }
 
@@ -63,7 +65,7 @@ export function useAdminRecipes({ search, sort, sortDirection, lang, page, categ
       let query = supabase
         .from('recipes')
         .select(
-          'id, slug, name_en, name_sr, category:categories(slug, name_en, name_sr), images:recipe_images(storage_path, alt_en, alt_sr, is_primary)',
+          'id, slug, name_en, name_sr, category:categories(slug, name_en, name_sr), subcategory:subcategories(slug, name_en, name_sr), images:recipe_images(storage_path, alt_en, alt_sr, is_primary)',
           { count: 'exact' },
         )
         .order(column, { ascending })

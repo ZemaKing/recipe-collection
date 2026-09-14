@@ -187,6 +187,7 @@
       "columnImage": "Slika",
       "columnName": "Naziv recepta",
       "columnCategory": "Kategorija",
+      "columnSubcategory": "Podkategorija",
       "columnActions": "Akcije",
       "noResults": "Nema recepata koji odgovaraju pretrazi.",
       "edit": "Izmeni",

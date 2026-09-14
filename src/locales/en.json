@@ -184,6 +184,7 @@
       "columnImage": "Image",
       "columnName": "Recipe name",
       "columnCategory": "Category",
+      "columnSubcategory": "Subcategory",
       "columnActions": "Actions",
       "noResults": "No recipes match your search.",
       "edit": "Edit",
