@@ -1,12 +1,5 @@
 # Recipe Collection — Development Plan
 
-See the master plan rationale (mockup analysis, schema design, i18n architecture, security model) for full context behind these phases. This file is the live progress tracker — update checkboxes only when a task is actually implemented and verified, not merely started.
-
-## Project Status
-
-Current Phase: Phase 7, Phase 6, and Phase 8 complete. Phases 2, 3 are unscheduled backlog ideas.
-MVP Status: Complete
-
 ---
 
 ## Phase 32 — Postgres Full-Text Search (not scheduled)
