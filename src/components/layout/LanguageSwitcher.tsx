@@ -1,3 +1,4 @@
+import { GB, RS } from 'country-flag-icons/react/3x2'
 import { Languages } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -11,6 +12,11 @@ import { useCurrentLang } from '@/hooks/useCurrentLang'
 import { supportedLanguages, type SupportedLanguage } from '@/lib/i18n'
 import { buildLocalizedPath, stripLangPrefix } from '@/lib/localizedPath'
 import { cn } from '@/lib/utils'
+
+const FLAG_BY_LANG: Record<SupportedLanguage, typeof RS> = {
+  sr: RS,
+  en: GB,
+}
 
 function LanguageSwitcher() {
   const { t } = useTranslation()
@@ -36,15 +42,19 @@ function LanguageSwitcher() {
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        {supportedLanguages.map((code) => (
-          <DropdownMenuItem
-            key={code}
-            onSelect={() => switchTo(code)}
-            className={cn(code === lang && 'text-accent')}
-          >
-            {t(`language.${code}`)}
-          </DropdownMenuItem>
-        ))}
+        {supportedLanguages.map((code) => {
+          const Flag = FLAG_BY_LANG[code]
+          return (
+            <DropdownMenuItem
+              key={code}
+              onSelect={() => switchTo(code)}
+              className={cn('gap-2', code === lang && 'text-accent')}
+            >
+              <Flag className="h-4 w-5.5 shrink-0 rounded-xs" />
+              {t(`language.${code}`)}
+            </DropdownMenuItem>
+          )
+        })}
       </DropdownMenuContent>
     </DropdownMenu>
   )
