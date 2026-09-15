@@ -3,6 +3,7 @@ import type { CategoryWithCount } from '@/hooks/useCategories'
 import type { IngredientWithCategory } from '@/hooks/useIngredients'
 import type { SubcategoryWithCount } from '@/hooks/useSubcategories'
 import type { Tag } from '@/hooks/useTags'
+import { normalizeSearchText } from '@/lib/diacritics'
 import { difficultyValues } from '@/lib/recipeFormSchema'
 import type { RecipeFormState } from '@/lib/recipeFormState'
 import { slugify } from '@/lib/slugify'
@@ -82,8 +83,11 @@ export class RecipeImportError extends Error {
   }
 }
 
+// Folds Serbian diacritics (š/č/ć/ž/đ) to their ASCII stand-ins, matching
+// how every other search/match in the app compares text — so an AI-generated
+// name like "Corba" still links to a catalog entry stored as "Čorba".
 function normalize(value: string): string {
-  return value.trim().toLowerCase()
+  return normalizeSearchText(value.trim())
 }
 
 interface Sluggable {
