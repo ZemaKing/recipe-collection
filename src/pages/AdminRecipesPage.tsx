@@ -138,107 +138,119 @@ function AdminRecipesPage() {
       {error && <p className="text-sm text-favorite">{error}</p>}
 
       {viewMode === 'list' && (
-        <div className="overflow-hidden rounded-card border border-border bg-surface">
-          <table className="w-full border-collapse text-sm">
-            <thead>
-              <tr className="border-b border-border text-left text-xs font-medium tracking-wide text-muted-foreground uppercase">
-                <th className="w-16 px-4 py-3 font-medium">{t('admin.recipesList.columnImage')}</th>
-                <th className="px-2 py-3 font-medium">
-                  <button
-                    type="button"
-                    onClick={handleNameHeaderClick}
-                    className="inline-flex items-center gap-1.5 uppercase text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    {t('admin.recipesList.columnName')}
-                    {sort === 'name' ? (
-                      sortDirection === 'asc' ? (
-                        <ArrowUp className="size-3.5" />
+        <div className="rounded-card border border-border bg-surface">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[640px] border-collapse text-sm">
+              <thead>
+                <tr className="border-b border-border text-left text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                  <th className="w-16 px-4 py-3 font-medium">
+                    {t('admin.recipesList.columnImage')}
+                  </th>
+                  <th className="px-2 py-3 font-medium">
+                    <button
+                      type="button"
+                      onClick={handleNameHeaderClick}
+                      className="inline-flex items-center gap-1.5 uppercase text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      {t('admin.recipesList.columnName')}
+                      {sort === 'name' ? (
+                        sortDirection === 'asc' ? (
+                          <ArrowUp className="size-3.5" />
+                        ) : (
+                          <ArrowDown className="size-3.5" />
+                        )
                       ) : (
-                        <ArrowDown className="size-3.5" />
-                      )
-                    ) : (
-                      <ArrowUpDown className="size-3.5" />
-                    )}
-                  </button>
-                </th>
-                <th className="px-2 py-3 font-medium">{t('admin.recipesList.columnCategory')}</th>
-                <th className="px-2 py-3 font-medium">{t('admin.recipesList.columnSubcategory')}</th>
-                <th className="px-4 py-3 text-right font-medium">{t('admin.recipesList.columnActions')}</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {recipes.map((recipe) => {
-                const name = pickLocalized(recipe.name_en, recipe.name_sr, lang)
-                const categoryName = recipe.category
-                  ? pickLocalized(recipe.category.name_en, recipe.category.name_sr, lang)
-                  : null
-                const badgeColor = recipe.category ? getCategoryBadgeColor(recipe.category.slug) : null
-                const subcategoryName = recipe.subcategory
-                  ? pickLocalized(recipe.subcategory.name_en, recipe.subcategory.name_sr, lang)
-                  : null
+                        <ArrowUpDown className="size-3.5" />
+                      )}
+                    </button>
+                  </th>
+                  <th className="px-2 py-3 font-medium">{t('admin.recipesList.columnCategory')}</th>
+                  <th className="px-2 py-3 font-medium">
+                    {t('admin.recipesList.columnSubcategory')}
+                  </th>
+                  <th className="px-4 py-3 text-right font-medium">
+                    {t('admin.recipesList.columnActions')}
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {recipes.map((recipe) => {
+                  const name = pickLocalized(recipe.name_en, recipe.name_sr, lang)
+                  const categoryName = recipe.category
+                    ? pickLocalized(recipe.category.name_en, recipe.category.name_sr, lang)
+                    : null
+                  const badgeColor = recipe.category
+                    ? getCategoryBadgeColor(recipe.category.slug)
+                    : null
+                  const subcategoryName = recipe.subcategory
+                    ? pickLocalized(recipe.subcategory.name_en, recipe.subcategory.name_sr, lang)
+                    : null
 
-                return (
-                  <tr key={recipe.id} className="transition-colors hover:bg-surface-hover">
-                    <td className="px-4 py-2.5">
-                      <Link to={buildLocalizedPath(lang, `/admin/recepti/${recipe.slug}/izmeni`)}>
-                        <RecipeImage
-                          image={recipe.image}
-                          alt={name}
-                          className="aspect-[3/2] w-15 shrink-0 rounded-control"
-                        />
-                      </Link>
-                    </td>
-                    <td className="px-2 py-2.5">
-                      <Link
-                        to={buildLocalizedPath(lang, `/admin/recepti/${recipe.slug}/izmeni`)}
-                        className="font-medium text-foreground transition-colors hover:text-accent"
-                      >
-                        {name}
-                      </Link>
-                    </td>
-                    <td className="px-2 py-2.5">
-                      {categoryName && badgeColor && (
-                        <span
-                          className={`inline-flex items-center rounded-pill px-2.5 py-1 text-xs font-medium ${badgeColor.bg} ${badgeColor.text}`}
-                        >
-                          {categoryName}
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-2 py-2.5">
-                      {subcategoryName && (
-                        <span className="inline-flex items-center rounded-pill bg-surface-elevated px-2.5 py-1 text-xs text-muted-foreground">
-                          {subcategoryName}
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-4 py-2.5">
-                      <div className="flex items-center justify-end gap-2">
+                  return (
+                    <tr key={recipe.id} className="transition-colors hover:bg-surface-hover">
+                      <td className="px-4 py-2.5">
+                        <Link to={buildLocalizedPath(lang, `/admin/recepti/${recipe.slug}/izmeni`)}>
+                          <RecipeImage
+                            image={recipe.image}
+                            alt={name}
+                            className="aspect-[3/2] w-15 shrink-0 rounded-control"
+                          />
+                        </Link>
+                      </td>
+                      <td className="px-2 py-2.5">
                         <Link
                           to={buildLocalizedPath(lang, `/admin/recepti/${recipe.slug}/izmeni`)}
-                          aria-label={t('admin.recipesList.edit')}
-                          className="flex size-8 shrink-0 items-center justify-center rounded-control border border-border text-muted-foreground hover:bg-surface-elevated hover:text-foreground"
+                          className="font-medium text-foreground transition-colors hover:text-accent"
                         >
-                          <Pencil className="size-3.5" />
+                          {name}
                         </Link>
-                        <button
-                          type="button"
-                          onClick={() => setPendingDelete(recipe)}
-                          aria-label={t('admin.recipesList.delete')}
-                          className="flex size-8 shrink-0 items-center justify-center rounded-control border border-border text-favorite hover:bg-favorite/10"
-                        >
-                          <Trash2 className="size-3.5" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+                      </td>
+                      <td className="px-2 py-2.5">
+                        {categoryName && badgeColor && (
+                          <span
+                            className={`inline-flex items-center rounded-pill px-2.5 py-1 text-xs font-medium ${badgeColor.bg} ${badgeColor.text}`}
+                          >
+                            {categoryName}
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-2 py-2.5">
+                        {subcategoryName && (
+                          <span className="inline-flex items-center rounded-pill bg-surface-elevated px-2.5 py-1 text-xs text-muted-foreground">
+                            {subcategoryName}
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-2.5">
+                        <div className="flex items-center justify-end gap-2">
+                          <Link
+                            to={buildLocalizedPath(lang, `/admin/recepti/${recipe.slug}/izmeni`)}
+                            aria-label={t('admin.recipesList.edit')}
+                            className="flex size-8 shrink-0 items-center justify-center rounded-control border border-border text-muted-foreground hover:bg-surface-elevated hover:text-foreground"
+                          >
+                            <Pencil className="size-3.5" />
+                          </Link>
+                          <button
+                            type="button"
+                            onClick={() => setPendingDelete(recipe)}
+                            aria-label={t('admin.recipesList.delete')}
+                            className="flex size-8 shrink-0 items-center justify-center rounded-control border border-border text-favorite hover:bg-favorite/10"
+                          >
+                            <Trash2 className="size-3.5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
 
           {!isLoading && recipes.length === 0 && (
-            <p className="px-4 py-6 text-center text-sm text-muted-foreground">{t('admin.recipesList.noResults')}</p>
+            <p className="px-4 py-6 text-center text-sm text-muted-foreground">
+              {t('admin.recipesList.noResults')}
+            </p>
           )}
         </div>
       )}
@@ -251,7 +263,9 @@ function AdminRecipesPage() {
               const categoryName = recipe.category
                 ? pickLocalized(recipe.category.name_en, recipe.category.name_sr, lang)
                 : null
-              const badgeColor = recipe.category ? getCategoryBadgeColor(recipe.category.slug) : null
+              const badgeColor = recipe.category
+                ? getCategoryBadgeColor(recipe.category.slug)
+                : null
               const editHref = buildLocalizedPath(lang, `/admin/recepti/${recipe.slug}/izmeni`)
 
               return (
@@ -302,7 +316,9 @@ function AdminRecipesPage() {
           </div>
 
           {!isLoading && recipes.length === 0 && (
-            <p className="px-4 py-6 text-center text-sm text-muted-foreground">{t('admin.recipesList.noResults')}</p>
+            <p className="px-4 py-6 text-center text-sm text-muted-foreground">
+              {t('admin.recipesList.noResults')}
+            </p>
           )}
         </div>
       )}
@@ -332,7 +348,9 @@ function AdminRecipesPage() {
       )}
 
       <DeleteRecipeDialog
-        recipeName={pendingDelete ? pickLocalized(pendingDelete.name_en, pendingDelete.name_sr, lang) : null}
+        recipeName={
+          pendingDelete ? pickLocalized(pendingDelete.name_en, pendingDelete.name_sr, lang) : null
+        }
         isDeleting={isDeleting}
         error={deleteError}
         onConfirm={() => void handleConfirmDelete()}

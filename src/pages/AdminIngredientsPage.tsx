@@ -46,7 +46,10 @@ function AdminIngredientsPage() {
     // column, so switching languages re-sorts the list accordingly.
     const direction = nameSortDirection === 'asc' ? 1 : -1
     return [...filtered].sort(
-      (a, b) => pickLocalized(a.name_en, a.name_sr, lang).localeCompare(pickLocalized(b.name_en, b.name_sr, lang)) * direction,
+      (a, b) =>
+        pickLocalized(a.name_en, a.name_sr, lang).localeCompare(
+          pickLocalized(b.name_en, b.name_sr, lang),
+        ) * direction,
     )
   }, [ingredients, search, categoryFilter, nameSortDirection, lang])
 
@@ -98,92 +101,110 @@ function AdminIngredientsPage() {
       </div>
 
       {viewMode === 'list' && (
-        <div className="overflow-hidden rounded-card border border-border bg-surface">
-          <table className="w-full border-collapse text-sm">
-            <thead>
-              <tr className="border-b border-border text-left text-xs font-medium tracking-wide text-muted-foreground uppercase">
-                <th className="w-16 px-4 py-3 font-medium">{t('admin.ingredients.columnImage')}</th>
-                <th className="px-2 py-3 font-medium">
-                  <button
-                    type="button"
-                    onClick={handleNameHeaderClick}
-                    className="inline-flex items-center gap-1.5 uppercase text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    {t('admin.ingredients.columnName')}
-                    {nameSortDirection === 'asc' ? (
-                      <ArrowUp className="size-3.5" />
-                    ) : (
-                      <ArrowDown className="size-3.5" />
-                    )}
-                  </button>
-                </th>
-                <th className="px-2 py-3 font-medium">{t('admin.ingredients.columnCategory')}</th>
-                <th className="px-4 py-3 text-right font-medium">{t('admin.ingredients.columnActions')}</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {visible.map((ingredient) => {
-                const name = pickLocalized(ingredient.name_en, ingredient.name_sr, lang)
-                const categoryName = ingredient.ingredient_category
-                  ? pickLocalized(ingredient.ingredient_category.name_en, ingredient.ingredient_category.name_sr, lang)
-                  : null
-                const badgeColor = ingredient.ingredient_category
-                  ? getIngredientCategoryColors(ingredient.ingredient_category.slug)
-                  : null
-                const editHref = buildLocalizedPath(lang, `/admin/sastojci/${ingredient.slug}/izmeni`)
-
-                return (
-                  <tr key={ingredient.id} className="transition-colors hover:bg-surface-hover">
-                    <td className="px-4 py-2.5">
-                      <Link to={editHref}>
-                        <IngredientImage
-                          storagePath={ingredient.image_storage_path}
-                          alt={name}
-                          className="aspect-[3/2] w-15 shrink-0 rounded-control"
-                        />
-                      </Link>
-                    </td>
-                    <td className="px-2 py-2.5">
-                      <Link to={editHref} className="font-medium text-foreground transition-colors hover:text-accent">
-                        {name}
-                      </Link>
-                    </td>
-                    <td className="px-2 py-2.5">
-                      {categoryName && badgeColor && (
-                        <span
-                          className={`inline-flex items-center rounded-pill px-2.5 py-1 text-xs font-medium ${badgeColor.bgSoft} ${badgeColor.text}`}
-                        >
-                          {categoryName}
-                        </span>
+        <div className="rounded-card border border-border bg-surface">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[560px] border-collapse text-sm">
+              <thead>
+                <tr className="border-b border-border text-left text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                  <th className="w-16 px-4 py-3 font-medium">
+                    {t('admin.ingredients.columnImage')}
+                  </th>
+                  <th className="px-2 py-3 font-medium">
+                    <button
+                      type="button"
+                      onClick={handleNameHeaderClick}
+                      className="inline-flex items-center gap-1.5 uppercase text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      {t('admin.ingredients.columnName')}
+                      {nameSortDirection === 'asc' ? (
+                        <ArrowUp className="size-3.5" />
+                      ) : (
+                        <ArrowDown className="size-3.5" />
                       )}
-                    </td>
-                    <td className="px-4 py-2.5">
-                      <div className="flex items-center justify-end gap-2">
+                    </button>
+                  </th>
+                  <th className="px-2 py-3 font-medium">{t('admin.ingredients.columnCategory')}</th>
+                  <th className="px-4 py-3 text-right font-medium">
+                    {t('admin.ingredients.columnActions')}
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {visible.map((ingredient) => {
+                  const name = pickLocalized(ingredient.name_en, ingredient.name_sr, lang)
+                  const categoryName = ingredient.ingredient_category
+                    ? pickLocalized(
+                        ingredient.ingredient_category.name_en,
+                        ingredient.ingredient_category.name_sr,
+                        lang,
+                      )
+                    : null
+                  const badgeColor = ingredient.ingredient_category
+                    ? getIngredientCategoryColors(ingredient.ingredient_category.slug)
+                    : null
+                  const editHref = buildLocalizedPath(
+                    lang,
+                    `/admin/sastojci/${ingredient.slug}/izmeni`,
+                  )
+
+                  return (
+                    <tr key={ingredient.id} className="transition-colors hover:bg-surface-hover">
+                      <td className="px-4 py-2.5">
+                        <Link to={editHref}>
+                          <IngredientImage
+                            storagePath={ingredient.image_storage_path}
+                            alt={name}
+                            className="aspect-[3/2] w-15 shrink-0 rounded-control"
+                          />
+                        </Link>
+                      </td>
+                      <td className="px-2 py-2.5">
                         <Link
                           to={editHref}
-                          aria-label={t('admin.ingredients.edit')}
-                          className="flex size-8 shrink-0 items-center justify-center rounded-control border border-border text-muted-foreground hover:bg-surface-elevated hover:text-foreground"
+                          className="font-medium text-foreground transition-colors hover:text-accent"
                         >
-                          <Pencil className="size-3.5" />
+                          {name}
                         </Link>
-                        <button
-                          type="button"
-                          onClick={() => setPendingDelete(ingredient)}
-                          aria-label={t('admin.ingredients.delete')}
-                          className="flex size-8 shrink-0 items-center justify-center rounded-control border border-border text-favorite hover:bg-favorite/10"
-                        >
-                          <Trash2 className="size-3.5" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+                      </td>
+                      <td className="px-2 py-2.5">
+                        {categoryName && badgeColor && (
+                          <span
+                            className={`inline-flex items-center rounded-pill px-2.5 py-1 text-xs font-medium ${badgeColor.bgSoft} ${badgeColor.text}`}
+                          >
+                            {categoryName}
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-2.5">
+                        <div className="flex items-center justify-end gap-2">
+                          <Link
+                            to={editHref}
+                            aria-label={t('admin.ingredients.edit')}
+                            className="flex size-8 shrink-0 items-center justify-center rounded-control border border-border text-muted-foreground hover:bg-surface-elevated hover:text-foreground"
+                          >
+                            <Pencil className="size-3.5" />
+                          </Link>
+                          <button
+                            type="button"
+                            onClick={() => setPendingDelete(ingredient)}
+                            aria-label={t('admin.ingredients.delete')}
+                            className="flex size-8 shrink-0 items-center justify-center rounded-control border border-border text-favorite hover:bg-favorite/10"
+                          >
+                            <Trash2 className="size-3.5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
 
           {!isLoading && visible.length === 0 && (
-            <p className="px-4 py-6 text-center text-sm text-muted-foreground">{t('admin.ingredients.noResults')}</p>
+            <p className="px-4 py-6 text-center text-sm text-muted-foreground">
+              {t('admin.ingredients.noResults')}
+            </p>
           )}
         </div>
       )}
@@ -194,7 +215,11 @@ function AdminIngredientsPage() {
             {visible.map((ingredient) => {
               const name = pickLocalized(ingredient.name_en, ingredient.name_sr, lang)
               const categoryName = ingredient.ingredient_category
-                ? pickLocalized(ingredient.ingredient_category.name_en, ingredient.ingredient_category.name_sr, lang)
+                ? pickLocalized(
+                    ingredient.ingredient_category.name_en,
+                    ingredient.ingredient_category.name_sr,
+                    lang,
+                  )
                 : null
               const badgeColor = ingredient.ingredient_category
                 ? getIngredientCategoryColors(ingredient.ingredient_category.slug)
@@ -207,7 +232,11 @@ function AdminIngredientsPage() {
                   className="flex flex-col overflow-hidden rounded-card border border-border bg-surface-elevated transition-colors hover:border-accent/50"
                 >
                   <Link to={editHref}>
-                    <IngredientImage storagePath={ingredient.image_storage_path} alt={name} className="aspect-[3/2] w-full" />
+                    <IngredientImage
+                      storagePath={ingredient.image_storage_path}
+                      alt={name}
+                      className="aspect-[3/2] w-full"
+                    />
                   </Link>
                   <div className="flex flex-1 flex-col gap-2 p-3">
                     <div className="flex items-start justify-between gap-2">
@@ -249,13 +278,17 @@ function AdminIngredientsPage() {
           </div>
 
           {!isLoading && visible.length === 0 && (
-            <p className="px-4 py-6 text-center text-sm text-muted-foreground">{t('admin.ingredients.noResults')}</p>
+            <p className="px-4 py-6 text-center text-sm text-muted-foreground">
+              {t('admin.ingredients.noResults')}
+            </p>
           )}
         </div>
       )}
 
       <DeleteIngredientDialog
-        ingredientName={pendingDelete ? pickLocalized(pendingDelete.name_en, pendingDelete.name_sr, lang) : null}
+        ingredientName={
+          pendingDelete ? pickLocalized(pendingDelete.name_en, pendingDelete.name_sr, lang) : null
+        }
         isDeleting={isDeleting}
         error={deleteError}
         onConfirm={() => void handleConfirmDelete()}
