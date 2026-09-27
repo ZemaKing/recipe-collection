@@ -1,4 +1,4 @@
-import { ChefHat, LogOut, User } from 'lucide-react'
+import { LogOut, User } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
@@ -21,7 +21,7 @@ function AdminTopbar() {
   return (
     <header className="flex items-center gap-4 border-b border-border bg-surface px-4 py-3 md:px-6">
       <div className="flex items-center gap-2 md:hidden">
-        <ChefHat className="size-6 shrink-0 text-accent" />
+        <img src="/favicon.svg" alt="" className="size-6 shrink-0" />
         <span className="text-base font-semibold">{t('admin.shellName')}</span>
       </div>
 

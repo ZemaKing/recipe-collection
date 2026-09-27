@@ -1,4 +1,4 @@
-import { ArrowLeft, ChefHat } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
@@ -14,7 +14,7 @@ function AdminSidebar() {
     <aside className="hidden min-h-0 shrink-0 flex-col border-r border-border bg-surface md:flex md:w-20 lg:w-64">
       <div className="px-3 py-5">
         <div className="flex items-center gap-2 px-3 md:justify-center lg:justify-start">
-          <ChefHat className="size-7 shrink-0 text-accent" />
+          <img src="/favicon.svg" alt="" className="size-7 shrink-0" />
           <span className="hidden text-lg font-semibold lg:inline">{t('admin.shellName')}</span>
         </div>
       </div>

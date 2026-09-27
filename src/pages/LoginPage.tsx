@@ -1,5 +1,4 @@
 import { useState, type FormEvent } from 'react'
-import { ChefHat } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Navigate, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
@@ -43,7 +42,7 @@ function LoginPage() {
     <div className="flex min-h-[70vh] items-center justify-center">
       <div className="w-full max-w-sm rounded-card border border-border bg-surface p-6">
         <div className="mb-6 flex flex-col items-center gap-2">
-          <ChefHat className="size-8 text-accent" />
+          <img src="/favicon.svg" alt="" className="size-8" />
           <h1 className="text-lg font-semibold">{t('login.title')}</h1>
           <p className="text-center text-sm text-muted-foreground">{t('login.subtitle')}</p>
         </div>

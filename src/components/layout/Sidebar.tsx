@@ -1,4 +1,4 @@
-import { ChefHat, Plus } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { NavLink, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { useCategories } from '@/hooks/useCategories'
@@ -82,7 +82,7 @@ function Sidebar() {
     <aside className="hidden min-h-0 shrink-0 flex-col border-r border-border bg-surface md:flex md:w-20 lg:w-64">
       <div className="px-3 py-5">
         <div className="flex items-center gap-2 px-3 md:justify-center lg:justify-start">
-          <ChefHat className="size-7 shrink-0 text-accent" />
+          <img src="/favicon.svg" alt="" className="size-7 shrink-0" />
           <span className="hidden text-lg font-semibold lg:inline">{t('app.name')}</span>
         </div>
       </div>
