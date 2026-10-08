@@ -1,18 +1,26 @@
 import { useEffect, useRef, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
-import { deleteRecipeImageFile, uploadRecipeImage } from '@/lib/storage'
+import { deleteRecipeImageFiles, uploadRecipeImage } from '@/lib/storage'
 
 export interface AdminRecipeImage {
   id: string
   storage_path: string
   thumb_path: string | null
+  // The pre-WebP file of a migrated photo (until Phase 39 retires it).
+  original_path: string | null
   alt_en: string
   alt_sr: string
   is_primary: boolean
   order_index: number
 }
 
-const IMAGE_SELECT = 'id, storage_path, thumb_path, alt_en, alt_sr, is_primary, order_index'
+const IMAGE_SELECT =
+  'id, storage_path, thumb_path, original_path, alt_en, alt_sr, is_primary, order_index'
+
+// Every file that belongs to a photo, for deleting it.
+function filesOf(image: Pick<AdminRecipeImage, 'storage_path' | 'thumb_path' | 'original_path'>) {
+  return [image.storage_path, image.thumb_path, image.original_path]
+}
 
 function fetchImages(recipeId: string) {
   return supabase
@@ -26,6 +34,7 @@ function mapRow(row: {
   id: string
   storage_path: string
   thumb_path: string | null
+  original_path: string | null
   alt_en: string | null
   alt_sr: string | null
   is_primary: boolean
@@ -35,6 +44,7 @@ function mapRow(row: {
     id: row.id,
     storage_path: row.storage_path,
     thumb_path: row.thumb_path,
+    original_path: row.original_path,
     alt_en: row.alt_en ?? '',
     alt_sr: row.alt_sr ?? '',
     is_primary: row.is_primary,
@@ -52,7 +62,9 @@ export function useRecipeImages(recipeId: string | null) {
   // from the render that was current when the mutation function was handed out.
   const imagesRef = useRef<AdminRecipeImage[]>([])
 
-  function applyImages(next: AdminRecipeImage[] | ((prev: AdminRecipeImage[]) => AdminRecipeImage[])) {
+  function applyImages(
+    next: AdminRecipeImage[] | ((prev: AdminRecipeImage[]) => AdminRecipeImage[]),
+  ) {
     imagesRef.current = typeof next === 'function' ? next(imagesRef.current) : next
     setImages(imagesRef.current)
   }
@@ -108,14 +120,14 @@ export function useRecipeImages(recipeId: string | null) {
     if (!recipeId) throw new Error('Recipe must be saved before adding images')
 
     const current = imagesRef.current
-    const storagePath = await uploadRecipeImage(recipeId, file)
+    const uploaded = await uploadRecipeImage(recipeId, file)
     const nextOrder = current.reduce((max, img) => Math.max(max, img.order_index), 0) + 1
 
     const { data, error } = await supabase
       .from('recipe_images')
       .insert({
         recipe_id: recipeId,
-        storage_path: storagePath,
+        ...uploaded,
         alt_en: altEn || null,
         alt_sr: altSr || null,
         is_primary: current.length === 0,
@@ -125,7 +137,9 @@ export function useRecipeImages(recipeId: string | null) {
       .single()
 
     if (error) {
-      await deleteRecipeImageFile(storagePath).catch(() => undefined)
+      await deleteRecipeImageFiles(filesOf({ ...uploaded, original_path: null })).catch(
+        () => undefined,
+      )
       throw error
     }
 
@@ -135,49 +149,46 @@ export function useRecipeImages(recipeId: string | null) {
   async function replaceImage(image: AdminRecipeImage, file: File) {
     if (!recipeId) throw new Error('Recipe must be saved before replacing images')
 
-    const newStoragePath = await uploadRecipeImage(recipeId, file)
+    const uploaded = await uploadRecipeImage(recipeId, file)
+    // The old photo is discarded entirely, including a migrated photo's
+    // pre-WebP original (it's in the Phase 34 backup).
+    const replaced = { ...uploaded, original_path: null }
 
-    const { error } = await supabase
-      .from('recipe_images')
-      // The thumb and dimensions belonged to the old file; until Phase 38
-      // uploads write variants, lists fall back to the new storage_path.
-      .update({ storage_path: newStoragePath, thumb_path: null, width: null, height: null })
-      .eq('id', image.id)
+    const { error } = await supabase.from('recipe_images').update(replaced).eq('id', image.id)
 
     if (error) {
-      await deleteRecipeImageFile(newStoragePath).catch(() => undefined)
+      await deleteRecipeImageFiles(filesOf(replaced)).catch(() => undefined)
       throw error
     }
 
-    // Old file is now unreferenced — best-effort cleanup, doesn't affect the
+    // Old files are now unreferenced — best-effort cleanup, doesn't affect the
     // row we just successfully updated.
-    await deleteRecipeImageFile(image.storage_path).catch(() => undefined)
-    if (image.thumb_path) await deleteRecipeImageFile(image.thumb_path).catch(() => undefined)
+    await deleteRecipeImageFiles(filesOf(image)).catch(() => undefined)
 
-    applyImages((prev) =>
-      prev.map((img) =>
-        img.id === image.id ? { ...img, storage_path: newStoragePath, thumb_path: null } : img,
-      ),
-    )
+    applyImages((prev) => prev.map((img) => (img.id === image.id ? { ...img, ...replaced } : img)))
   }
 
   async function removeImage(image: AdminRecipeImage) {
-    await deleteRecipeImageFile(image.storage_path)
-    if (image.thumb_path) await deleteRecipeImageFile(image.thumb_path).catch(() => undefined)
-
+    // Row first: if that fails the photo is still intact. Then its files,
+    // best effort (a leftover file is harmless; a row without files isn't).
     const { error } = await supabase.from('recipe_images').delete().eq('id', image.id)
     if (error) throw error
+    await deleteRecipeImageFiles(filesOf(image)).catch(() => undefined)
 
     const remaining = imagesRef.current.filter((img) => img.id !== image.id)
 
     if (image.is_primary && remaining.length > 0) {
-      const promoted = remaining.reduce((first, img) => (img.order_index < first.order_index ? img : first))
+      const promoted = remaining.reduce((first, img) =>
+        img.order_index < first.order_index ? img : first,
+      )
       const { error: promoteError } = await supabase
         .from('recipe_images')
         .update({ is_primary: true })
         .eq('id', promoted.id)
       if (promoteError) throw promoteError
-      applyImages(remaining.map((img) => (img.id === promoted.id ? { ...img, is_primary: true } : img)))
+      applyImages(
+        remaining.map((img) => (img.id === promoted.id ? { ...img, is_primary: true } : img)),
+      )
       return
     }
 
@@ -196,7 +207,10 @@ export function useRecipeImages(recipeId: string | null) {
       if (error) throw error
     }
 
-    const { error } = await supabase.from('recipe_images').update({ is_primary: true }).eq('id', imageId)
+    const { error } = await supabase
+      .from('recipe_images')
+      .update({ is_primary: true })
+      .eq('id', imageId)
     if (error) throw error
 
     applyImages((prev) => prev.map((img) => ({ ...img, is_primary: img.id === imageId })))
@@ -209,7 +223,9 @@ export function useRecipeImages(recipeId: string | null) {
       .eq('id', imageId)
     if (error) throw error
 
-    applyImages((prev) => prev.map((img) => (img.id === imageId ? { ...img, alt_en: altEn, alt_sr: altSr } : img)))
+    applyImages((prev) =>
+      prev.map((img) => (img.id === imageId ? { ...img, alt_en: altEn, alt_sr: altSr } : img)),
+    )
   }
 
   async function moveImage(imageId: string, direction: -1 | 1) {
@@ -222,8 +238,14 @@ export function useRecipeImages(recipeId: string | null) {
     const target = sorted[targetIndex]
 
     const [{ error: err1 }, { error: err2 }] = await Promise.all([
-      supabase.from('recipe_images').update({ order_index: target.order_index }).eq('id', current.id),
-      supabase.from('recipe_images').update({ order_index: current.order_index }).eq('id', target.id),
+      supabase
+        .from('recipe_images')
+        .update({ order_index: target.order_index })
+        .eq('id', current.id),
+      supabase
+        .from('recipe_images')
+        .update({ order_index: current.order_index })
+        .eq('id', target.id),
     ])
     if (err1) throw err1
     if (err2) throw err2
@@ -237,5 +259,16 @@ export function useRecipeImages(recipeId: string | null) {
     )
   }
 
-  return { images, isLoading, error, reload, addImage, replaceImage, removeImage, setPrimary, updateAlt, moveImage }
+  return {
+    images,
+    isLoading,
+    error,
+    reload,
+    addImage,
+    replaceImage,
+    removeImage,
+    setPrimary,
+    updateAlt,
+    moveImage,
+  }
 }

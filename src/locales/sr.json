@@ -289,7 +289,7 @@
       "imagesNeedSave": "Sačuvajte recept da biste mogli da dodate slike.",
       "dropImagesHere": "Prevucite slike ovde",
       "clickToBrowse": "ili kliknite da izaberete",
-      "imageHint": "Podržani formati: JPG, PNG, WebP. Maks. 5MB po slici.",
+      "imageHint": "Podržani formati: JPG, PNG, WebP (čuva se kao WebP). Maks. 25MB po slici.",
       "addImage": "Dodaj sliku",
       "replaceImage": "Zameni",
       "altEn": "Alt tekst (EN)",
@@ -301,7 +301,7 @@
       "retryUpload": "Pokušaj ponovo",
       "imageErrors": {
         "invalidType": "Dozvoljene su samo JPEG, PNG ili WebP slike.",
-        "tooLarge": "Slika mora biti do 5MB.",
+        "tooLarge": "Slika mora biti do 25MB.",
         "uploadFailed": "Otpremanje nije uspelo. Pokušajte ponovo.",
         "actionFailed": "Nešto je pošlo naopako. Pokušajte ponovo."
       }

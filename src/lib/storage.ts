@@ -1,16 +1,37 @@
+import { resizeImageVariants, type ResizeVariant } from '@/lib/image-resize'
 import { supabase } from '@/lib/supabaseClient'
 import type { RecipeImageRef } from '@/types/recipe'
 
 const RECIPE_IMAGES_BUCKET = 'recipe-images'
 const INGREDIENT_IMAGES_BUCKET = 'ingredient-images'
 
-export const MAX_RECIPE_IMAGE_BYTES = 5 * 1024 * 1024
+// Only the WebP output is stored (≈ 100–400 KB), so the input can be a big
+// phone photo. Decoding a much larger file in the browser gets slow.
+export const MAX_RECIPE_IMAGE_BYTES = 25 * 1024 * 1024
 export const ACCEPTED_RECIPE_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const
+
+// Same variants as the migration jobs (scripts/migrate-images/), WebP q85.
+// The card thumb covers 500×500 because cards crop it to a square.
+export const RECIPE_IMAGE_VARIANTS = [
+  { name: 'full', maxWidth: 1600, quality: 0.85 },
+  { name: 'card', maxWidth: 500, maxHeight: 500, fit: 'outside', quality: 0.85 },
+] as const satisfies readonly ResizeVariant[]
+export const INGREDIENT_IMAGE_VARIANT = {
+  name: 'full',
+  maxWidth: 600,
+  maxHeight: 400,
+  quality: 0.85,
+} as const satisfies ResizeVariant
+
+// New photo = new UUID path, so objects never change and can be cached for a year.
+const CACHE_CONTROL = '31536000'
 
 export type RecipeImageValidationError = 'invalidType' | 'tooLarge'
 
 export function validateRecipeImageFile(file: File): RecipeImageValidationError | null {
-  if (!ACCEPTED_RECIPE_IMAGE_TYPES.includes(file.type as (typeof ACCEPTED_RECIPE_IMAGE_TYPES)[number])) {
+  if (
+    !ACCEPTED_RECIPE_IMAGE_TYPES.includes(file.type as (typeof ACCEPTED_RECIPE_IMAGE_TYPES)[number])
+  ) {
     return 'invalidType'
   }
   if (file.size > MAX_RECIPE_IMAGE_BYTES) {
@@ -23,7 +44,9 @@ export function validateRecipeImageFile(file: File): RecipeImageValidationError 
 // than sharing validateRecipeImageFile) so ingredient-specific error copy can
 // diverge later without touching the recipe path.
 export function validateIngredientImageFile(file: File): RecipeImageValidationError | null {
-  if (!ACCEPTED_RECIPE_IMAGE_TYPES.includes(file.type as (typeof ACCEPTED_RECIPE_IMAGE_TYPES)[number])) {
+  if (
+    !ACCEPTED_RECIPE_IMAGE_TYPES.includes(file.type as (typeof ACCEPTED_RECIPE_IMAGE_TYPES)[number])
+  ) {
     return 'invalidType'
   }
   if (file.size > MAX_RECIPE_IMAGE_BYTES) {
@@ -37,11 +60,11 @@ export function getRecipeImageUrl(storagePath: string): string {
 }
 
 // Cards and admin lists show the thumbnail; the detail hero shows the full
-// image. Rows not migrated yet (or uploaded before Phase 38) have no thumb, so
-// both fall back to storage_path.
-export function getRecipeImageUrls(
-  image: Pick<RecipeImageRef, 'storage_path' | 'thumb_path'>,
-): { full: string; thumb: string } {
+// image. Rows without a thumb fall back to storage_path.
+export function getRecipeImageUrls(image: Pick<RecipeImageRef, 'storage_path' | 'thumb_path'>): {
+  full: string
+  thumb: string
+} {
   const full = getRecipeImageUrl(image.storage_path)
   return { full, thumb: image.thumb_path ? getRecipeImageUrl(image.thumb_path) : full }
 }
@@ -50,76 +73,89 @@ export function getIngredientImageUrl(storagePath: string): string {
   return supabase.storage.from(INGREDIENT_IMAGES_BUCKET).getPublicUrl(storagePath).data.publicUrl
 }
 
-function extensionFor(file: File): string {
-  const fromName = file.name.split('.').pop()
-  if (fromName && fromName.length <= 5) return fromName.toLowerCase()
-  return file.type.split('/').pop() ?? 'jpg'
+/** What an upload wrote: the columns to store on the row. */
+export interface UploadedRecipeImage {
+  storage_path: string
+  thumb_path: string
+  width: number
+  height: number
 }
 
-const MAX_RECIPE_IMAGE_DIMENSION = 2000
+export interface UploadedIngredientImage {
+  storage_path: string
+  width: number
+  height: number
+}
 
-// Downscales oversized photos client-side before they ever hit Storage —
-// phone camera photos routinely exceed 4000px on a side, which is wasted
-// bandwidth for a recipe thumbnail/hero image. Small images pass through
-// untouched (re-encoding a PNG through canvas can bloat it).
-async function resizeImageIfNeeded(file: File): Promise<File> {
-  if (file.type === 'image/png') return file
-
-  const bitmap = await createImageBitmap(file)
-  const largestSide = Math.max(bitmap.width, bitmap.height)
-  if (largestSide <= MAX_RECIPE_IMAGE_DIMENSION) {
-    bitmap.close()
-    return file
+// Uploads the files in order; if one fails, removes the ones already uploaded
+// (best effort) and rethrows, so a failed upload leaves nothing behind.
+async function uploadAll(bucket: string, files: { path: string; blob: Blob }[]): Promise<void> {
+  const done: string[] = []
+  try {
+    for (const { path, blob } of files) {
+      const { error } = await supabase.storage.from(bucket).upload(path, blob, {
+        cacheControl: CACHE_CONTROL,
+        contentType: blob.type,
+        upsert: false,
+      })
+      if (error) throw error
+      done.push(path)
+    }
+  } catch (error) {
+    if (done.length) await removeFiles(bucket, done).catch(() => undefined)
+    throw error
   }
+}
 
-  const scale = MAX_RECIPE_IMAGE_DIMENSION / largestSide
-  const canvas = document.createElement('canvas')
-  canvas.width = Math.round(bitmap.width * scale)
-  canvas.height = Math.round(bitmap.height * scale)
-  const ctx = canvas.getContext('2d')
-  if (!ctx) {
-    bitmap.close()
-    return file
+async function removeFiles(bucket: string, paths: (string | null | undefined)[]): Promise<void> {
+  const unique = [...new Set(paths.filter((p): p is string => !!p))]
+  if (!unique.length) return
+  const { error } = await supabase.storage.from(bucket).remove(unique)
+  if (error) throw error
+}
+
+// Every input becomes WebP (PNG where the browser can't encode WebP): a full
+// image (≤ 1600 px) and a card thumb ({uuid}.card.webp, short edge 500).
+export async function uploadRecipeImage(
+  recipeId: string,
+  file: File,
+): Promise<UploadedRecipeImage> {
+  const [full, card] = await resizeImageVariants(file, [...RECIPE_IMAGE_VARIANTS])
+  const id = crypto.randomUUID()
+  const storagePath = `${recipeId}/${id}.${full.ext}`
+  const thumbPath = `${recipeId}/${id}.card.${card.ext}`
+  await uploadAll(RECIPE_IMAGES_BUCKET, [
+    { path: storagePath, blob: full.blob },
+    { path: thumbPath, blob: card.blob },
+  ])
+  return {
+    storage_path: storagePath,
+    thumb_path: thumbPath,
+    width: full.width,
+    height: full.height,
   }
-  ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height)
-  bitmap.close()
-
-  const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, file.type, 0.85))
-  if (!blob) return file
-
-  return new File([blob], file.name, { type: file.type })
 }
 
-export async function uploadRecipeImage(recipeId: string, file: File): Promise<string> {
-  const resized = await resizeImageIfNeeded(file)
-  const storagePath = `${recipeId}/${crypto.randomUUID()}.${extensionFor(resized)}`
-  const { error } = await supabase.storage.from(RECIPE_IMAGES_BUCKET).upload(storagePath, resized, {
-    cacheControl: '3600',
-    upsert: false,
-  })
-  if (error) throw error
-  return storagePath
+/** Removes every file of a recipe photo (full, thumb, pre-WebP original). */
+export async function deleteRecipeImageFiles(paths: (string | null | undefined)[]): Promise<void> {
+  await removeFiles(RECIPE_IMAGES_BUCKET, paths)
 }
 
-export async function deleteRecipeImageFile(storagePath: string): Promise<void> {
-  const { error } = await supabase.storage.from(RECIPE_IMAGES_BUCKET).remove([storagePath])
-  if (error) throw error
+export async function uploadIngredientImage(
+  ingredientId: string,
+  file: File,
+): Promise<UploadedIngredientImage> {
+  const [image] = await resizeImageVariants(file, [INGREDIENT_IMAGE_VARIANT])
+  const storagePath = `${ingredientId}/${crypto.randomUUID()}.${image.ext}`
+  await uploadAll(INGREDIENT_IMAGES_BUCKET, [{ path: storagePath, blob: image.blob }])
+  return { storage_path: storagePath, width: image.width, height: image.height }
 }
 
-export async function uploadIngredientImage(ingredientId: string, file: File): Promise<string> {
-  const resized = await resizeImageIfNeeded(file)
-  const storagePath = `${ingredientId}/${crypto.randomUUID()}.${extensionFor(resized)}`
-  const { error } = await supabase.storage.from(INGREDIENT_IMAGES_BUCKET).upload(storagePath, resized, {
-    cacheControl: '3600',
-    upsert: false,
-  })
-  if (error) throw error
-  return storagePath
-}
-
-export async function deleteIngredientImageFile(storagePath: string): Promise<void> {
-  const { error } = await supabase.storage.from(INGREDIENT_IMAGES_BUCKET).remove([storagePath])
-  if (error) throw error
+/** Removes an ingredient photo's files (the image and its pre-WebP original). */
+export async function deleteIngredientImageFiles(
+  paths: (string | null | undefined)[],
+): Promise<void> {
+  await removeFiles(INGREDIENT_IMAGES_BUCKET, paths)
 }
 
 // Same folder-listing cleanup as deleteRecipeImageFolder, used when the whole

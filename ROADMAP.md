@@ -4,7 +4,7 @@ Follow-up to the build log in [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md). Its 
 
 The image pipeline reuses the one built for the diecast app (`../diecast-collection/scripts/images/` + `src/lib/image-resize.ts`). That code was written app-agnostic so it could be reused here (diecast ROADMAP Phase 21). Its README even uses "recipe photos" as the example job.
 
-**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08. Phase 35 done 2026-10-08. Phase 36 done 2026-10-08 (all images served as WebP). Phase 37 done 2026-10-08 (card thumbs re-done per Open decision 6). ⚠ Org grace period ends 31 Oct 2026 (Storage 117 %): see Open decision 1.** Research done 2026-10-04 (findings below).
+**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08. Phase 35 done 2026-10-08. Phase 36 done 2026-10-08 (all images served as WebP). Phase 37 done 2026-10-08 (card thumbs re-done per Open decision 6). Phase 38 code done 2026-10-08, bucket migration applied; waiting on a hand upload. ⚠ Org grace period ends 31 Oct 2026 (Storage 117 %): see Open decision 1.** Research done 2026-10-04 (findings below).
 
 ---
 
@@ -92,7 +92,7 @@ Existing files:    scripts/images (sharp) ─► WebP at new paths ─► verify
 | 35 | Image Pipeline Port & Schema | ✅ Done 2026-10-08 | — |
 | 36 | WebP Migration of Existing Images | ✅ Done 2026-10-08 | Admin pages check when next signed in |
 | 37 | Read Path: Thumbnails & Loading Priority | ✅ Done 2026-10-08 | Admin pages check when next signed in |
-| 38 | Upload Path: WebP in the Browser | ⬜ Not started | Upload a test photo by hand |
+| 38 | Upload Path: WebP in the Browser | 🟡 Code done + migration applied 2026-10-08 | Upload a test photo by hand |
 | 39 | Retire Originals | ⬜ Not started | **Explicit approval to delete ~84 MB of originals** |
 | 40 | Data Layer & Performance | ⬜ Not started | — |
 | 41 | Deployment Hardening | ⬜ Not started | — |
@@ -229,18 +229,21 @@ No list view downloads a full-size recipe photo. ✅
 New uploads are stored as small WebP files, PNGs included.
 
 ### Tasks
-- [ ] Copy diecast `src/lib/image-resize.ts` (no imports; EXIF-aware decode, step-down resize, `OffscreenCanvas` + fallback, WebP with a PNG fallback)
-- [ ] Replace `resizeImageIfNeeded()`. **Remove the PNG skip.** Every input → WebP (`full` + `thumb` for recipes, one variant for ingredients); `cacheControl` one year
-- [ ] `useRecipeImages.addImage` / `replaceImage` / `removeImage` and `useIngredientImage.setImageFile` / `removeImage` write and delete **both** variants and clean up on failure
-- [ ] The input size limit can go up (only the output is stored); bucket `allowed_mime_types` → WebP (+ PNG fallback)
-- [ ] The JSON/AI recipe import paths that attach images (if any) use the same function
+- [x] Copy diecast `src/lib/image-resize.ts` + its tests (no imports; EXIF-aware decode, step-down resize, `OffscreenCanvas` + fallback, WebP with a PNG fallback), plus `fit: 'outside'` like the scripts
+- [x] Replace `resizeImageIfNeeded()`. **The PNG skip is gone.** Every input → WebP q85: recipes `full` (≤ 1600) + `card` (covers 500×500, `{uuid}.card.webp`, same as the migration), ingredients one variant (≤ 600×400, alpha kept); `cacheControl` one year, `contentType` set, `upsert: false`. Variants are exported (`RECIPE_IMAGE_VARIANTS`, `INGREDIENT_IMAGE_VARIANT`) and match `scripts/migrate-images/`
+- [x] Upload order: files one by one; if any fails, the ones already uploaded are removed and the error rethrown. `useRecipeImages.addImage` / `replaceImage` write `storage_path`, `thumb_path`, `width`, `height` (and clear `original_path`); a failed row write removes the new files; replace/remove delete **every** file of the old photo (full, thumb and a migrated photo's pre-WebP original, which is in the Phase 34 backup). `removeImage` deletes the row first, then the files (best effort). `useIngredientImage.setImageFile` / `removeImage` the same with `image_width`/`image_height`/`image_original_path`
+- [x] Input size limit 5 → 25 MB (only the output is stored), hint/error copy in `sr` + `en`. Migration `20261008150000_image_buckets_webp.sql`: both buckets' `allowed_mime_types` → WebP + PNG (fallback); `file_size_limit` stays 5 MB (a PNG fallback can reach a few MB)
+- [x] The JSON/AI recipe import attaches no images (nothing to change)
+- [x] **Owner:** applied `20261008150000_image_buckets_webp.sql` (2026-10-08). Checked as the admin: both buckets reject `image/jpeg` and accept `image/webp` + `image/png` (test files removed)
 
 ### Verification
-- [ ] Owner uploads a 1.5 MB PNG dish photo → ≈ 150 KB + ≈ 45 KB WebP; a transparent ingredient PNG keeps its transparency
-- [ ] Unit tests: the fit maths, the upload/rollback order (mocked Storage)
+- [x] Unit tests: the fit maths (incl. `outside`), the upload/rollback order and the cleanup (mocked Storage + resizer, `storage.upload.test.ts`)
+- [x] Real Chromium (dev server, no upload): a real 2.97 MB PNG original (1536×1024) → full 1536×1024 **403 KB** + card 750×500 **118 KB** WebP in 176 ms (sharp gave 390 + 135 KB); a transparent 300×200 PNG → 300×200 WebP with alpha 0 in the corner
+- [ ] Owner uploads a dish photo and a transparent ingredient PNG by hand (signed in): rows get WebP paths + dimensions, the card shows the new thumb, transparency kept; replace + remove leave no files behind
+- [ ] "No new object over ~300 KB": **the largest full image is ≈ 400 KB** (1536 px at q85, same as the migrated ones; cards ≤ ~135 KB). Within the bucket limit; lowering it would need a lower quality or max width
 
 ### Definition of Done
-No new object over ~300 KB reaches either bucket.
+No new object over ~300 KB reaches either bucket (see the note above: ≈ 400 KB for the biggest full images at q85).
 
 ---
 

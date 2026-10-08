@@ -286,7 +286,7 @@
       "imagesNeedSave": "Save the recipe first to add photos.",
       "dropImagesHere": "Drag and drop images here",
       "clickToBrowse": "or click to browse",
-      "imageHint": "Supports JPG, PNG, WebP. Max 5MB per image.",
+      "imageHint": "Supports JPG, PNG, WebP (stored as WebP). Max 25MB per image.",
       "addImage": "Add image",
       "replaceImage": "Replace",
       "altEn": "Alt text (EN)",
@@ -298,7 +298,7 @@
       "retryUpload": "Retry",
       "imageErrors": {
         "invalidType": "Only JPEG, PNG, or WebP images are allowed.",
-        "tooLarge": "Image must be 5MB or smaller.",
+        "tooLarge": "Image must be 25MB or smaller.",
         "uploadFailed": "Upload failed. Please try again.",
         "actionFailed": "Something went wrong. Please try again."
       }
