@@ -4,7 +4,7 @@ Follow-up to the build log in [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md). Its 
 
 The image pipeline reuses the one built for the diecast app (`../diecast-collection/scripts/images/` + `src/lib/image-resize.ts`). That code was written app-agnostic so it could be reused here (diecast ROADMAP Phase 21). Its README even uses "recipe photos" as the example job.
 
-**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08 except the owner's steps (Usage page, second copy).** Research done 2026-10-04 (findings below).
+**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08. ⚠ Org grace period ends 31 Oct 2026 (Storage 117 %): see Open decision 1.** Research done 2026-10-04 (findings below).
 
 ---
 
@@ -87,7 +87,7 @@ Existing files:    scripts/images (sharp) ─► WebP at new paths ─► verify
 | # | Phase | Status | Needs from owner |
 | --- | --- | --- | --- |
 | 33 | Security & Privacy Lockdown | 🟡 DB locked down & verified; frontend not deployed | Deploy; admin CRUD check on the deployed site |
-| 34 | Image Audit & Local Backup | 🟡 Audit, image backup and DB export done and verified | Check the Usage page; copy `backups/` to a second place |
+| 34 | Image Audit & Local Backup | ✅ Done 2026-10-08 | — |
 | 35 | Image Pipeline Port & Schema | ⬜ Not started | Apply migration |
 | 36 | WebP Migration of Existing Images | ⬜ Not started | Run the scripts |
 | 37 | Read Path: Thumbnails & Loading Priority | ⬜ Not started | — |
@@ -135,20 +135,20 @@ Writes require `is_admin()`, sign-ups are off, private data isn't public, and a 
 One checksummed copy of every original (84 MB) before anything changes. That copy is also the conversion source.
 
 ### Tasks
-- [ ] Owner: Dashboard → Organization → Usage. Record Storage size, this month's egress, whether uploads are restricted, and the cycle reset date (shared with the game app; → Open decision 1)
+- [x] Owner: Dashboard → Organization → Usage, 2026-10-08 (cycle 10 Sep – 10 Oct 2026): **Storage 1.173 / 1 GB (117 %)**, egress 3.697 / 5 GB (74 %), cached egress 3.706 / 5 GB (74 %), DB 0.034 / 0.5 GB. Not restricted yet: the org exceeded Storage in the previous cycle and is in a **grace period until 31 Oct 2026**; after that, if still over quota, every project in the org (this one included) answers 402 (→ Open decision 1)
 - [ ] Owner (optional now): `SUPABASE_SERVICE_ROLE_KEY` in `.env.local`. The scripts fall back to the admin login (`RLS_ADMIN_*`), which can list both buckets and read every table; only the `admin_users` export needs the key
 - [x] `scripts/images-audit.ts` (`npm run images:audit`): rows vs objects for both buckets, bytes by format, orphans, shared paths, duplicate content (ETag + size), one HEAD per public URL → `docs/images-audit.md`. Run 2026-10-08: 62 + 69 objects, 83.60 MB, 0 missing / orphans / duplicates / HEAD problems. Stored `Cache-Control` is `max-age=3600` on all 131 (a HEAD answers `no-cache`, so the audit reports the stored value)
 - [x] `scripts/images-backup.ts` (`npm run images:backup`, dry run by default; `-- --apply` downloads; `-- --verify` re-hashes offline): both buckets → git-ignored `backups/images/{bucket}/…` + `manifest.json` (bytes, sha256, ETag, sniffed type, width × height); resumable, size- and MD5-checked, never deletes. Dimensions come from `scripts/lib/image-info.ts` (PNG/JPEG/WebP header parser, no dependency). Node 24 runs the `.ts` scripts directly (type stripping), so no `tsx` yet
 - [x] Owner approved; `npm run images:backup -- --apply` run 2026-10-08: 131 files, 83.60 MB, all size/MD5-checked. Manifest dims: ingredients 69 × 300×200 PNG; recipes 29 PNG 900×600 (one 900×601), 13 PNG 1536×1024, 19 JPEG 1200×800, 1 JPEG 1536×1024. Bucket listing retries on Storage's transient "Too many connections"
 - [x] DB export: `npm run db:export` → `backups/db/{timestamp}/{table}.json` + `manifest.json` (row counts, sha256), through the API because `pg_dump` needs the DB password. First export 2026-10-08: 16 tables, `admin_users` skipped (needs the service-role key). Procedure + restore in `docs/backup.md`
-- [ ] Owner copies `backups/` to a second place
+- [x] Owner copied `backups/` to a second place (2026-10-08)
 
 ### Verification
 - [x] Audit matches the findings: 62 + 69 objects, ≈ 84 MB (83.60 MB), 0 orphans
 - [x] A re-run of the backup downloads 0 bytes; `--verify` passes (131/131, 2026-10-08)
 
 ### Definition of Done
-Verified local copy of every image + DB export, in two places.
+Verified local copy of every image + DB export, in two places. ✅
 
 ---
 
@@ -346,7 +346,7 @@ Docs match the app; production verified by the owner.
 
 | # | Question | Needed by |
 | --- | --- | --- |
-| 1 | **The org is over its Storage quota (≈ 2.1 GB of 1 GB), mostly because of the game app.** If uploads are blocked, the WebP variants can't be uploaded until space is freed. Recipes are small (~13 MB of WebP), so doing **this app first is a cheap pilot** of the pipeline, but it frees only ~70 MB. The real fix is the game app's Phase 37. Options while blocked: a month of Pro ($25), or delete originals before upload (relying on the local backup) | Ph 34 / 36 |
+| 1 | **The org is over its Storage quota: 1.173 GB of 1 GB on 2026-10-08 (was ≈ 2.1 GB on 2026-10-04), mostly the game app.** Uploads still work, but the grace period ends **31 Oct 2026**; if the org is still over 1 GB then, all its projects (this site too) get 402s. It needs ≥ 173 MB freed, plus headroom. This app frees ~71 MB at most (84 MB originals → ~13 MB WebP, only after Phase 39), so **the game app must free ≥ ~110 MB by 31 Oct** whatever happens here. Plan: Phases 35–36 by ~15 Oct, Phase 39 (needs the 7-day wait + approval) by ~25 Oct; game app's image phase in parallel. Fallbacks: a month of Pro ($25), or shorten Phase 39's wait (the originals are backed up in two places) | Ph 36 / 39, **by 31 Oct** |
 | 2 | ~~`kitchen_notes` and `meal_plan_entries`: private or public?~~ **Decided 2026-10-08: both stay publicly readable**; only writes are admin-only | Ph 33 ✅ |
 | 3 | ~~Favourites for visitors: hide or localStorage?~~ **Decided 2026-10-08: per-visitor localStorage**; the admin's hearts keep writing `is_favorite`. (The finding above was partly stale: visitors already saw a read-only heart; the silent revert hit only signed-in non-admins) | Ph 33 ✅ |
 | 4 | E2E: a separate Supabase test project (allows admin-flow E2E; this org's two free slots are used, so it would go in another org) or read-only E2E against production? | Ph 42 |
