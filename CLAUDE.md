@@ -23,6 +23,7 @@ npm run images:backup  # dry run; `-- --apply` downloads both buckets to git-ign
 npm run db:export      # every table as JSON → git-ignored backups/db/{timestamp}/ (see docs/backup.md)
 npm run images:migrate # dry run: originals (from backups/images/) → WebP q85 variants; `-- --apply` uploads (scripts/images/README.md)
 npm run images:check   # uploaded WebP vs the manifests (`-- --full` downloads + sha256)
+npm run images:flip    # dry run: point rows at the uploaded WebP; `-- --apply`, `-- --rollback --apply` (one transaction per table)
 ```
 
 The `.ts` scripts run directly on Node 24 (type stripping, so relative imports need the `.ts` extension); `tsconfig.scripts.json` puts them under `tsc -b`. They use `SUPABASE_SERVICE_ROLE_KEY` if set, otherwise the `RLS_ADMIN_*` login.

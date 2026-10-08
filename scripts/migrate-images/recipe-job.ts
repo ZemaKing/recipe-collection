@@ -13,8 +13,8 @@ const job: ImageJob = {
   variants: [
     // Originals are ≤ 1536 px wide, so full is a re-encode, not a resize.
     { name: 'full', maxWidth: 1600, quality: 85 },
-    // Cards are aspect-square at ≤ ~300 CSS px; 600 covers 2× screens.
-    { name: 'thumb', maxWidth: 600, quality: 85, pathPattern: '{folder}/{name}.thumb.{ext}' },
+    // Cards are aspect-square at ≤ ~300 CSS px; 500 is the owner's pick (Open decision 5).
+    { name: 'thumb', maxWidth: 500, quality: 85, pathPattern: '{folder}/{name}.thumb.{ext}' },
   ],
   manifest: new URL('./recipe-manifest.json', import.meta.url),
   // Every new image gets a new path, so objects can be cached for a year.
