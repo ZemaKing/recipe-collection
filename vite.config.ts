@@ -1,9 +1,9 @@
-/// <reference types="vitest/config" />
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig, type Plugin } from 'vite'
+import { configDefaults } from 'vitest/config'
 
 // vercel.json's CSP allows the inline theme script in index.html by its sha256. A Windows
 // checkout (core.autocrlf) has CRLF line endings and Vercel's has LF, so normalise them: every
@@ -44,5 +44,7 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: './src/test/setup.ts',
+    // e2e/ is Playwright's (npm run test:e2e).
+    exclude: [...configDefaults.exclude, 'e2e/**'],
   },
 })

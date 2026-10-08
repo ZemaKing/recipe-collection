@@ -10,6 +10,9 @@
     "format": "prettier --write .",
     "preview": "vite preview",
     "test": "vitest run",
+    "typecheck": "tsc -b",
+    "test:e2e": "playwright test",
+    "test:e2e:report": "playwright show-report",
     "verify:rls": "node scripts/verify-rls.mjs",
     "images:audit": "node scripts/images-audit.ts",
     "images:backup": "node scripts/images-backup.ts",
@@ -43,6 +46,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.63.0",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.7",

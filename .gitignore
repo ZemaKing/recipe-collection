@@ -16,6 +16,11 @@ dist-ssr
 # original photo and the full database; never commit them.
 backups/
 
+# Playwright E2E output (Phase 42, e2e/README.md).
+/test-results
+/playwright-report
+/blob-report
+
 # Personal reference material used to hand-write seed data (Phase 6) —
 # not meant to be served as static assets or committed.
 public/*.pdf

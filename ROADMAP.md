@@ -4,7 +4,7 @@ Follow-up to the build log in [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md). Its 
 
 The image pipeline reuses the one built for the diecast app (`../diecast-collection/scripts/images/` + `src/lib/image-resize.ts`). That code was written app-agnostic so it could be reused here (diecast ROADMAP Phase 21). Its README even uses "recipe photos" as the example job.
 
-**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08. Phase 35 done 2026-10-08. Phase 36 done 2026-10-08 (all images served as WebP). Phase 37 done 2026-10-08 (card thumbs re-done per Open decision 6). Phase 38 done 2026-10-08. Phase 39 done 2026-10-08 (owner shortened the wait): only WebP left, buckets 16.3 + 1.0 MB. Phase 40 done 2026-10-08 (mobile LCP gap accepted, Open decision 7). Phase 41 done 2026-10-08 (headers + CSP live, verified on production). ⚠ Org grace period ends 31 Oct 2026 (Storage 117 %): see Open decision 1.** Research done 2026-10-04 (findings below).
+**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08. Phase 35 done 2026-10-08. Phase 36 done 2026-10-08 (all images served as WebP). Phase 37 done 2026-10-08 (card thumbs re-done per Open decision 6). Phase 38 done 2026-10-08. Phase 39 done 2026-10-08 (owner shortened the wait): only WebP left, buckets 16.3 + 1.0 MB. Phase 40 done 2026-10-08 (mobile LCP gap accepted, Open decision 7). Phase 41 done 2026-10-08 (headers + CSP live, verified on production). Phase 42 code done 2026-10-08 (CI not yet run on GitHub; E2E 20/20 three runs in a row). ⚠ Org grace period ends 31 Oct 2026 (Storage 117 %): see Open decision 1.** Research done 2026-10-04 (findings below).
 
 ---
 
@@ -96,7 +96,7 @@ Existing files:    scripts/images (sharp) ─► WebP at new paths ─► verify
 | 39 | Retire Originals | ✅ Done 2026-10-08 | Confirm the second backup copy is still intact |
 | 40 | Data Layer & Performance | ✅ Done 2026-10-08 (mobile LCP 2.9–4.3 s accepted) | — |
 | 41 | Deployment Hardening | ✅ Done 2026-10-08 | — |
-| 42 | Quality Gates (CI & E2E) | ⬜ Not started | Make CI a required check (GitHub setting) |
+| 42 | Quality Gates (CI & E2E) | 🟡 Code done 2026-10-08; CI runs on the first push | Push; make CI a required check (GitHub setting) |
 | 43 | Docs, Backup & Production Verification | ⬜ Not started | Go/no-go |
 
 ---
@@ -323,14 +323,18 @@ Assets cached immutably, security headers on, secrets can't ship. ✅
 Stop regressions from reaching production automatically.
 
 ### Tasks
-- [ ] `.github/workflows/ci.yml` (Node 22): `npm ci`, `lint`, `test`, `build` on pushes to `main` and on PRs (copy the game app's)
-- [ ] `typecheck` script (`tsc -b`) covering `scripts/`
-- [ ] Unit tests for code without them: `localizedPath`, `recipeSearchParams`, `slugify`, the favourites behaviour from Phase 33, `useRecipeImages` ordering helpers (extract them as pure functions first)
-- [ ] Playwright E2E with the local Edge, **read-only by default** (a fixture fails any non-GET to Supabase): home → `/recepti` → search (incl. diacritics) → filters (category, subcategory, tags, favourites) → recipe detail → language switch (`/sr/...` ↔ `/en/...`) → category pages; at desktop and mobile. Admin flows go in a manual checklist unless a test project exists (Open decision 4)
+- [x] `.github/workflows/ci.yml`: `npm ci`, `lint`, `typecheck`, `test`, `build` on pushes to `main` and on PRs (the game app's, plus `typecheck` and a concurrency group). **Node 24, not 22**: the `scripts/` `.ts` files need Node 24's type stripping. The build gets the real (public) Supabase URL because postbuild's `check-csp.mjs` compares it with the CSP; the anon key is a placeholder
+- [x] `typecheck` script (`tsc -b`): app, `scripts/`, and now `playwright.config.ts` + `e2e/` (`tsconfig.node.json`)
+- [x] Unit tests: `localizedPath`, `recipeSearchParams`, `slugify`, `useFavorites` (visitor → localStorage and never the DB; admin → DB and the column as is), and the `useRecipeImages` ordering rules, extracted to `src/lib/recipeImageOrder.ts` (`nextOrderIndex`, `pickPromotedPrimary`, `planImageMove`, `swapOrderIndex`, `withPrimary`; the hook now uses them). 227 → **255 tests / 37 files**
+- [x] Playwright E2E (`npm run test:e2e`, `e2e/README.md`; diecast's setup): fresh production build on :4174 with production's CSP, local Edge, desktop 1280×900 + Pixel 7. **Read-only** (Open decision 4): `fixtures.ts` aborts and fails any non-GET to Supabase, and fails on page errors and CSP violations; expected values come from PostgREST directly (`support/data.ts`), not from `src/lib`. Journeys: home → `/recepti` → search (č ć š ž đ both ways, ingredients, no results) → category → subcategory → tags (AND) → Clear → visitor favourites + filter + `/omiljeni` → detail → language switch (path, query, `<html lang>`) → categories → subcategory chips; plus redirects, 404 + noindex, `/admin` → login. Admin flows: manual checklist in `e2e/README.md`. `E2E_BASE_URL` runs it against a deployed site
+- [x] Open decision 4 → read-only E2E against the live project (the default this phase planned; same as diecast)
 - [ ] Owner: make CI a required check on `main`
 
 ### Verification
-- [ ] CI blocks a deliberately broken commit; E2E green 3 runs in a row
+- [x] E2E green 3 runs in a row (20/20 each, ~15 s, 2026-10-08)
+- [x] The tests can fail: with the tag filter switched to OR, the filter journey fails; with `š` dropped from the diacritics folding, the search journey fails (`"prsutom"`); a page `POST` to Supabase is blocked and fails its test
+- [x] CI's steps locally with CI's env (`lint`, `typecheck`, `test` 255/255, `build` incl. both postbuild checks)
+- [ ] CI blocks a deliberately broken commit (needs the first push; then make it a required check)
 
 ### Definition of Done
 Lint, tests and build gate every push; core public flows covered by E2E.
@@ -370,7 +374,7 @@ Docs match the app; production verified by the owner.
 | 1 | **The org is over its Storage quota: 1.173 GB of 1 GB on 2026-10-08 (was ≈ 2.1 GB on 2026-10-04), mostly the game app.** Uploads still work, but the grace period ends **31 Oct 2026**; if the org is still over 1 GB then, all its projects (this site too) get 402s. It needs ≥ 173 MB freed, plus headroom. **This app's part is done (Phase 39, 2026-10-08): its buckets went from 83.6 MB to 17.2 MB, ≈ 66 MB freed.** Check the org's Usage page for the new total, so **the game app must free ≥ ~110 MB by 31 Oct** whatever happens here. Plan: Phases 35–36 by ~15 Oct, Phase 39 (needs the 7-day wait + approval) by ~25 Oct; game app's image phase in parallel. Fallbacks: a month of Pro ($25), or shorten Phase 39's wait (the originals are backed up in two places) | Ph 36 / 39, **by 31 Oct** |
 | 2 | ~~`kitchen_notes` and `meal_plan_entries`: private or public?~~ **Decided 2026-10-08: both stay publicly readable**; only writes are admin-only | Ph 33 ✅ |
 | 3 | ~~Favourites for visitors: hide or localStorage?~~ **Decided 2026-10-08: per-visitor localStorage**; the admin's hearts keep writing `is_favorite`. (The finding above was partly stale: visitors already saw a read-only heart; the silent revert hit only signed-in non-admins) | Ph 33 ✅ |
-| 4 | E2E: a separate Supabase test project (allows admin-flow E2E; this org's two free slots are used, so it would go in another org) or read-only E2E against production? | Ph 42 |
+| 4 | ~~E2E: a separate Supabase test project or read-only E2E against production?~~ **Decided 2026-10-08: read-only against the live project** (the roadmap's default, as in diecast); admin flows are a manual checklist (`e2e/README.md`). A test project stays an option if admin E2E is wanted later | Ph 42 ✅ |
 | 5 | ~~Recipe thumb size 600 vs 400 px~~ **Decided 2026-10-08: 500 px** (q85: avg 49.5 KB, 3.0 MB for all 62) | Ph 36 ✅ |
 | 6 | ~~**Card thumbs are slightly soft on 2×/3× screens**~~ **Decided 2026-10-08: (b), done in Phase 37** (750×500 `card` variant, 5.6 MB for all 62). Was: thumbs fit inside 500×500, so landscape photos are 500×333 and the square card crops 333×333. Options: (a) keep as is (3.0 MB for all 62); (b) bound the *short* side instead (`fit: outside`, e.g. 750×500 → 500×500 crop, roughly +60–80 % thumb bytes, est. ~5 MB); (c) square-cropped 480×480 thumbs (sharp, ≈ today's bytes, but the admin table's 3:2 tiles lose the sides). Re-upload of 62 thumbs at new paths + a flip of `thumb_path` | Ph 37 ✅ |
 | 7 | ~~**Mobile LCP is 2.9–4.3 s on Slow 4G (budget 2.5 s; desktop ≤ 2.1 s).** It's bytes: JS 214 kB + font 47 kB + 4–6 on-screen card photos (~96 kB each). Options: (a) a phone card variant (510×340, measured avg 53 kB vs 96 kB) in a card `srcset`: est. −0.9 s, costs 62 new objects (~3.3 MB), a column/path rule, upload path + migration job; (b) accept it, as the diecast app did. See `docs/performance.md`~~ **Decided 2026-10-08: (b), accepted**; (a) stays an option if mobile matters more later | Ph 40 ✅ |

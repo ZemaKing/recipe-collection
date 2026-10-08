@@ -1,4 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
+import {
+  nextOrderIndex,
+  pickPromotedPrimary,
+  planImageMove,
+  swapOrderIndex,
+  withPrimary,
+} from '@/lib/recipeImageOrder'
 import { supabase } from '@/lib/supabaseClient'
 import { deleteRecipeImageFiles, uploadRecipeImage } from '@/lib/storage'
 
@@ -121,7 +128,7 @@ export function useRecipeImages(recipeId: string | null) {
 
     const current = imagesRef.current
     const uploaded = await uploadRecipeImage(recipeId, file)
-    const nextOrder = current.reduce((max, img) => Math.max(max, img.order_index), 0) + 1
+    const nextOrder = nextOrderIndex(current)
 
     const { data, error } = await supabase
       .from('recipe_images')
@@ -177,18 +184,14 @@ export function useRecipeImages(recipeId: string | null) {
 
     const remaining = imagesRef.current.filter((img) => img.id !== image.id)
 
-    if (image.is_primary && remaining.length > 0) {
-      const promoted = remaining.reduce((first, img) =>
-        img.order_index < first.order_index ? img : first,
-      )
+    const promoted = image.is_primary ? pickPromotedPrimary(remaining) : null
+    if (promoted) {
       const { error: promoteError } = await supabase
         .from('recipe_images')
         .update({ is_primary: true })
         .eq('id', promoted.id)
       if (promoteError) throw promoteError
-      applyImages(
-        remaining.map((img) => (img.id === promoted.id ? { ...img, is_primary: true } : img)),
-      )
+      applyImages(withPrimary(remaining, promoted.id))
       return
     }
 
@@ -213,7 +216,7 @@ export function useRecipeImages(recipeId: string | null) {
       .eq('id', imageId)
     if (error) throw error
 
-    applyImages((prev) => prev.map((img) => ({ ...img, is_primary: img.id === imageId })))
+    applyImages((prev) => withPrimary(prev, imageId))
   }
 
   async function updateAlt(imageId: string, altEn: string, altSr: string) {
@@ -229,13 +232,9 @@ export function useRecipeImages(recipeId: string | null) {
   }
 
   async function moveImage(imageId: string, direction: -1 | 1) {
-    const sorted = [...imagesRef.current].sort((a, b) => a.order_index - b.order_index)
-    const index = sorted.findIndex((img) => img.id === imageId)
-    const targetIndex = index + direction
-    if (index === -1 || targetIndex < 0 || targetIndex >= sorted.length) return
-
-    const current = sorted[index]
-    const target = sorted[targetIndex]
+    const move = planImageMove(imagesRef.current, imageId, direction)
+    if (!move) return
+    const { current, target } = move
 
     const [{ error: err1 }, { error: err2 }] = await Promise.all([
       supabase
@@ -250,13 +249,7 @@ export function useRecipeImages(recipeId: string | null) {
     if (err1) throw err1
     if (err2) throw err2
 
-    applyImages((prev) =>
-      prev.map((img) => {
-        if (img.id === current.id) return { ...img, order_index: target.order_index }
-        if (img.id === target.id) return { ...img, order_index: current.order_index }
-        return img
-      }),
-    )
+    applyImages((prev) => swapOrderIndex(prev, move))
   }
 
   return {

@@ -16,6 +16,8 @@ npm run build     # tsc -b type-check, then vite build
 npm run lint      # eslint .
 npm run format    # prettier --write .
 npm test          # vitest run (single run, not watch)
+npm run typecheck # tsc -b (app, scripts/, e2e/)
+npm run test:e2e  # Playwright: fresh build on :4174, local Edge, desktop + mobile, READ-ONLY against the live project (e2e/README.md)
 npm run preview   # preview production build
 npm run verify:rls # checks live RLS/Storage policies as anon, a non-admin and the admin (RLS_* logins in .env.local)
 npm run images:audit   # rows vs Storage objects → docs/images-audit.md (read-only, HEADs only)
@@ -30,7 +32,7 @@ npm run perf:vitals    # lab Web Vitals against `npm run preview` (:4173), headl
 
 The `.ts` scripts run directly on Node 24 (type stripping, so relative imports need the `.ts` extension); `tsconfig.scripts.json` puts them under `tsc -b`. They use `SUPABASE_SERVICE_ROLE_KEY` if set, otherwise the `RLS_ADMIN_*` login.
 
-Run a single test file: `npx vitest run src/lib/recipeFilter.test.ts`. Tests use Vitest + Testing Library with jsdom (setup file: `src/test/setup.ts`); test files live next to the code they cover (`*.test.ts(x)`).
+Run a single test file: `npx vitest run src/lib/recipeFilter.test.ts`. Tests use Vitest + Testing Library with jsdom (setup file: `src/test/setup.ts`); test files live next to the code they cover (`*.test.ts(x)`). CI (`.github/workflows/ci.yml`) runs lint, typecheck, test and build on pushes to `main` and PRs; E2E runs locally only. E2E tests must stay read-only (the fixture fails any non-GET to Supabase); take expected values from `e2e/support/data.ts`, not from `src/lib`.
 
 Supabase env vars (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`) must be set in `.env.local` (see `.env.local.example`) — `src/lib/supabaseClient.ts` throws at import time if they're missing.
 
