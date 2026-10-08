@@ -4,7 +4,7 @@ Follow-up to the build log in [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md). Its 
 
 The image pipeline reuses the one built for the diecast app (`../diecast-collection/scripts/images/` + `src/lib/image-resize.ts`). That code was written app-agnostic so it could be reused here (diecast ROADMAP Phase 21). Its README even uses "recipe photos" as the example job.
 
-**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08. Phase 35 done 2026-10-08. Phase 36 done 2026-10-08 (all images served as WebP). Phase 37 done 2026-10-08 (card thumbs re-done per Open decision 6). Phase 38 done 2026-10-08. Phase 39 done 2026-10-08 (owner shortened the wait): only WebP left, buckets 16.3 + 1.0 MB. Phase 40 done 2026-10-08 (mobile LCP gap accepted, Open decision 7). ⚠ Org grace period ends 31 Oct 2026 (Storage 117 %): see Open decision 1.** Research done 2026-10-04 (findings below).
+**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08. Phase 35 done 2026-10-08. Phase 36 done 2026-10-08 (all images served as WebP). Phase 37 done 2026-10-08 (card thumbs re-done per Open decision 6). Phase 38 done 2026-10-08. Phase 39 done 2026-10-08 (owner shortened the wait): only WebP left, buckets 16.3 + 1.0 MB. Phase 40 done 2026-10-08 (mobile LCP gap accepted, Open decision 7). Phase 41 code done 2026-10-08 (headers + CSP checked locally; preview deployment pending). ⚠ Org grace period ends 31 Oct 2026 (Storage 117 %): see Open decision 1.** Research done 2026-10-04 (findings below).
 
 ---
 
@@ -95,7 +95,7 @@ Existing files:    scripts/images (sharp) ─► WebP at new paths ─► verify
 | 38 | Upload Path: WebP in the Browser | ✅ Done 2026-10-08 | — |
 | 39 | Retire Originals | ✅ Done 2026-10-08 | Confirm the second backup copy is still intact |
 | 40 | Data Layer & Performance | ✅ Done 2026-10-08 (mobile LCP 2.9–4.3 s accepted) | — |
-| 41 | Deployment Hardening | ⬜ Not started | — |
+| 41 | Deployment Hardening | 🟡 Code done 2026-10-08; checked under `npm run preview` | Push → preview deployment: headers check |
 | 42 | Quality Gates (CI & E2E) | ⬜ Not started | Make CI a required check (GitHub setting) |
 | 43 | Docs, Backup & Production Verification | ⬜ Not started | Go/no-go |
 
@@ -300,13 +300,17 @@ Public pages meet the recorded budget on mobile. ✅ All but LCP, whose gap the 
 Match the game app's Vercel setup.
 
 ### Tasks
-- [ ] `vercel.json`: `/assets/(.*)` → `Cache-Control: public, max-age=31536000, immutable`; security headers (`X-Content-Type-Options`, `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy`); consider a CSP (Supabase URL in `connect-src`/`img-src`)
-- [ ] `postbuild` secret scan: fail the build if a service-role/secret key string ends up in `dist/` (diecast `scripts/check-bundle-secrets.mjs`)
-- [ ] `src/lib/supabaseClient.ts` rejects a secret/service-role key in `VITE_SUPABASE_ANON_KEY` (diecast `env.ts` pattern)
-- [ ] 404 route for unknown paths under `:lang` (check what happens today)
+- [x] `vercel.json`: `/assets/(.*)` → `Cache-Control: public, max-age=31536000, immutable`; the game app's security headers (`X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`, + `payment`/`usb` off)
+- [x] **CSP** (enforced, not report-only): `default-src 'self'`; `script-src 'self'` + the sha256 of the inline theme script; `style-src 'self' 'unsafe-inline'` (react-select's emotion injects `<style>`, Radix sets style attributes); `img-src 'self' data: blob:` + the Supabase URL (`blob:` = upload previews); `font-src 'self' data:` (Vite inlines the 3.6 kB latin-ext Inter subset as `data:`; found because the first CSP blocked it); `connect-src 'self'` + the Supabase URL (no `wss:`: realtime is stubbed); `object-src 'none'`, `base-uri`/`form-action 'self'`, `frame-ancestors 'none'`
+- [x] The theme-script hash has to be the same on Windows (CRLF checkout) and Vercel (LF): a Vite plugin normalises `index.html` to LF. `vite preview` sends `vercel.json`'s headers, so `npm run preview` / `perf:vitals` run under the production CSP
+- [x] `postbuild`: `scripts/check-bundle-secrets.mjs` (diecast port: service_role JWT, `sb_secret_`, the env var name, the literal key if set; `--url` scans a deployed site) and `scripts/check-csp.mjs` (every inline script hashed in `script-src`, no stale hashes, the preconnected Supabase origin in `connect-src` + `img-src`, CSS `data:` fonts/images allowed)
+- [x] `src/lib/env.ts` (`parseSupabaseEnv`, diecast pattern + tests): `supabaseClient.ts` throws at startup on a missing/non-Supabase URL, a secret/service_role key or a key that isn't anon/publishable
+- [x] 404: unknown paths under `:lang` already hit `*`, but showed a placeholder ("not implemented yet"). Now `NotFoundPage` (sr + en copy, links home and to all recipes, `<meta name="robots" content="noindex">` because Vercel answers every path 200). Paths without a valid `:lang` are redirected under one first (`/xx/foo` → `/en/foo` → 404)
 
 ### Verification
-- [ ] Response headers checked on a preview deployment; a deliberate secret in a test build fails `postbuild`
+- [x] A deliberate secret fails `postbuild`: a fake service_role JWT and an `sb_secret_` key as `VITE_SUPABASE_ANON_KEY` → exit 1. A changed theme script and a CSP without `data:` fonts each fail `check-csp`
+- [x] Headers + CSP under `npm run preview` (2026-10-08): no CSP violation on home, `/recepti` (scrolled), a recipe detail, categories, login and the 404; theme script runs (light/dark), Inter incl. the Serbian subset and Supabase photos load. 404 checked sr + en, desktop + mobile, dark + light
+- [ ] Response headers on a **preview deployment** (needs a push; Vercel's preview toolbar is blocked by the CSP there, expected) and `node scripts/check-bundle-secrets.mjs --url <deployment>`
 
 ### Definition of Done
 Assets cached immutably, security headers on, secrets can't ship.

@@ -52,8 +52,13 @@
     "favorites": "Favorite Recipes",
     "recentlyAdded": "Recently Added",
     "profile": "Profile",
-    "addRecipe": "Add Recipe",
-    "notFound": "Page not found"
+    "addRecipe": "Add Recipe"
+  },
+  "notFoundPage": {
+    "title": "Page not found",
+    "description": "This page doesn't exist. The link may be old or mistyped.",
+    "home": "Go home",
+    "allRecipes": "Browse all recipes"
   },
   "common": {
     "recipeCount_one": "{{count}} recipe",

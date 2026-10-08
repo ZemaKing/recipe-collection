@@ -66,4 +66,4 @@ Tailwind CSS v4 (via `@tailwindcss/vite`, no separate config file — tokens are
 
 ### Deployment
 
-Vercel, with `vercel.json` rewriting all paths to `index.html` (required for client-side routing on direct/refreshed navigation to non-root routes — see commit `861ec84`).
+Vercel, with `vercel.json` rewriting all paths to `index.html` (required for client-side routing on direct/refreshed navigation to non-root routes — see commit `861ec84`). `vercel.json` also sets the security headers and a CSP (Supabase URL in `connect-src`/`img-src`, the inline theme script in `index.html` allowed by its sha256), and `immutable` caching for `/assets/*`; `npm run preview` sends the same headers. `postbuild` fails the build if `dist/` contains a service-role/secret key (`scripts/check-bundle-secrets.mjs`) or the CSP no longer fits `dist/index.html` (`scripts/check-csp.mjs`): after editing the theme script, put the hash it prints into `vercel.json`. A new external origin (fonts, images, APIs) needs a CSP entry. `src/lib/env.ts` rejects a secret key in `VITE_SUPABASE_ANON_KEY` at startup.

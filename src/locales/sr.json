@@ -52,8 +52,13 @@
     "favorites": "Omiljeni recepti",
     "recentlyAdded": "Nedavno dodati",
     "profile": "Profil",
-    "addRecipe": "Dodaj recept",
-    "notFound": "Stranica nije pronađena"
+    "addRecipe": "Dodaj recept"
+  },
+  "notFoundPage": {
+    "title": "Stranica nije pronađena",
+    "description": "Ova stranica ne postoji. Link je možda zastareo ili pogrešno ukucan.",
+    "home": "Na početnu",
+    "allRecipes": "Svi recepti"
   },
   "common": {
     "recipeCount_one": "{{count}} recept",

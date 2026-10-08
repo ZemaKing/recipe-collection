@@ -1,13 +1,9 @@
 import { createClient } from '@supabase/supabase-js'
+import { parseSupabaseEnv } from '@/lib/env'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
-
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error(
-    'Missing Supabase env vars: VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY must be set in .env.local (see .env.local.example).',
-  )
-}
+// Throws at import time on a missing/invalid URL or key, and on a secret/service-role key,
+// which would otherwise be published in the browser bundle.
+const { url: supabaseUrl, anonKey: supabaseAnonKey } = parseSupabaseEnv(import.meta.env)
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 

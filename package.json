@@ -18,7 +18,8 @@
     "images:check": "node scripts/images/cli.ts scripts/migrate-images/recipe-job.ts scripts/migrate-images/ingredient-job.ts verify",
     "images:flip": "node scripts/migrate-images/flip.ts",
     "images:prune-originals": "node scripts/migrate-images/prune.ts",
-    "perf:vitals": "node scripts/perf/vitals.mjs"
+    "perf:vitals": "node scripts/perf/vitals.mjs",
+    "postbuild": "node scripts/check-bundle-secrets.mjs && node scripts/check-csp.mjs"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.23",

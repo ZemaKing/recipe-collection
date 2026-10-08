@@ -12,6 +12,7 @@ import CategoryRecipesPage from '@/pages/CategoryRecipesPage'
 import FavoritesPage from '@/pages/FavoritesPage'
 import HomePage from '@/pages/HomePage'
 import LoginPage from '@/pages/LoginPage'
+import NotFoundPage from '@/pages/NotFoundPage'
 import PlaceholderPage from '@/pages/PlaceholderPage'
 import RecentlyAddedPage from '@/pages/RecentlyAddedPage'
 import RecipeDetailPage from '@/pages/RecipeDetailPage'
@@ -81,7 +82,7 @@ function App() {
               <Route path="nedavno-dodati" element={<RecentlyAddedPage />} />
               <Route path="profil" element={<PlaceholderPage title={t('pages.profile')} />} />
               <Route path="prijava" element={<LoginPage />} />
-              <Route path="*" element={<PlaceholderPage title={t('pages.notFound')} />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Route>
 
             <Route element={<ProtectedRoute />}>
