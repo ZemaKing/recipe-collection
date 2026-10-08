@@ -67,6 +67,12 @@ export interface StorageObject {
 
 const PAGE = 1000
 
+function listOnce(client: SupabaseClient, bucket: string, prefix: string, offset: number) {
+  return client.storage
+    .from(bucket)
+    .list(prefix, { limit: PAGE, offset, sortBy: { column: 'name', order: 'asc' } })
+}
+
 // Storage lists one folder level at a time; entries without an id are folders.
 export async function listBucket(
   client: SupabaseClient,
@@ -75,10 +81,14 @@ export async function listBucket(
 ): Promise<StorageObject[]> {
   const objects: StorageObject[] = []
   for (let offset = 0; ; offset += PAGE) {
-    const { data, error } = await client.storage
-      .from(bucket)
-      .list(prefix, { limit: PAGE, offset, sortBy: { column: 'name', order: 'asc' } })
-    if (error) throw new Error(`list ${bucket}/${prefix}: ${error.message}`)
+    // Storage sometimes answers "Too many connections" during a burst of
+    // folder listings; a short back-off clears it.
+    let { data, error } = await listOnce(client, bucket, prefix, offset)
+    for (let attempt = 1; error && attempt <= 3; attempt++) {
+      await new Promise((resolve) => setTimeout(resolve, 1000 * attempt))
+      ;({ data, error } = await listOnce(client, bucket, prefix, offset))
+    }
+    if (error || !data) throw new Error(`list ${bucket}/${prefix}: ${error?.message}`)
     for (const entry of data) {
       const path = prefix ? `${prefix}/${entry.name}` : entry.name
       if (entry.id) {

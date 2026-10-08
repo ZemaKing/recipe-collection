@@ -4,7 +4,7 @@ Follow-up to the build log in [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md). Its 
 
 The image pipeline reuses the one built for the diecast app (`../diecast-collection/scripts/images/` + `src/lib/image-resize.ts`). That code was written app-agnostic so it could be reused here (diecast ROADMAP Phase 21). Its README even uses "recipe photos" as the example job.
 
-**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 scripts done 2026-10-08; image download awaits approval.** Research done 2026-10-04 (findings below).
+**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08 except the owner's steps (Usage page, second copy).** Research done 2026-10-04 (findings below).
 
 ---
 
@@ -87,7 +87,7 @@ Existing files:    scripts/images (sharp) ─► WebP at new paths ─► verify
 | # | Phase | Status | Needs from owner |
 | --- | --- | --- | --- |
 | 33 | Security & Privacy Lockdown | 🟡 DB locked down & verified; frontend not deployed | Deploy; admin CRUD check on the deployed site |
-| 34 | Image Audit & Local Backup | 🟡 Audit + DB export done; image download (83.6 MB) awaits approval | Approve `images:backup -- --apply`; check the Usage page; copy `backups/` to a second place |
+| 34 | Image Audit & Local Backup | 🟡 Audit, image backup and DB export done and verified | Check the Usage page; copy `backups/` to a second place |
 | 35 | Image Pipeline Port & Schema | ⬜ Not started | Apply migration |
 | 36 | WebP Migration of Existing Images | ⬜ Not started | Run the scripts |
 | 37 | Read Path: Thumbnails & Loading Priority | ⬜ Not started | — |
@@ -139,13 +139,13 @@ One checksummed copy of every original (84 MB) before anything changes. That cop
 - [ ] Owner (optional now): `SUPABASE_SERVICE_ROLE_KEY` in `.env.local`. The scripts fall back to the admin login (`RLS_ADMIN_*`), which can list both buckets and read every table; only the `admin_users` export needs the key
 - [x] `scripts/images-audit.ts` (`npm run images:audit`): rows vs objects for both buckets, bytes by format, orphans, shared paths, duplicate content (ETag + size), one HEAD per public URL → `docs/images-audit.md`. Run 2026-10-08: 62 + 69 objects, 83.60 MB, 0 missing / orphans / duplicates / HEAD problems. Stored `Cache-Control` is `max-age=3600` on all 131 (a HEAD answers `no-cache`, so the audit reports the stored value)
 - [x] `scripts/images-backup.ts` (`npm run images:backup`, dry run by default; `-- --apply` downloads; `-- --verify` re-hashes offline): both buckets → git-ignored `backups/images/{bucket}/…` + `manifest.json` (bytes, sha256, ETag, sniffed type, width × height); resumable, size- and MD5-checked, never deletes. Dimensions come from `scripts/lib/image-info.ts` (PNG/JPEG/WebP header parser, no dependency). Node 24 runs the `.ts` scripts directly (type stripping), so no `tsx` yet
-- [ ] Owner approval, then `npm run images:backup -- --apply` (dry run 2026-10-08: 131 files, 83.6 MB of egress)
+- [x] Owner approved; `npm run images:backup -- --apply` run 2026-10-08: 131 files, 83.60 MB, all size/MD5-checked. Manifest dims: ingredients 69 × 300×200 PNG; recipes 29 PNG 900×600 (one 900×601), 13 PNG 1536×1024, 19 JPEG 1200×800, 1 JPEG 1536×1024. Bucket listing retries on Storage's transient "Too many connections"
 - [x] DB export: `npm run db:export` → `backups/db/{timestamp}/{table}.json` + `manifest.json` (row counts, sha256), through the API because `pg_dump` needs the DB password. First export 2026-10-08: 16 tables, `admin_users` skipped (needs the service-role key). Procedure + restore in `docs/backup.md`
 - [ ] Owner copies `backups/` to a second place
 
 ### Verification
 - [x] Audit matches the findings: 62 + 69 objects, ≈ 84 MB (83.60 MB), 0 orphans
-- [ ] A re-run of the backup downloads 0 bytes; `--verify` passes
+- [x] A re-run of the backup downloads 0 bytes; `--verify` passes (131/131, 2026-10-08)
 
 ### Definition of Done
 Verified local copy of every image + DB export, in two places.
