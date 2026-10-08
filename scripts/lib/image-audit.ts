@@ -96,7 +96,7 @@ export function auditBucket(
 
   return {
     bucket,
-    rows: bucketRefs.length,
+    rows: new Set(bucketRefs.map((ref) => ref.rowId)).size,
     objects: objects.length,
     bytes: objects.reduce((sum, object) => sum + object.bytes, 0),
     byFormat,

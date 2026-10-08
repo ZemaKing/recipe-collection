@@ -11,7 +11,10 @@ import type { BackupManifest } from '../lib/backup-plan.ts'
 export const BACKUP_DIR = new URL('../../backups/images/', import.meta.url)
 
 /** `{bucket}/{path}` → the local copy and its recorded sha256. */
-export type BackupIndex = Map<string, { file: string; sha256: string }>
+export type BackupIndex = Map<
+  string,
+  { file: string; sha256: string; bytes: number; type: string | null }
+>
 
 export function backupIndex(manifest: BackupManifest | null, dir: URL = BACKUP_DIR): BackupIndex {
   const index: BackupIndex = new Map()
@@ -19,6 +22,8 @@ export function backupIndex(manifest: BackupManifest | null, dir: URL = BACKUP_D
     index.set(`${entry.bucket}/${entry.path}`, {
       file: fileURLToPath(new URL(`${entry.bucket}/${entry.path}`, dir)),
       sha256: entry.sha256,
+      bytes: entry.bytes,
+      type: entry.type,
     })
   }
   return index

@@ -4,7 +4,7 @@ Follow-up to the build log in [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md). Its 
 
 The image pipeline reuses the one built for the diecast app (`../diecast-collection/scripts/images/` + `src/lib/image-resize.ts`). That code was written app-agnostic so it could be reused here (diecast ROADMAP Phase 21). Its README even uses "recipe photos" as the example job.
 
-**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08. Phase 35 done 2026-10-08. Phase 36 done 2026-10-08 (all images served as WebP). Phase 37 done 2026-10-08 (card thumbs re-done per Open decision 6). Phase 38 done 2026-10-08. ⚠ Org grace period ends 31 Oct 2026 (Storage 117 %): see Open decision 1.** Research done 2026-10-04 (findings below).
+**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08. Phase 35 done 2026-10-08. Phase 36 done 2026-10-08 (all images served as WebP). Phase 37 done 2026-10-08 (card thumbs re-done per Open decision 6). Phase 38 done 2026-10-08. Phase 39 done 2026-10-08 (owner shortened the wait): only WebP left, buckets 16.3 + 1.0 MB. ⚠ Org grace period ends 31 Oct 2026 (Storage 117 %): see Open decision 1.** Research done 2026-10-04 (findings below).
 
 ---
 
@@ -93,7 +93,7 @@ Existing files:    scripts/images (sharp) ─► WebP at new paths ─► verify
 | 36 | WebP Migration of Existing Images | ✅ Done 2026-10-08 | Admin pages check when next signed in |
 | 37 | Read Path: Thumbnails & Loading Priority | ✅ Done 2026-10-08 | Admin pages check when next signed in |
 | 38 | Upload Path: WebP in the Browser | ✅ Done 2026-10-08 | — |
-| 39 | Retire Originals | ⬜ Not started | **Explicit approval to delete ~84 MB of originals** |
+| 39 | Retire Originals | ✅ Done 2026-10-08 | Confirm the second backup copy is still intact |
 | 40 | Data Layer & Performance | ⬜ Not started | — |
 | 41 | Deployment Hardening | ⬜ Not started | — |
 | 42 | Quality Gates (CI & E2E) | ⬜ Not started | Make CI a required check (GitHub setting) |
@@ -253,17 +253,18 @@ No new object over ~300 KB reaches either bucket (see the note above: ≈ 400 KB
 Delete the 131 original files once WebP has been stable.
 
 ### Tasks
-- [ ] Wait period (≥ 7 days of normal use) without image issues
-- [ ] Re-verify the backup (sha256) in both places
-- [ ] `images:prune-originals` (dry run default, `--apply`): deletes only objects in `original_path` / `image_original_path` whose row points at a verified WebP, clears the column, writes a deletion log
-- [ ] Also delete the 62 superseded `{uuid}.thumb.webp` objects (3.0 MB, first thumbs, unreferenced since Phase 37; in `recipe-manifest.json` as variant `thumb`)
-- [ ] Document restore: re-upload from the backup + `images:flip -- --rollback`
+- [x] Wait period: **shortened by the owner** (approved 2026-10-08, the day WebP went live; Open decision 1 allowed it). The originals are backed up locally (sha256-verified) and in a second place
+- [x] Re-verify the backup (sha256): local `images:backup -- --verify` **131/131, 83.60 MB** (2026-10-08). [ ] Owner: confirm the second copy (approved the deletion without re-checking it)
+- [x] `images:prune-originals` (dry run default, `--apply`, `--restore`, `--job=`; `prune-plan.ts` tested): deletes only originals whose row points at its migrated WebP, that are in the local backup with a matching sha256 and that no row uses; plus the 62 superseded `{uuid}.thumb.webp` (unused since Phase 37, also dropped from the upload manifest). Every row's WebP + thumb must serve `image/webp` at the manifest size first; any problem blocks `--apply`. Deletes in batches (Storage reports what it removed), then clears `original_path` / `image_original_path` in one transaction per table, and appends to `scripts/migrate-images/prune-log.json`
+- [x] Dry run (2026-10-08): **62 + 69 originals = 83.60 MB, 62 superseded thumbs = 3.00 MB, 0 problems**, 124 + 69 WebP URLs checked
+- [x] Document restore (`docs/backup.md` → "Pre-WebP originals"): allow JPEG on the buckets for the moment, `images:prune-originals -- --restore --apply` re-uploads from the backup and sets `original_path` again, then `images:flip -- --rollback --apply` works as before
+- [x] **Owner approved** (2026-10-08); `images:prune-originals -- --apply`: **193 files deleted** (62 + 69 originals, 62 superseded thumbs), 0 failed; `original_path` cleared on 62 + 69 rows (one transaction each); `prune-log.json` written; superseded thumbs dropped from `recipe-manifest.json`. A second dry run finds nothing left
 
 ### Verification
-- [ ] Buckets ≈ 15 MB; every row still resolves; app checked
+- [x] Buckets: `recipe-images` **126 objects, 16.27 MB**, `ingredient-images` **70 objects, 0.97 MB**, all `image/webp` (14.3 MB migrated + the hand uploads). `images:audit`: 0 missing, 0 orphans, 0 duplicates, 0 HEAD problems (the audit now counts `thumb_path`/`original_path` as references and retries 429s). `images:check --full` 124/124 + 69/69. Browser: home, `/recepti`, a category and a recipe detail: every image `.webp`, all 200
 
 ### Definition of Done
-Only WebP remains in Storage.
+Only WebP remains in Storage. ✅
 
 **Manual:** explicit approval before `--apply`.
 
@@ -359,7 +360,7 @@ Docs match the app; production verified by the owner.
 
 | # | Question | Needed by |
 | --- | --- | --- |
-| 1 | **The org is over its Storage quota: 1.173 GB of 1 GB on 2026-10-08 (was ≈ 2.1 GB on 2026-10-04), mostly the game app.** Uploads still work, but the grace period ends **31 Oct 2026**; if the org is still over 1 GB then, all its projects (this site too) get 402s. It needs ≥ 173 MB freed, plus headroom. This app frees ~68 MB at most (84 MB originals → 14.3 MB WebP, only after Phase 39; Phase 36 first *added* those 14.3 MB), so **the game app must free ≥ ~110 MB by 31 Oct** whatever happens here. Plan: Phases 35–36 by ~15 Oct, Phase 39 (needs the 7-day wait + approval) by ~25 Oct; game app's image phase in parallel. Fallbacks: a month of Pro ($25), or shorten Phase 39's wait (the originals are backed up in two places) | Ph 36 / 39, **by 31 Oct** |
+| 1 | **The org is over its Storage quota: 1.173 GB of 1 GB on 2026-10-08 (was ≈ 2.1 GB on 2026-10-04), mostly the game app.** Uploads still work, but the grace period ends **31 Oct 2026**; if the org is still over 1 GB then, all its projects (this site too) get 402s. It needs ≥ 173 MB freed, plus headroom. **This app's part is done (Phase 39, 2026-10-08): its buckets went from 83.6 MB to 17.2 MB, ≈ 66 MB freed.** Check the org's Usage page for the new total, so **the game app must free ≥ ~110 MB by 31 Oct** whatever happens here. Plan: Phases 35–36 by ~15 Oct, Phase 39 (needs the 7-day wait + approval) by ~25 Oct; game app's image phase in parallel. Fallbacks: a month of Pro ($25), or shorten Phase 39's wait (the originals are backed up in two places) | Ph 36 / 39, **by 31 Oct** |
 | 2 | ~~`kitchen_notes` and `meal_plan_entries`: private or public?~~ **Decided 2026-10-08: both stay publicly readable**; only writes are admin-only | Ph 33 ✅ |
 | 3 | ~~Favourites for visitors: hide or localStorage?~~ **Decided 2026-10-08: per-visitor localStorage**; the admin's hearts keep writing `is_favorite`. (The finding above was partly stale: visitors already saw a read-only heart; the silent revert hit only signed-in non-admins) | Ph 33 ✅ |
 | 4 | E2E: a separate Supabase test project (allows admin-flow E2E; this org's two free slots are used, so it would go in another org) or read-only E2E against production? | Ph 42 |

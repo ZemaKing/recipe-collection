@@ -18,22 +18,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:20.343Z"
     },
-    "03767694-4f0b-40d7-8726-70c91213969b/b7a0a59b-9515-4658-8d8e-6810bbd4d1cb.thumb.webp": {
-      "source": "03767694-4f0b-40d7-8726-70c91213969b/b7a0a59b-9515-4658-8d8e-6810bbd4d1cb.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/03767694-4f0b-40d7-8726-70c91213969b/b7a0a59b-9515-4658-8d8e-6810bbd4d1cb.png",
-      "sourceSha256": "916c39ff8eba492c2b56ea4771a072c812986a60dd7155fdfd89f98c78a2799e",
-      "sourceBytes": 1054338,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "e865acfa3a23bc1164895779044d4d233c082a1cdeb5972125d230fc69d9575a",
-      "bytes": 61460,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:39:58.528Z"
-    },
     "03767694-4f0b-40d7-8726-70c91213969b/b7a0a59b-9515-4658-8d8e-6810bbd4d1cb.webp": {
       "source": "03767694-4f0b-40d7-8726-70c91213969b/b7a0a59b-9515-4658-8d8e-6810bbd4d1cb.png",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/03767694-4f0b-40d7-8726-70c91213969b/b7a0a59b-9515-4658-8d8e-6810bbd4d1cb.png",
@@ -65,22 +49,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:20.189Z"
-    },
-    "06af1d9f-624b-4d19-a628-62956663c54f/86bcfa0b-587a-47f0-8782-a2edf941c09e.thumb.webp": {
-      "source": "06af1d9f-624b-4d19-a628-62956663c54f/86bcfa0b-587a-47f0-8782-a2edf941c09e.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/06af1d9f-624b-4d19-a628-62956663c54f/86bcfa0b-587a-47f0-8782-a2edf941c09e.png",
-      "sourceSha256": "6ac5f7d1d3515cbe3b18576ba717fc5552503730efb42452b025c63e01f65bec",
-      "sourceBytes": 1039510,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "b4996bf82243406a4b4cf93fccd0250ba806726bad97e655d8abcd721611a6af",
-      "bytes": 56008,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:39:58.215Z"
     },
     "06af1d9f-624b-4d19-a628-62956663c54f/86bcfa0b-587a-47f0-8782-a2edf941c09e.webp": {
       "source": "06af1d9f-624b-4d19-a628-62956663c54f/86bcfa0b-587a-47f0-8782-a2edf941c09e.png",
@@ -114,22 +82,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:20.320Z"
     },
-    "0a67afbd-5b85-44b5-a985-81fb61a9f48b/42bdad3b-54da-4871-88ef-26ef2d0a149a.thumb.webp": {
-      "source": "0a67afbd-5b85-44b5-a985-81fb61a9f48b/42bdad3b-54da-4871-88ef-26ef2d0a149a.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/0a67afbd-5b85-44b5-a985-81fb61a9f48b/42bdad3b-54da-4871-88ef-26ef2d0a149a.png",
-      "sourceSha256": "30b5dd919b5645d6215ccbf3ea69b1b5e40ac240c062baa4e1bee68fc47f44e0",
-      "sourceBytes": 2689182,
-      "sourceWidth": 1536,
-      "sourceHeight": 1024,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "0b72a008031b1cfdeba17dcbfd70eb5ad98150189522c5a3ed04012ba1f9f83f",
-      "bytes": 54478,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:39:58.508Z"
-    },
     "0a67afbd-5b85-44b5-a985-81fb61a9f48b/42bdad3b-54da-4871-88ef-26ef2d0a149a.webp": {
       "source": "0a67afbd-5b85-44b5-a985-81fb61a9f48b/42bdad3b-54da-4871-88ef-26ef2d0a149a.png",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/0a67afbd-5b85-44b5-a985-81fb61a9f48b/42bdad3b-54da-4871-88ef-26ef2d0a149a.png",
@@ -161,22 +113,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:20.300Z"
-    },
-    "0a7f59b6-9c5a-410d-877a-f664da2081b6/d69135ce-c9b8-471d-8f51-54a8d5979bcd.thumb.webp": {
-      "source": "0a7f59b6-9c5a-410d-877a-f664da2081b6/d69135ce-c9b8-471d-8f51-54a8d5979bcd.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/0a7f59b6-9c5a-410d-877a-f664da2081b6/d69135ce-c9b8-471d-8f51-54a8d5979bcd.png",
-      "sourceSha256": "5bae00551882d7e7bcf0dbd429f1f7f7c7cf69429286c133f916f46d479c956a",
-      "sourceBytes": 1038374,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "d70adce0c30098ee35217855dbabce1f1522e53c330108e268ff2cf0b88f0866",
-      "bytes": 58838,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:39:58.184Z"
     },
     "0a7f59b6-9c5a-410d-877a-f664da2081b6/d69135ce-c9b8-471d-8f51-54a8d5979bcd.webp": {
       "source": "0a7f59b6-9c5a-410d-877a-f664da2081b6/d69135ce-c9b8-471d-8f51-54a8d5979bcd.png",
@@ -210,22 +146,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:20.783Z"
     },
-    "0a835a23-c8f4-465d-aee8-349601a5c69d/cb666ac6-13c1-4d81-b9d2-9ffe1f629ea1.thumb.webp": {
-      "source": "0a835a23-c8f4-465d-aee8-349601a5c69d/cb666ac6-13c1-4d81-b9d2-9ffe1f629ea1.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/0a835a23-c8f4-465d-aee8-349601a5c69d/cb666ac6-13c1-4d81-b9d2-9ffe1f629ea1.png",
-      "sourceSha256": "6741ca38906808436d98ecde24c8821f7456c18bd0a12ed072d2f42478745e7c",
-      "sourceBytes": 2917989,
-      "sourceWidth": 1536,
-      "sourceHeight": 1024,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "509293a5e4b1dbf4634c263ca011f4bc2700aebd242d93f2b36ce571b67060b0",
-      "bytes": 64660,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:39:59.193Z"
-    },
     "0a835a23-c8f4-465d-aee8-349601a5c69d/cb666ac6-13c1-4d81-b9d2-9ffe1f629ea1.webp": {
       "source": "0a835a23-c8f4-465d-aee8-349601a5c69d/cb666ac6-13c1-4d81-b9d2-9ffe1f629ea1.png",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/0a835a23-c8f4-465d-aee8-349601a5c69d/cb666ac6-13c1-4d81-b9d2-9ffe1f629ea1.png",
@@ -257,22 +177,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:24.494Z"
-    },
-    "0b119ca5-b672-4efe-83ab-9b3252b79098/8b37be06-c187-4825-be80-289a1b4b7211.thumb.webp": {
-      "source": "0b119ca5-b672-4efe-83ab-9b3252b79098/8b37be06-c187-4825-be80-289a1b4b7211.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/0b119ca5-b672-4efe-83ab-9b3252b79098/8b37be06-c187-4825-be80-289a1b4b7211.png",
-      "sourceSha256": "08e4cdd3540711971b2df76a0bfb4296d0320a20494e72721ee852e036ecb6b6",
-      "sourceBytes": 2929856,
-      "sourceWidth": 1536,
-      "sourceHeight": 1024,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "f5c95c459514a18951e63e6e4fe94e613deb47c07f903e34fff61ef4d82de513",
-      "bytes": 55848,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:16.003Z"
     },
     "0b119ca5-b672-4efe-83ab-9b3252b79098/8b37be06-c187-4825-be80-289a1b4b7211.webp": {
       "source": "0b119ca5-b672-4efe-83ab-9b3252b79098/8b37be06-c187-4825-be80-289a1b4b7211.png",
@@ -306,22 +210,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:24.578Z"
     },
-    "13488fb2-a5e8-4ad4-ac37-9280c1838ed1/26dfd637-3981-4825-9a09-8defa97e3dc0.thumb.webp": {
-      "source": "13488fb2-a5e8-4ad4-ac37-9280c1838ed1/26dfd637-3981-4825-9a09-8defa97e3dc0.jpg",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/13488fb2-a5e8-4ad4-ac37-9280c1838ed1/26dfd637-3981-4825-9a09-8defa97e3dc0.jpg",
-      "sourceSha256": "287ee8ae4d25d280037c20fbcfbeb9d9b932c75aae6f9e9fafa2ac9970743481",
-      "sourceBytes": 1508675,
-      "sourceWidth": 1536,
-      "sourceHeight": 1024,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "635aed522c0ca2251ba93fcb8dcd3ec809ff5e0a3ed0d757856bcc137aa8bddf",
-      "bytes": 44790,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:16.621Z"
-    },
     "13488fb2-a5e8-4ad4-ac37-9280c1838ed1/26dfd637-3981-4825-9a09-8defa97e3dc0.webp": {
       "source": "13488fb2-a5e8-4ad4-ac37-9280c1838ed1/26dfd637-3981-4825-9a09-8defa97e3dc0.jpg",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/13488fb2-a5e8-4ad4-ac37-9280c1838ed1/26dfd637-3981-4825-9a09-8defa97e3dc0.jpg",
@@ -353,22 +241,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:24.582Z"
-    },
-    "134a7286-3e07-45a9-8d70-da9f07fc5cfb/100563fa-7b3f-4a30-a7a4-94ac644ac460.thumb.webp": {
-      "source": "134a7286-3e07-45a9-8d70-da9f07fc5cfb/100563fa-7b3f-4a30-a7a4-94ac644ac460.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/134a7286-3e07-45a9-8d70-da9f07fc5cfb/100563fa-7b3f-4a30-a7a4-94ac644ac460.png",
-      "sourceSha256": "e207728dcca1398ee9c1c6624167f1609e709aa90b5ad471591c3c80109612a1",
-      "sourceBytes": 900619,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "c66b923433a6030cc4d9dd24cede5ff43e45141f6b2bcca2f5696e425460e8f2",
-      "bytes": 43600,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:15.533Z"
     },
     "134a7286-3e07-45a9-8d70-da9f07fc5cfb/100563fa-7b3f-4a30-a7a4-94ac644ac460.webp": {
       "source": "134a7286-3e07-45a9-8d70-da9f07fc5cfb/100563fa-7b3f-4a30-a7a4-94ac644ac460.png",
@@ -402,22 +274,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:24.599Z"
     },
-    "135ff9eb-0d2f-4663-aa63-c64166536cc5/95d4d746-0d7b-4bdc-8078-e442fd41ec11.thumb.webp": {
-      "source": "135ff9eb-0d2f-4663-aa63-c64166536cc5/95d4d746-0d7b-4bdc-8078-e442fd41ec11.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/135ff9eb-0d2f-4663-aa63-c64166536cc5/95d4d746-0d7b-4bdc-8078-e442fd41ec11.png",
-      "sourceSha256": "c0ca44d48e0068a63829bd262acb056a3a131b0ca7d5661e47d6e00e50bf9f82",
-      "sourceBytes": 989620,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "2e8a2bc53070508173e3862f31ae133f6be85cfb59726cd4cefe38da5ab355bb",
-      "bytes": 50822,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:15.940Z"
-    },
     "135ff9eb-0d2f-4663-aa63-c64166536cc5/95d4d746-0d7b-4bdc-8078-e442fd41ec11.webp": {
       "source": "135ff9eb-0d2f-4663-aa63-c64166536cc5/95d4d746-0d7b-4bdc-8078-e442fd41ec11.png",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/135ff9eb-0d2f-4663-aa63-c64166536cc5/95d4d746-0d7b-4bdc-8078-e442fd41ec11.png",
@@ -449,22 +305,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:24.888Z"
-    },
-    "1401ffbb-30f8-4263-aa75-468b0af126c1/9e9275b6-3d70-4022-908d-fb82226089ed.thumb.webp": {
-      "source": "1401ffbb-30f8-4263-aa75-468b0af126c1/9e9275b6-3d70-4022-908d-fb82226089ed.jpg",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/1401ffbb-30f8-4263-aa75-468b0af126c1/9e9275b6-3d70-4022-908d-fb82226089ed.jpg",
-      "sourceSha256": "f7b16d1f9f36dce36682016813df2ce386821d94cf836f67f6e28bdfe9d27a0b",
-      "sourceBytes": 797244,
-      "sourceWidth": 1200,
-      "sourceHeight": 800,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "d3c6a934639964f09f9f064994e257f9d40d92b7fd781cc21178fcf47519980e",
-      "bytes": 32700,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:16.295Z"
     },
     "1401ffbb-30f8-4263-aa75-468b0af126c1/9e9275b6-3d70-4022-908d-fb82226089ed.webp": {
       "source": "1401ffbb-30f8-4263-aa75-468b0af126c1/9e9275b6-3d70-4022-908d-fb82226089ed.jpg",
@@ -498,22 +338,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:25.208Z"
     },
-    "21287917-cc81-4972-8352-48b5ced67c03/9946080b-93c7-4798-9e36-a5e15aaba750.thumb.webp": {
-      "source": "21287917-cc81-4972-8352-48b5ced67c03/9946080b-93c7-4798-9e36-a5e15aaba750.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/21287917-cc81-4972-8352-48b5ced67c03/9946080b-93c7-4798-9e36-a5e15aaba750.png",
-      "sourceSha256": "38ad2c738339773916c753369990bb4be03af89ae85a4cca32af95380d69e9de",
-      "sourceBytes": 1089447,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "f0cf81ca987dd2fb6fac59dd4609a7ef963051a72cbd522bb02fa40271d63282",
-      "bytes": 62852,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:16.730Z"
-    },
     "21287917-cc81-4972-8352-48b5ced67c03/9946080b-93c7-4798-9e36-a5e15aaba750.webp": {
       "source": "21287917-cc81-4972-8352-48b5ced67c03/9946080b-93c7-4798-9e36-a5e15aaba750.png",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/21287917-cc81-4972-8352-48b5ced67c03/9946080b-93c7-4798-9e36-a5e15aaba750.png",
@@ -545,22 +369,6 @@
       "width": 749,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:25.008Z"
-    },
-    "22038460-2983-46eb-bd84-6be088971144/9d9ca48f-3ff8-4407-9c1f-a514e9591f4b.thumb.webp": {
-      "source": "22038460-2983-46eb-bd84-6be088971144/9d9ca48f-3ff8-4407-9c1f-a514e9591f4b.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/22038460-2983-46eb-bd84-6be088971144/9d9ca48f-3ff8-4407-9c1f-a514e9591f4b.png",
-      "sourceSha256": "724b8d1d186c7e6f19a1acb025b9e474bf6917287d6f7d73497e8ce8e46d9930",
-      "sourceBytes": 886549,
-      "sourceWidth": 900,
-      "sourceHeight": 601,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "1652df38ed2a5352964f3a13b36e3e2bac04154f270f34cfac64f6671b2c6d97",
-      "bytes": 37478,
-      "width": 500,
-      "height": 334,
-      "uploadedAt": "2026-10-08T13:40:16.878Z"
     },
     "22038460-2983-46eb-bd84-6be088971144/9d9ca48f-3ff8-4407-9c1f-a514e9591f4b.webp": {
       "source": "22038460-2983-46eb-bd84-6be088971144/9d9ca48f-3ff8-4407-9c1f-a514e9591f4b.png",
@@ -594,22 +402,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:25.067Z"
     },
-    "253a0782-604c-4416-ab1a-6762fb8c8976/510ba26b-8888-47fd-806b-71b71dd75b09.thumb.webp": {
-      "source": "253a0782-604c-4416-ab1a-6762fb8c8976/510ba26b-8888-47fd-806b-71b71dd75b09.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/253a0782-604c-4416-ab1a-6762fb8c8976/510ba26b-8888-47fd-806b-71b71dd75b09.png",
-      "sourceSha256": "52f5e6871d8863ad58b12a3f748b4d93b0994281af66fd3822f3cd1595d33fe7",
-      "sourceBytes": 1003138,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "52682b6b5c54c940ec7d24870f7a84d7ebc71df4acec53c7844621289e2d4078",
-      "bytes": 52012,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:17.121Z"
-    },
     "253a0782-604c-4416-ab1a-6762fb8c8976/510ba26b-8888-47fd-806b-71b71dd75b09.webp": {
       "source": "253a0782-604c-4416-ab1a-6762fb8c8976/510ba26b-8888-47fd-806b-71b71dd75b09.png",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/253a0782-604c-4416-ab1a-6762fb8c8976/510ba26b-8888-47fd-806b-71b71dd75b09.png",
@@ -641,22 +433,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:25.505Z"
-    },
-    "30ce3a63-d54b-405c-9a06-268c68633ef0/09dfc74c-dae3-4bf5-abae-2f6ceb8fb747.thumb.webp": {
-      "source": "30ce3a63-d54b-405c-9a06-268c68633ef0/09dfc74c-dae3-4bf5-abae-2f6ceb8fb747.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/30ce3a63-d54b-405c-9a06-268c68633ef0/09dfc74c-dae3-4bf5-abae-2f6ceb8fb747.png",
-      "sourceSha256": "335d580cd7c4750bb324823bc12955ca5603ee0ba4041338cd5315694f77a1c8",
-      "sourceBytes": 1094064,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "a095217371e05b1c771b0d2955f6b6c4570fff181230da96369a753eac4b0af1",
-      "bytes": 63776,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:17.547Z"
     },
     "30ce3a63-d54b-405c-9a06-268c68633ef0/09dfc74c-dae3-4bf5-abae-2f6ceb8fb747.webp": {
       "source": "30ce3a63-d54b-405c-9a06-268c68633ef0/09dfc74c-dae3-4bf5-abae-2f6ceb8fb747.png",
@@ -690,22 +466,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:25.624Z"
     },
-    "3643499c-01c1-4b66-87c2-475328a0e005/37aa437d-f5f6-478e-acb3-178ff4c1900c.thumb.webp": {
-      "source": "3643499c-01c1-4b66-87c2-475328a0e005/37aa437d-f5f6-478e-acb3-178ff4c1900c.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/3643499c-01c1-4b66-87c2-475328a0e005/37aa437d-f5f6-478e-acb3-178ff4c1900c.png",
-      "sourceSha256": "eef66c7dd68771ad7f7058e8e27d9148e5de3098d4e5bea2ac3f4edd4f776b24",
-      "sourceBytes": 1081014,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "129c0e7bc7f01b4b0cdeb322abc1d02c25cf779cc136a20905c5929103371de2",
-      "bytes": 59456,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:17.509Z"
-    },
     "3643499c-01c1-4b66-87c2-475328a0e005/37aa437d-f5f6-478e-acb3-178ff4c1900c.webp": {
       "source": "3643499c-01c1-4b66-87c2-475328a0e005/37aa437d-f5f6-478e-acb3-178ff4c1900c.png",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/3643499c-01c1-4b66-87c2-475328a0e005/37aa437d-f5f6-478e-acb3-178ff4c1900c.png",
@@ -737,22 +497,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:25.512Z"
-    },
-    "36526f3b-f83a-4af8-b078-edd5a928628d/32cf6215-7933-4bc1-a3c5-d2061d10f4cd.thumb.webp": {
-      "source": "36526f3b-f83a-4af8-b078-edd5a928628d/32cf6215-7933-4bc1-a3c5-d2061d10f4cd.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/36526f3b-f83a-4af8-b078-edd5a928628d/32cf6215-7933-4bc1-a3c5-d2061d10f4cd.png",
-      "sourceSha256": "5522420b86048b889f21782720f4951e84929464c4719fb75e9b008b9fa1085b",
-      "sourceBytes": 2624900,
-      "sourceWidth": 1536,
-      "sourceHeight": 1024,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "cbc92bc279892ec17792fc861811303d5d1a5b7649da3aea7b41c7fe55fb7bfe",
-      "bytes": 52280,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:17.841Z"
     },
     "36526f3b-f83a-4af8-b078-edd5a928628d/32cf6215-7933-4bc1-a3c5-d2061d10f4cd.webp": {
       "source": "36526f3b-f83a-4af8-b078-edd5a928628d/32cf6215-7933-4bc1-a3c5-d2061d10f4cd.png",
@@ -786,22 +530,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:25.732Z"
     },
-    "36cf0adf-5dfe-4cdf-a5e6-d9ae3a476d85/9197ec22-9766-499d-bcf2-cf1657419996.thumb.webp": {
-      "source": "36cf0adf-5dfe-4cdf-a5e6-d9ae3a476d85/9197ec22-9766-499d-bcf2-cf1657419996.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/36cf0adf-5dfe-4cdf-a5e6-d9ae3a476d85/9197ec22-9766-499d-bcf2-cf1657419996.png",
-      "sourceSha256": "1f0c7cdedcc7b14ab71f3cb8586451c0683a03526fd6bf33450fbf8928f92be1",
-      "sourceBytes": 2653160,
-      "sourceWidth": 1536,
-      "sourceHeight": 1024,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "472a29e736eadeb167de8251a295e511c47c208d0eddbf65c48f9415082014b2",
-      "bytes": 51586,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:18.133Z"
-    },
     "36cf0adf-5dfe-4cdf-a5e6-d9ae3a476d85/9197ec22-9766-499d-bcf2-cf1657419996.webp": {
       "source": "36cf0adf-5dfe-4cdf-a5e6-d9ae3a476d85/9197ec22-9766-499d-bcf2-cf1657419996.png",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/36cf0adf-5dfe-4cdf-a5e6-d9ae3a476d85/9197ec22-9766-499d-bcf2-cf1657419996.png",
@@ -833,22 +561,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:26.182Z"
-    },
-    "375fee0d-e03a-423d-b37f-78f44f96a222/d1709419-3ac1-4163-9455-94cf713177f0.thumb.webp": {
-      "source": "375fee0d-e03a-423d-b37f-78f44f96a222/d1709419-3ac1-4163-9455-94cf713177f0.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/375fee0d-e03a-423d-b37f-78f44f96a222/d1709419-3ac1-4163-9455-94cf713177f0.png",
-      "sourceSha256": "d7a8ad6ce367317679a646fc817bca144a8155f118ebf94a9d24d07109c51da1",
-      "sourceBytes": 2441276,
-      "sourceWidth": 1536,
-      "sourceHeight": 1024,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "0a3a858984068b58099e66e422cc7754fe72325ce7f96b11a2a8169cfab883f9",
-      "bytes": 50834,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:18.360Z"
     },
     "375fee0d-e03a-423d-b37f-78f44f96a222/d1709419-3ac1-4163-9455-94cf713177f0.webp": {
       "source": "375fee0d-e03a-423d-b37f-78f44f96a222/d1709419-3ac1-4163-9455-94cf713177f0.png",
@@ -882,22 +594,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:26.158Z"
     },
-    "3ce61ca3-ae9b-4369-9ae3-6df8bfc17262/53204517-1a2a-4b38-b960-2a007bfa7992.thumb.webp": {
-      "source": "3ce61ca3-ae9b-4369-9ae3-6df8bfc17262/53204517-1a2a-4b38-b960-2a007bfa7992.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/3ce61ca3-ae9b-4369-9ae3-6df8bfc17262/53204517-1a2a-4b38-b960-2a007bfa7992.png",
-      "sourceSha256": "6da85ff68c213e56cc409a0f16cec3277cce4045fbd214d06ced9cb690c54173",
-      "sourceBytes": 2477365,
-      "sourceWidth": 1536,
-      "sourceHeight": 1024,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "3311019a08886ef2ba1e657ebcd45d183d0ac518dbd746d0229f94f88b216fbe",
-      "bytes": 47574,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:18.391Z"
-    },
     "3ce61ca3-ae9b-4369-9ae3-6df8bfc17262/53204517-1a2a-4b38-b960-2a007bfa7992.webp": {
       "source": "3ce61ca3-ae9b-4369-9ae3-6df8bfc17262/53204517-1a2a-4b38-b960-2a007bfa7992.png",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/3ce61ca3-ae9b-4369-9ae3-6df8bfc17262/53204517-1a2a-4b38-b960-2a007bfa7992.png",
@@ -929,22 +625,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:26.153Z"
-    },
-    "45966976-8b4a-403b-9bec-f1e94ddd81ef/3bbfc5aa-087d-4b32-b0fe-3a1b101193bf.thumb.webp": {
-      "source": "45966976-8b4a-403b-9bec-f1e94ddd81ef/3bbfc5aa-087d-4b32-b0fe-3a1b101193bf.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/45966976-8b4a-403b-9bec-f1e94ddd81ef/3bbfc5aa-087d-4b32-b0fe-3a1b101193bf.png",
-      "sourceSha256": "bf7c99a491aa3a78fae9ceb9c3bb1174d48bf5169fa52ee05f209b6f4cb46156",
-      "sourceBytes": 1067365,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "43c365eb3d806d4da974d858b5c81b5fa611e4fde29f566baccbfa9d0bd61f46",
-      "bytes": 60170,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:18.567Z"
     },
     "45966976-8b4a-403b-9bec-f1e94ddd81ef/3bbfc5aa-087d-4b32-b0fe-3a1b101193bf.webp": {
       "source": "45966976-8b4a-403b-9bec-f1e94ddd81ef/3bbfc5aa-087d-4b32-b0fe-3a1b101193bf.png",
@@ -978,22 +658,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:26.382Z"
     },
-    "55fe2cb2-f06e-4c36-864f-2bf9aa379fea/c9e46fe1-e34d-478e-ba2e-8cc8bef9f551.thumb.webp": {
-      "source": "55fe2cb2-f06e-4c36-864f-2bf9aa379fea/c9e46fe1-e34d-478e-ba2e-8cc8bef9f551.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/55fe2cb2-f06e-4c36-864f-2bf9aa379fea/c9e46fe1-e34d-478e-ba2e-8cc8bef9f551.png",
-      "sourceSha256": "c6a6e38f00031ce59c3f9f2f6f3d252cd6396969929f62dae02736412844ada1",
-      "sourceBytes": 1079628,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "1b5c5cdbb3da52c8f73ec924e9a1bf293f3ee4c180dfbe07615e62b2d26a75db",
-      "bytes": 62886,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:18.983Z"
-    },
     "55fe2cb2-f06e-4c36-864f-2bf9aa379fea/c9e46fe1-e34d-478e-ba2e-8cc8bef9f551.webp": {
       "source": "55fe2cb2-f06e-4c36-864f-2bf9aa379fea/c9e46fe1-e34d-478e-ba2e-8cc8bef9f551.png",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/55fe2cb2-f06e-4c36-864f-2bf9aa379fea/c9e46fe1-e34d-478e-ba2e-8cc8bef9f551.png",
@@ -1025,22 +689,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:26.761Z"
-    },
-    "5b3d950b-6e57-4e48-9ac1-954184003d6c/cb6bc8fc-214b-4f1a-905a-f767b4d86c9d.thumb.webp": {
-      "source": "5b3d950b-6e57-4e48-9ac1-954184003d6c/cb6bc8fc-214b-4f1a-905a-f767b4d86c9d.jpg",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/5b3d950b-6e57-4e48-9ac1-954184003d6c/cb6bc8fc-214b-4f1a-905a-f767b4d86c9d.jpg",
-      "sourceSha256": "7119332eed3b4491f8ea8c5660b06c9b556e161aff13ceb3410bc420cfc4e90c",
-      "sourceBytes": 973610,
-      "sourceWidth": 1200,
-      "sourceHeight": 800,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "94dd1007a964603dfbc3aa042e9f4d097cbb450660beffbd7f058a807cc568b0",
-      "bytes": 43330,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:19.230Z"
     },
     "5b3d950b-6e57-4e48-9ac1-954184003d6c/cb6bc8fc-214b-4f1a-905a-f767b4d86c9d.webp": {
       "source": "5b3d950b-6e57-4e48-9ac1-954184003d6c/cb6bc8fc-214b-4f1a-905a-f767b4d86c9d.jpg",
@@ -1074,22 +722,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:26.668Z"
     },
-    "628b43d5-df99-4ff3-bbe4-d206eed3777b/a4de03c6-1f0e-43c2-984e-48cdd15a4270.thumb.webp": {
-      "source": "628b43d5-df99-4ff3-bbe4-d206eed3777b/a4de03c6-1f0e-43c2-984e-48cdd15a4270.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/628b43d5-df99-4ff3-bbe4-d206eed3777b/a4de03c6-1f0e-43c2-984e-48cdd15a4270.png",
-      "sourceSha256": "8154213039dbb666b7968d12517ee8c0e1af11cf0070b186491b36c656da8987",
-      "sourceBytes": 956832,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "9c137309b8fd13c6ace48789198990625bcccbf18e3ccf7a508bac1842dde6f1",
-      "bytes": 46366,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:19.285Z"
-    },
     "628b43d5-df99-4ff3-bbe4-d206eed3777b/a4de03c6-1f0e-43c2-984e-48cdd15a4270.webp": {
       "source": "628b43d5-df99-4ff3-bbe4-d206eed3777b/a4de03c6-1f0e-43c2-984e-48cdd15a4270.png",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/628b43d5-df99-4ff3-bbe4-d206eed3777b/a4de03c6-1f0e-43c2-984e-48cdd15a4270.png",
@@ -1121,22 +753,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:26.765Z"
-    },
-    "71b47e2d-ba21-4268-afda-4e283bd34e48/3a09d05f-f060-4b0f-a978-62c9eb2b5682.thumb.webp": {
-      "source": "71b47e2d-ba21-4268-afda-4e283bd34e48/3a09d05f-f060-4b0f-a978-62c9eb2b5682.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/71b47e2d-ba21-4268-afda-4e283bd34e48/3a09d05f-f060-4b0f-a978-62c9eb2b5682.png",
-      "sourceSha256": "aa7844d1d031113534cfda7ab45f0ffbc03714fa4c6c07187ec9c4d854e72d63",
-      "sourceBytes": 1039598,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "1e1be46169bb985d7054946fee2c9080472d2f1c8640d553797441bbc6737620",
-      "bytes": 57326,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:19.371Z"
     },
     "71b47e2d-ba21-4268-afda-4e283bd34e48/3a09d05f-f060-4b0f-a978-62c9eb2b5682.webp": {
       "source": "71b47e2d-ba21-4268-afda-4e283bd34e48/3a09d05f-f060-4b0f-a978-62c9eb2b5682.png",
@@ -1170,22 +786,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:26.902Z"
     },
-    "74ff0cd2-9f9c-48be-b4c3-6966ba3c296d/9e1aa956-aeff-4d74-a07d-6ed6167fa3b5.thumb.webp": {
-      "source": "74ff0cd2-9f9c-48be-b4c3-6966ba3c296d/9e1aa956-aeff-4d74-a07d-6ed6167fa3b5.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/74ff0cd2-9f9c-48be-b4c3-6966ba3c296d/9e1aa956-aeff-4d74-a07d-6ed6167fa3b5.png",
-      "sourceSha256": "71aa438ad779cc7b3d9b6e8d6093e49495923270b08576fba02cc8f80a91ff52",
-      "sourceBytes": 919854,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "f923da84d60ae06483429fa815ec78423fecd1a32fab34df25ae6bd2be87bd98",
-      "bytes": 45218,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:19.667Z"
-    },
     "74ff0cd2-9f9c-48be-b4c3-6966ba3c296d/9e1aa956-aeff-4d74-a07d-6ed6167fa3b5.webp": {
       "source": "74ff0cd2-9f9c-48be-b4c3-6966ba3c296d/9e1aa956-aeff-4d74-a07d-6ed6167fa3b5.png",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/74ff0cd2-9f9c-48be-b4c3-6966ba3c296d/9e1aa956-aeff-4d74-a07d-6ed6167fa3b5.png",
@@ -1217,22 +817,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:27.286Z"
-    },
-    "79076df6-f7ec-4a75-aa31-2c686ade4a77/9dacc22c-5eb4-4540-bbdb-01d5da2f5085.thumb.webp": {
-      "source": "79076df6-f7ec-4a75-aa31-2c686ade4a77/9dacc22c-5eb4-4540-bbdb-01d5da2f5085.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/79076df6-f7ec-4a75-aa31-2c686ade4a77/9dacc22c-5eb4-4540-bbdb-01d5da2f5085.png",
-      "sourceSha256": "f59b47ed5acc2c33b1324b86a0b0728d19f7da8df2724da7f69b3b12b1fbf842",
-      "sourceBytes": 1048946,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "417a0a773698405b3d0dc202be846852d9a5bf9cae8b54023544f35616ec7113",
-      "bytes": 57420,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:19.941Z"
     },
     "79076df6-f7ec-4a75-aa31-2c686ade4a77/9dacc22c-5eb4-4540-bbdb-01d5da2f5085.webp": {
       "source": "79076df6-f7ec-4a75-aa31-2c686ade4a77/9dacc22c-5eb4-4540-bbdb-01d5da2f5085.png",
@@ -1266,22 +850,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:27.305Z"
     },
-    "7ab9cb8f-ddbd-40fa-888b-a037a5aa5e1d/44729e97-74a6-4c38-b446-e8cd1a6ad899.thumb.webp": {
-      "source": "7ab9cb8f-ddbd-40fa-888b-a037a5aa5e1d/44729e97-74a6-4c38-b446-e8cd1a6ad899.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/7ab9cb8f-ddbd-40fa-888b-a037a5aa5e1d/44729e97-74a6-4c38-b446-e8cd1a6ad899.png",
-      "sourceSha256": "72efce00c3f7683e3bf94b83232acd7018cdd8c063fc80d53dcc74becaf21b97",
-      "sourceBytes": 860809,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "c706b3da38c712d0319dfe063458bfc948f042c4f3ddbaf95716c286974aaf77",
-      "bytes": 38022,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:19.939Z"
-    },
     "7ab9cb8f-ddbd-40fa-888b-a037a5aa5e1d/44729e97-74a6-4c38-b446-e8cd1a6ad899.webp": {
       "source": "7ab9cb8f-ddbd-40fa-888b-a037a5aa5e1d/44729e97-74a6-4c38-b446-e8cd1a6ad899.png",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/7ab9cb8f-ddbd-40fa-888b-a037a5aa5e1d/44729e97-74a6-4c38-b446-e8cd1a6ad899.png",
@@ -1313,22 +881,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:27.281Z"
-    },
-    "7b4ae411-8b19-4a07-906b-301c238fc496/846e93b6-40ac-4a1b-bc20-8f0c45b5c271.thumb.webp": {
-      "source": "7b4ae411-8b19-4a07-906b-301c238fc496/846e93b6-40ac-4a1b-bc20-8f0c45b5c271.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/7b4ae411-8b19-4a07-906b-301c238fc496/846e93b6-40ac-4a1b-bc20-8f0c45b5c271.png",
-      "sourceSha256": "06610b195cc6772932bd0e75c8f9c596b2b960739e848c378fbc58619a908e2c",
-      "sourceBytes": 1042289,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "661f0f35d1140d7152446ce239c7d5c3dee6be678052c2cc4b896684f69dff4b",
-      "bytes": 57136,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:20.060Z"
     },
     "7b4ae411-8b19-4a07-906b-301c238fc496/846e93b6-40ac-4a1b-bc20-8f0c45b5c271.webp": {
       "source": "7b4ae411-8b19-4a07-906b-301c238fc496/846e93b6-40ac-4a1b-bc20-8f0c45b5c271.png",
@@ -1362,22 +914,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:27.575Z"
     },
-    "80afebe7-f28e-4c4a-8987-66fb30b916cd/56219688-eb04-4502-87aa-475ac09dcfbc.thumb.webp": {
-      "source": "80afebe7-f28e-4c4a-8987-66fb30b916cd/56219688-eb04-4502-87aa-475ac09dcfbc.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/80afebe7-f28e-4c4a-8987-66fb30b916cd/56219688-eb04-4502-87aa-475ac09dcfbc.png",
-      "sourceSha256": "15ed7b7dc79397e903cba8d03698f7ba081817fadf9e4d9cb530bf958d572cf3",
-      "sourceBytes": 1042312,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "cd38e7675978125a6c521f8765554fbda1a540184a5947c951164a64c38aa51d",
-      "bytes": 59410,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:20.610Z"
-    },
     "80afebe7-f28e-4c4a-8987-66fb30b916cd/56219688-eb04-4502-87aa-475ac09dcfbc.webp": {
       "source": "80afebe7-f28e-4c4a-8987-66fb30b916cd/56219688-eb04-4502-87aa-475ac09dcfbc.png",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/80afebe7-f28e-4c4a-8987-66fb30b916cd/56219688-eb04-4502-87aa-475ac09dcfbc.png",
@@ -1409,22 +945,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:27.788Z"
-    },
-    "86fa556a-4403-46ac-a684-1dcec97176c5/7fdbaa94-a96b-4994-83a8-b78b679c69d9.thumb.webp": {
-      "source": "86fa556a-4403-46ac-a684-1dcec97176c5/7fdbaa94-a96b-4994-83a8-b78b679c69d9.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/86fa556a-4403-46ac-a684-1dcec97176c5/7fdbaa94-a96b-4994-83a8-b78b679c69d9.png",
-      "sourceSha256": "f00d7bc6e4fee405e11ab524df18be5ad081f0c63e268e8a66830a7a7fed25c4",
-      "sourceBytes": 1013826,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "34ce30f1cdc5d0f47cb3e8c0c72d6ad9da3a57a24208955b1a1cd680b6af509c",
-      "bytes": 54592,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:20.702Z"
     },
     "86fa556a-4403-46ac-a684-1dcec97176c5/7fdbaa94-a96b-4994-83a8-b78b679c69d9.webp": {
       "source": "86fa556a-4403-46ac-a684-1dcec97176c5/7fdbaa94-a96b-4994-83a8-b78b679c69d9.png",
@@ -1458,22 +978,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:27.799Z"
     },
-    "8a5598ad-31fd-43ad-86c1-0b28db1100f3/927218d0-e2d0-4248-a15f-4113090c577a.thumb.webp": {
-      "source": "8a5598ad-31fd-43ad-86c1-0b28db1100f3/927218d0-e2d0-4248-a15f-4113090c577a.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/8a5598ad-31fd-43ad-86c1-0b28db1100f3/927218d0-e2d0-4248-a15f-4113090c577a.png",
-      "sourceSha256": "6613eaeb9cd73218c6630b154ac04c2c71bb47465ef153e7a515695ee6becf1c",
-      "sourceBytes": 1122905,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "da62aa30859ce423cbd525bcd0eeae3d93527462681881387c061c57cba46bb0",
-      "bytes": 67142,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:20.819Z"
-    },
     "8a5598ad-31fd-43ad-86c1-0b28db1100f3/927218d0-e2d0-4248-a15f-4113090c577a.webp": {
       "source": "8a5598ad-31fd-43ad-86c1-0b28db1100f3/927218d0-e2d0-4248-a15f-4113090c577a.png",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/8a5598ad-31fd-43ad-86c1-0b28db1100f3/927218d0-e2d0-4248-a15f-4113090c577a.png",
@@ -1505,22 +1009,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:27.845Z"
-    },
-    "94c9af13-3ce7-4bc8-9c82-77c4166508fd/6b1df20d-0473-464d-bb47-0926930470ba.thumb.webp": {
-      "source": "94c9af13-3ce7-4bc8-9c82-77c4166508fd/6b1df20d-0473-464d-bb47-0926930470ba.jpg",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/94c9af13-3ce7-4bc8-9c82-77c4166508fd/6b1df20d-0473-464d-bb47-0926930470ba.jpg",
-      "sourceSha256": "da6098df5bccb73f251239f3c31b7e6a91c5feac62a5192f2a0815c5da5e30dc",
-      "sourceBytes": 1038905,
-      "sourceWidth": 1200,
-      "sourceHeight": 800,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "676e4ffbb9ffffba29440c6f42dbe7d5cf5c95c56eeba824766e5225bdf10f88",
-      "bytes": 54958,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:20.804Z"
     },
     "94c9af13-3ce7-4bc8-9c82-77c4166508fd/6b1df20d-0473-464d-bb47-0926930470ba.webp": {
       "source": "94c9af13-3ce7-4bc8-9c82-77c4166508fd/6b1df20d-0473-464d-bb47-0926930470ba.jpg",
@@ -1554,22 +1042,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:28.140Z"
     },
-    "a2bddbae-ad9f-48d0-b2e1-fd7008e90c2b/0a60572c-e1ed-4745-98e5-8215461e3b18.thumb.webp": {
-      "source": "a2bddbae-ad9f-48d0-b2e1-fd7008e90c2b/0a60572c-e1ed-4745-98e5-8215461e3b18.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/a2bddbae-ad9f-48d0-b2e1-fd7008e90c2b/0a60572c-e1ed-4745-98e5-8215461e3b18.png",
-      "sourceSha256": "b32e6c6be26bbff67a16fd0133205210599dafd7be156051876c31450a74711d",
-      "sourceBytes": 1027659,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "810c6a95113bb59e9c0ee7da821277907cf20bc5702d940549d9b9ec3da28491",
-      "bytes": 56374,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:21.376Z"
-    },
     "a2bddbae-ad9f-48d0-b2e1-fd7008e90c2b/0a60572c-e1ed-4745-98e5-8215461e3b18.webp": {
       "source": "a2bddbae-ad9f-48d0-b2e1-fd7008e90c2b/0a60572c-e1ed-4745-98e5-8215461e3b18.png",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/a2bddbae-ad9f-48d0-b2e1-fd7008e90c2b/0a60572c-e1ed-4745-98e5-8215461e3b18.png",
@@ -1601,22 +1073,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:28.746Z"
-    },
-    "a6ccaf21-c685-44bd-9746-9827ddce2d73/bbc6eacd-f441-4677-affc-181b295a425e.thumb.webp": {
-      "source": "a6ccaf21-c685-44bd-9746-9827ddce2d73/bbc6eacd-f441-4677-affc-181b295a425e.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/a6ccaf21-c685-44bd-9746-9827ddce2d73/bbc6eacd-f441-4677-affc-181b295a425e.png",
-      "sourceSha256": "74ad5b1642281887fb2454f50b6d3a5b0c6ed28cde746b2ee22b974b6456dd13",
-      "sourceBytes": 2653323,
-      "sourceWidth": 1536,
-      "sourceHeight": 1024,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "67a8e4d001786f69d29e605fded46c207bc0e0e0311d384022449997bdab0ca5",
-      "bytes": 58560,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:21.767Z"
     },
     "a6ccaf21-c685-44bd-9746-9827ddce2d73/bbc6eacd-f441-4677-affc-181b295a425e.webp": {
       "source": "a6ccaf21-c685-44bd-9746-9827ddce2d73/bbc6eacd-f441-4677-affc-181b295a425e.png",
@@ -1650,22 +1106,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:28.228Z"
     },
-    "a899ca84-6ad2-48c8-99d8-d5285c4c69bc/231cd511-f6cc-42f0-a1ac-4ddaafe72673.thumb.webp": {
-      "source": "a899ca84-6ad2-48c8-99d8-d5285c4c69bc/231cd511-f6cc-42f0-a1ac-4ddaafe72673.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/a899ca84-6ad2-48c8-99d8-d5285c4c69bc/231cd511-f6cc-42f0-a1ac-4ddaafe72673.png",
-      "sourceSha256": "24b0d32caf34b3216370c69a35d773403d8c7c313fc8a75aaca98c45a984ddb4",
-      "sourceBytes": 942279,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "66ed87065a0cbac89b3ddb79dc17b4a04e68f5ff9d082dca7b7fb9719160b674",
-      "bytes": 47432,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:21.497Z"
-    },
     "a899ca84-6ad2-48c8-99d8-d5285c4c69bc/231cd511-f6cc-42f0-a1ac-4ddaafe72673.webp": {
       "source": "a899ca84-6ad2-48c8-99d8-d5285c4c69bc/231cd511-f6cc-42f0-a1ac-4ddaafe72673.png",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/a899ca84-6ad2-48c8-99d8-d5285c4c69bc/231cd511-f6cc-42f0-a1ac-4ddaafe72673.png",
@@ -1697,22 +1137,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:28.348Z"
-    },
-    "ae266867-ce30-41c1-9bae-aa4272b9faf1/8f9f3a07-8ade-4563-a6fd-e05f6827fa63.thumb.webp": {
-      "source": "ae266867-ce30-41c1-9bae-aa4272b9faf1/8f9f3a07-8ade-4563-a6fd-e05f6827fa63.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/ae266867-ce30-41c1-9bae-aa4272b9faf1/8f9f3a07-8ade-4563-a6fd-e05f6827fa63.png",
-      "sourceSha256": "334cc45552983dcff5d80fb176f33d01df7b765a19260e9a00f1d76eaae5a704",
-      "sourceBytes": 1087168,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "275e0f79bbf91ecf60a315fad9db0d6e5c5306e964e897ef0ac0915da2fafab6",
-      "bytes": 63776,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:21.698Z"
     },
     "ae266867-ce30-41c1-9bae-aa4272b9faf1/8f9f3a07-8ade-4563-a6fd-e05f6827fa63.webp": {
       "source": "ae266867-ce30-41c1-9bae-aa4272b9faf1/8f9f3a07-8ade-4563-a6fd-e05f6827fa63.png",
@@ -1746,22 +1170,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:28.684Z"
     },
-    "b2045dea-f397-492f-af12-ea54e5bcfb04/40c72f52-44af-4f00-a06a-c8bf24ff980c.thumb.webp": {
-      "source": "b2045dea-f397-492f-af12-ea54e5bcfb04/40c72f52-44af-4f00-a06a-c8bf24ff980c.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/b2045dea-f397-492f-af12-ea54e5bcfb04/40c72f52-44af-4f00-a06a-c8bf24ff980c.png",
-      "sourceSha256": "9cc3f4398e83c3d4ea07107930b76727e2b80f9a354ce5f3e75f926d6b718326",
-      "sourceBytes": 2444451,
-      "sourceWidth": 1536,
-      "sourceHeight": 1024,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "0c60eec0bb06d854480a969dad882786720e15997aedf35023845248520fa930",
-      "bytes": 48276,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:22.354Z"
-    },
     "b2045dea-f397-492f-af12-ea54e5bcfb04/40c72f52-44af-4f00-a06a-c8bf24ff980c.webp": {
       "source": "b2045dea-f397-492f-af12-ea54e5bcfb04/40c72f52-44af-4f00-a06a-c8bf24ff980c.png",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/b2045dea-f397-492f-af12-ea54e5bcfb04/40c72f52-44af-4f00-a06a-c8bf24ff980c.png",
@@ -1793,22 +1201,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:28.750Z"
-    },
-    "b8e565dd-5e1e-457b-bf4f-809a67b8d896/95a66463-ab3e-44df-a82a-685118de5d2f.thumb.webp": {
-      "source": "b8e565dd-5e1e-457b-bf4f-809a67b8d896/95a66463-ab3e-44df-a82a-685118de5d2f.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/b8e565dd-5e1e-457b-bf4f-809a67b8d896/95a66463-ab3e-44df-a82a-685118de5d2f.png",
-      "sourceSha256": "2bd080267fc52b6a33303be60663dd3fe557799b33bd8dbad20d16b08c25b060",
-      "sourceBytes": 3044730,
-      "sourceWidth": 1536,
-      "sourceHeight": 1024,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "7a45e4c24696e3a83667b0c75db677a617df1b4cb7e48edc73eb3226aba65669",
-      "bytes": 69922,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:22.479Z"
     },
     "b8e565dd-5e1e-457b-bf4f-809a67b8d896/95a66463-ab3e-44df-a82a-685118de5d2f.webp": {
       "source": "b8e565dd-5e1e-457b-bf4f-809a67b8d896/95a66463-ab3e-44df-a82a-685118de5d2f.png",
@@ -1842,22 +1234,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:28.896Z"
     },
-    "baff3458-4cf7-444c-97e6-8748d9fb2046/48e0cd50-01b9-411f-97ca-354727a7a6dc.thumb.webp": {
-      "source": "baff3458-4cf7-444c-97e6-8748d9fb2046/48e0cd50-01b9-411f-97ca-354727a7a6dc.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/baff3458-4cf7-444c-97e6-8748d9fb2046/48e0cd50-01b9-411f-97ca-354727a7a6dc.png",
-      "sourceSha256": "9ebb00939a7293d3b8c2a546b886b5ca5f3b2789c793599074b551e6fe1367e6",
-      "sourceBytes": 2506178,
-      "sourceWidth": 1536,
-      "sourceHeight": 1024,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "1536b1947508826787acfd5d1e8452001068827c1c985a3cd5545c653237559c",
-      "bytes": 47598,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:22.510Z"
-    },
     "baff3458-4cf7-444c-97e6-8748d9fb2046/48e0cd50-01b9-411f-97ca-354727a7a6dc.webp": {
       "source": "baff3458-4cf7-444c-97e6-8748d9fb2046/48e0cd50-01b9-411f-97ca-354727a7a6dc.png",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/baff3458-4cf7-444c-97e6-8748d9fb2046/48e0cd50-01b9-411f-97ca-354727a7a6dc.png",
@@ -1889,22 +1265,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:29.158Z"
-    },
-    "bbdbaf7f-b48b-4c8c-87a9-f68fcaac426d/bae9bf90-0d20-4361-a0ce-63a110071412.thumb.webp": {
-      "source": "bbdbaf7f-b48b-4c8c-87a9-f68fcaac426d/bae9bf90-0d20-4361-a0ce-63a110071412.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/bbdbaf7f-b48b-4c8c-87a9-f68fcaac426d/bae9bf90-0d20-4361-a0ce-63a110071412.png",
-      "sourceSha256": "2d413dd8a5b69378526ae63ef706dd38a6e2060aab6419fdbd2c0a310cebd2c2",
-      "sourceBytes": 2553924,
-      "sourceWidth": 1536,
-      "sourceHeight": 1024,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "d551e49b127c5fa82cea963a88aa879c65d1f36e3e5ba97b28ce3d7194ac5524",
-      "bytes": 47724,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:22.581Z"
     },
     "bbdbaf7f-b48b-4c8c-87a9-f68fcaac426d/bae9bf90-0d20-4361-a0ce-63a110071412.webp": {
       "source": "bbdbaf7f-b48b-4c8c-87a9-f68fcaac426d/bae9bf90-0d20-4361-a0ce-63a110071412.png",
@@ -1938,22 +1298,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:29.243Z"
     },
-    "ce4c9d80-5111-4eb2-9b84-30ac6886abe6/e37cbe21-c827-49a2-8cff-f70a99f39054.thumb.webp": {
-      "source": "ce4c9d80-5111-4eb2-9b84-30ac6886abe6/e37cbe21-c827-49a2-8cff-f70a99f39054.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/ce4c9d80-5111-4eb2-9b84-30ac6886abe6/e37cbe21-c827-49a2-8cff-f70a99f39054.png",
-      "sourceSha256": "02ff4e004f086b16e008e6d4d578af312247c8ad8fb59e08a685aa6cd1fbdf31",
-      "sourceBytes": 872525,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "68c0194a367eedbab63ea99e9f8d87dd78ed2e063be77721216bddc61fab9a71",
-      "bytes": 39440,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:23.083Z"
-    },
     "ce4c9d80-5111-4eb2-9b84-30ac6886abe6/e37cbe21-c827-49a2-8cff-f70a99f39054.webp": {
       "source": "ce4c9d80-5111-4eb2-9b84-30ac6886abe6/e37cbe21-c827-49a2-8cff-f70a99f39054.png",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/ce4c9d80-5111-4eb2-9b84-30ac6886abe6/e37cbe21-c827-49a2-8cff-f70a99f39054.png",
@@ -1985,22 +1329,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:29.204Z"
-    },
-    "d2d57538-1c44-4942-b481-d2779307e1ed/73d30228-6841-48be-9509-f0e058c13d7b.thumb.webp": {
-      "source": "d2d57538-1c44-4942-b481-d2779307e1ed/73d30228-6841-48be-9509-f0e058c13d7b.jpg",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/d2d57538-1c44-4942-b481-d2779307e1ed/73d30228-6841-48be-9509-f0e058c13d7b.jpg",
-      "sourceSha256": "a4d0ea44bfc928b356b0814b2eda500c67f0a74d303fdd373bd7002712476a7b",
-      "sourceBytes": 791555,
-      "sourceWidth": 1200,
-      "sourceHeight": 800,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "0fb9f81732440371c981275ce32868f69fe169859c40ca8efd67f03ee5dbc0b3",
-      "bytes": 34440,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:23.444Z"
     },
     "d2d57538-1c44-4942-b481-d2779307e1ed/73d30228-6841-48be-9509-f0e058c13d7b.webp": {
       "source": "d2d57538-1c44-4942-b481-d2779307e1ed/73d30228-6841-48be-9509-f0e058c13d7b.jpg",
@@ -2034,22 +1362,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:29.478Z"
     },
-    "dc6cc8ee-105e-4fb5-86c7-afc1c1091316/be85a9c0-3877-4dae-8074-34842b2cd7f2.thumb.webp": {
-      "source": "dc6cc8ee-105e-4fb5-86c7-afc1c1091316/be85a9c0-3877-4dae-8074-34842b2cd7f2.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/dc6cc8ee-105e-4fb5-86c7-afc1c1091316/be85a9c0-3877-4dae-8074-34842b2cd7f2.png",
-      "sourceSha256": "cc4f4ea273d2966098ab4017b6246c7b3e0eff1b6babba7c13525bad5a342dec",
-      "sourceBytes": 1070442,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "cb5bf988eff3b3eb30d93abf27ea025eb0ae80644756fea433671949a0fc3f22",
-      "bytes": 59528,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:23.273Z"
-    },
     "dc6cc8ee-105e-4fb5-86c7-afc1c1091316/be85a9c0-3877-4dae-8074-34842b2cd7f2.webp": {
       "source": "dc6cc8ee-105e-4fb5-86c7-afc1c1091316/be85a9c0-3877-4dae-8074-34842b2cd7f2.png",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/dc6cc8ee-105e-4fb5-86c7-afc1c1091316/be85a9c0-3877-4dae-8074-34842b2cd7f2.png",
@@ -2081,22 +1393,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:29.682Z"
-    },
-    "e33f6bf7-755e-48aa-b9d0-80ed6b2fcaa6/c7c1632a-c07b-4026-ac44-8a0ccc0cc73e.thumb.webp": {
-      "source": "e33f6bf7-755e-48aa-b9d0-80ed6b2fcaa6/c7c1632a-c07b-4026-ac44-8a0ccc0cc73e.jpg",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/e33f6bf7-755e-48aa-b9d0-80ed6b2fcaa6/c7c1632a-c07b-4026-ac44-8a0ccc0cc73e.jpg",
-      "sourceSha256": "f3e9f10e77657fb7bd55347ff972fec28eac3acc0f2f156b86a29b112919fea8",
-      "sourceBytes": 926219,
-      "sourceWidth": 1200,
-      "sourceHeight": 800,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "df042b23bcae1bb062d3097a2b54f952f62f6f2d9cd7f0eab707442de45f5022",
-      "bytes": 41762,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:23.451Z"
     },
     "e33f6bf7-755e-48aa-b9d0-80ed6b2fcaa6/c7c1632a-c07b-4026-ac44-8a0ccc0cc73e.webp": {
       "source": "e33f6bf7-755e-48aa-b9d0-80ed6b2fcaa6/c7c1632a-c07b-4026-ac44-8a0ccc0cc73e.jpg",
@@ -2130,22 +1426,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:29.775Z"
     },
-    "eb29fbfc-58ff-4099-9403-ac8cc4ed43ce/2c8ccfc1-3ca4-4292-a766-f3925c89393c.thumb.webp": {
-      "source": "eb29fbfc-58ff-4099-9403-ac8cc4ed43ce/2c8ccfc1-3ca4-4292-a766-f3925c89393c.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/eb29fbfc-58ff-4099-9403-ac8cc4ed43ce/2c8ccfc1-3ca4-4292-a766-f3925c89393c.png",
-      "sourceSha256": "e3b1fd53817467206527a42bca0460413a12a52165c40dfe650fc4f7adbd798e",
-      "sourceBytes": 2699360,
-      "sourceWidth": 1536,
-      "sourceHeight": 1024,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "ee30150cd31ee27659362730aba27405816968928e66552718e486e4b5da225d",
-      "bytes": 56562,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:23.976Z"
-    },
     "eb29fbfc-58ff-4099-9403-ac8cc4ed43ce/2c8ccfc1-3ca4-4292-a766-f3925c89393c.webp": {
       "source": "eb29fbfc-58ff-4099-9403-ac8cc4ed43ce/2c8ccfc1-3ca4-4292-a766-f3925c89393c.png",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/eb29fbfc-58ff-4099-9403-ac8cc4ed43ce/2c8ccfc1-3ca4-4292-a766-f3925c89393c.png",
@@ -2177,22 +1457,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:29.781Z"
-    },
-    "f66cff26-baec-402c-ab18-6538ddd86fec/715a0752-6ca3-48e0-874f-7ee4362fe8ae.thumb.webp": {
-      "source": "f66cff26-baec-402c-ab18-6538ddd86fec/715a0752-6ca3-48e0-874f-7ee4362fe8ae.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/f66cff26-baec-402c-ab18-6538ddd86fec/715a0752-6ca3-48e0-874f-7ee4362fe8ae.png",
-      "sourceSha256": "c8934b0abe1c8a9265d2e3968d9dc03c4332a4850550787ce7bd30d4ecb96462",
-      "sourceBytes": 1081634,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "1aa7b303f3b21113dbc9f5f967ac2b9aec6b36cb9570bf50d9ae65b4c8864d29",
-      "bytes": 63424,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:24.520Z"
     },
     "f66cff26-baec-402c-ab18-6538ddd86fec/715a0752-6ca3-48e0-874f-7ee4362fe8ae.webp": {
       "source": "f66cff26-baec-402c-ab18-6538ddd86fec/715a0752-6ca3-48e0-874f-7ee4362fe8ae.png",
@@ -2226,22 +1490,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:30.065Z"
     },
-    "f8d0095d-e12a-4e60-acca-3cf393544001/bb2115e3-f1ac-4625-911e-dd3699acd7fd.thumb.webp": {
-      "source": "f8d0095d-e12a-4e60-acca-3cf393544001/bb2115e3-f1ac-4625-911e-dd3699acd7fd.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/f8d0095d-e12a-4e60-acca-3cf393544001/bb2115e3-f1ac-4625-911e-dd3699acd7fd.png",
-      "sourceSha256": "0eb371bc9e1f99ee747d152ec582f0df8c85fa562fdc5223120e48a2156c86e4",
-      "sourceBytes": 1033464,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "85eca319027ac9a2ddc7412434d8cc67b0b4213e0504c08d14eb113a5d03ab90",
-      "bytes": 57530,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:24.177Z"
-    },
     "f8d0095d-e12a-4e60-acca-3cf393544001/bb2115e3-f1ac-4625-911e-dd3699acd7fd.webp": {
       "source": "f8d0095d-e12a-4e60-acca-3cf393544001/bb2115e3-f1ac-4625-911e-dd3699acd7fd.png",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/f8d0095d-e12a-4e60-acca-3cf393544001/bb2115e3-f1ac-4625-911e-dd3699acd7fd.png",
@@ -2273,22 +1521,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:30.296Z"
-    },
-    "ff788795-c412-46ec-a25c-aff4becb8801/d00119ac-cfb3-4818-a43e-fd9c9d2eb901.thumb.webp": {
-      "source": "ff788795-c412-46ec-a25c-aff4becb8801/d00119ac-cfb3-4818-a43e-fd9c9d2eb901.png",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/ff788795-c412-46ec-a25c-aff4becb8801/d00119ac-cfb3-4818-a43e-fd9c9d2eb901.png",
-      "sourceSha256": "9bad977ea1f53de99cf1c34415f17da453e96f670c00f6c5a0205b0792d8d3ac",
-      "sourceBytes": 1034743,
-      "sourceWidth": 900,
-      "sourceHeight": 600,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "92b682c576418b4c3b9b4b9275dbdc04621e49645d61b5f3900bb602bcefee48",
-      "bytes": 57730,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:24.156Z"
     },
     "ff788795-c412-46ec-a25c-aff4becb8801/d00119ac-cfb3-4818-a43e-fd9c9d2eb901.webp": {
       "source": "ff788795-c412-46ec-a25c-aff4becb8801/d00119ac-cfb3-4818-a43e-fd9c9d2eb901.png",
@@ -2322,22 +1554,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:30.232Z"
     },
-    "seed/bakin-kolac.thumb.webp": {
-      "source": "seed/bakin-kolac.jpg",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/seed/bakin-kolac.jpg",
-      "sourceSha256": "3abf662d81eba5936237fdf38d0d8903afa8e9109ef3e9c183e18a9be9c778e2",
-      "sourceBytes": 860614,
-      "sourceWidth": 1200,
-      "sourceHeight": 800,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "34033888194c38876f94e87a21e0ecc1f7c9a42153dd608067fe2b6217e85ca1",
-      "bytes": 39832,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:24.817Z"
-    },
     "seed/bakin-kolac.webp": {
       "source": "seed/bakin-kolac.jpg",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/seed/bakin-kolac.jpg",
@@ -2369,22 +1585,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:30.315Z"
-    },
-    "seed/domaca-limunada.thumb.webp": {
-      "source": "seed/domaca-limunada.jpg",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/seed/domaca-limunada.jpg",
-      "sourceSha256": "62a6bd49cb99b7ed8d91a5a3e4ad04b1d666b44575f78dc5687fe8f46948e4de",
-      "sourceBytes": 842922,
-      "sourceWidth": 1200,
-      "sourceHeight": 800,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "a3e41cb817f09f8585a4ac36b863dc3a603b0149cde2b3cb38eb698526c30c56",
-      "bytes": 36760,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:24.972Z"
     },
     "seed/domaca-limunada.webp": {
       "source": "seed/domaca-limunada.jpg",
@@ -2418,22 +1618,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:30.520Z"
     },
-    "seed/gulas.thumb.webp": {
-      "source": "seed/gulas.jpg",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/seed/gulas.jpg",
-      "sourceSha256": "48d2f93aafa1ddca544e43e2829f94ada15b3e11f1d97acf5907fbf034613e64",
-      "sourceBytes": 937446,
-      "sourceWidth": 1200,
-      "sourceHeight": 800,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "61e0c5c91af860e80a8e2ae35b36445881a90be3d557f6b4ea6017b9392081b7",
-      "bytes": 46158,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:24.931Z"
-    },
     "seed/gulas.webp": {
       "source": "seed/gulas.jpg",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/seed/gulas.jpg",
@@ -2465,22 +1649,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:30.744Z"
-    },
-    "seed/kajgana-sa-povrcem.thumb.webp": {
-      "source": "seed/kajgana-sa-povrcem.jpg",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/seed/kajgana-sa-povrcem.jpg",
-      "sourceSha256": "1f35eb6ee758199fd804c3da253f391b04f04b7923e31b60e0cfe39cd4f26e6d",
-      "sourceBytes": 1032830,
-      "sourceWidth": 1200,
-      "sourceHeight": 800,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "beee7270a8bc415555d3dcc3174c3cfd5dddddb4aeb29fcf18e9869b440aa4fc",
-      "bytes": 50464,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:25.233Z"
     },
     "seed/kajgana-sa-povrcem.webp": {
       "source": "seed/kajgana-sa-povrcem.jpg",
@@ -2514,22 +1682,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:30.700Z"
     },
-    "seed/kinder-kolac.thumb.webp": {
-      "source": "seed/kinder-kolac.jpg",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/seed/kinder-kolac.jpg",
-      "sourceSha256": "4cec62f28a3fb6d5a336dbed8406f3e6265eb27e37e1fd02548efdb9ed34b2e5",
-      "sourceBytes": 832694,
-      "sourceWidth": 1200,
-      "sourceHeight": 800,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "fc4c092c71bbf58fe097c442a8e4c5cebddd897536c03bc04f2ac3aa3bc26ec8",
-      "bytes": 35912,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:25.579Z"
-    },
     "seed/kinder-kolac.webp": {
       "source": "seed/kinder-kolac.jpg",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/seed/kinder-kolac.jpg",
@@ -2561,22 +1713,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:30.766Z"
-    },
-    "seed/krempita.thumb.webp": {
-      "source": "seed/krempita.jpg",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/seed/krempita.jpg",
-      "sourceSha256": "b80fee22d5b6b42e60d1ace8d4e2f8c2437d3a571440d3d5618cc6ea1e937e79",
-      "sourceBytes": 887943,
-      "sourceWidth": 1200,
-      "sourceHeight": 800,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "eb62e072e26ac6bd54973a5a5314cba2ed9c90b6f75d915cd9157158e1bbe009",
-      "bytes": 44046,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:25.706Z"
     },
     "seed/krempita.webp": {
       "source": "seed/krempita.jpg",
@@ -2610,22 +1746,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:31.018Z"
     },
-    "seed/medenjaci.thumb.webp": {
-      "source": "seed/medenjaci.jpg",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/seed/medenjaci.jpg",
-      "sourceSha256": "a89a799fcf1d0013f5320bd4656dfc80939fa71ba8ee7ff0d78a948a8bc0db20",
-      "sourceBytes": 969486,
-      "sourceWidth": 1200,
-      "sourceHeight": 800,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "602baa60f2cc66075ceab51a33ec7835aa6041d2b53d282973193a5439cbd0cd",
-      "bytes": 46158,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:25.796Z"
-    },
     "seed/medenjaci.webp": {
       "source": "seed/medenjaci.jpg",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/seed/medenjaci.jpg",
@@ -2657,22 +1777,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:31.270Z"
-    },
-    "seed/pileca-supa.thumb.webp": {
-      "source": "seed/pileca-supa.jpg",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/seed/pileca-supa.jpg",
-      "sourceSha256": "847f73c6b663f24add0bfc20118aadddb2a2c5bf1350a8a6d2622c3498a33772",
-      "sourceBytes": 946453,
-      "sourceWidth": 1200,
-      "sourceHeight": 800,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "1a28ba2f4bab2f710acc05a9ea9c5a4b52d31ee98adcbadfb1216d03d44b2b4d",
-      "bytes": 43000,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:26.021Z"
     },
     "seed/pileca-supa.webp": {
       "source": "seed/pileca-supa.jpg",
@@ -2706,22 +1810,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:31.217Z"
     },
-    "seed/pire-krompir.thumb.webp": {
-      "source": "seed/pire-krompir.jpg",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/seed/pire-krompir.jpg",
-      "sourceSha256": "d91763a75f20ecc7e557ca3c8ce0d25725c614fb05d621893c315db9db631121",
-      "sourceBytes": 813037,
-      "sourceWidth": 1200,
-      "sourceHeight": 800,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "4dc4a47d21bde899651bff51d2d17d1bf5a2cc7fcab964c7b6e6987e3c677c2c",
-      "bytes": 33424,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:26.258Z"
-    },
     "seed/pire-krompir.webp": {
       "source": "seed/pire-krompir.jpg",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/seed/pire-krompir.jpg",
@@ -2753,22 +1841,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:31.208Z"
-    },
-    "seed/plazma-torta.thumb.webp": {
-      "source": "seed/plazma-torta.jpg",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/seed/plazma-torta.jpg",
-      "sourceSha256": "ee5dbaa6cdd11a5167d047e1358769e2a1c4b549563345b5bb926bd8b0874800",
-      "sourceBytes": 817095,
-      "sourceWidth": 1200,
-      "sourceHeight": 800,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "2ad18d43adc20300c82cf7247cb8215f55dabd9e4b97c71d4fc72ef64ef00c67",
-      "bytes": 36906,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:26.393Z"
     },
     "seed/plazma-torta.webp": {
       "source": "seed/plazma-torta.jpg",
@@ -2802,22 +1874,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:31.478Z"
     },
-    "seed/raffaello-kuglice.thumb.webp": {
-      "source": "seed/raffaello-kuglice.jpg",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/seed/raffaello-kuglice.jpg",
-      "sourceSha256": "3ec0a2a230f610116334316e82a1db9c2e8dc3d7c02d228e57299404667efab2",
-      "sourceBytes": 854463,
-      "sourceWidth": 1200,
-      "sourceHeight": 800,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "fc0d9aa8b7c1f46d7191a6358ab03afb43aa983a014f561c9cbce7464310d62c",
-      "bytes": 37562,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:26.587Z"
-    },
     "seed/raffaello-kuglice.webp": {
       "source": "seed/raffaello-kuglice.jpg",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/seed/raffaello-kuglice.jpg",
@@ -2849,22 +1905,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:31.720Z"
-    },
-    "seed/sopska-salata.thumb.webp": {
-      "source": "seed/sopska-salata.jpg",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/seed/sopska-salata.jpg",
-      "sourceSha256": "6a51affc56a23a4bdaf5f8ab88d432faeb936e2121b26de76a9668a0b15189b7",
-      "sourceBytes": 960381,
-      "sourceWidth": 1200,
-      "sourceHeight": 800,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "d8fa30db0d47309ab93a1da612848f63252bde6f3a0ec2146fc51a792064c793",
-      "bytes": 44414,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:26.796Z"
     },
     "seed/sopska-salata.webp": {
       "source": "seed/sopska-salata.jpg",
@@ -2898,22 +1938,6 @@
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:31.741Z"
     },
-    "seed/strudla-sa-makom.thumb.webp": {
-      "source": "seed/strudla-sa-makom.jpg",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/seed/strudla-sa-makom.jpg",
-      "sourceSha256": "81ceffa1a4795d15c5f344a9446d2350e761ad9b90de6ff45244b2b700553192",
-      "sourceBytes": 1009967,
-      "sourceWidth": 1200,
-      "sourceHeight": 800,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "56d4819b1c08be29ac538c2fc82a9fefb1e9ed62990379ad9bf315bbecc16b1f",
-      "bytes": 52840,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:27.112Z"
-    },
     "seed/strudla-sa-makom.webp": {
       "source": "seed/strudla-sa-makom.jpg",
       "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/seed/strudla-sa-makom.jpg",
@@ -2945,22 +1969,6 @@
       "width": 750,
       "height": 500,
       "uploadedAt": "2026-10-08T13:58:31.786Z"
-    },
-    "seed/tulumbe.thumb.webp": {
-      "source": "seed/tulumbe.jpg",
-      "sourceUrl": "https://laapabfzldjerljmthgn.supabase.co/storage/v1/object/public/recipe-images/seed/tulumbe.jpg",
-      "sourceSha256": "a6db79008e16e2b97d22fb08443de5ae789b9565b6e2264fd50e6811804897ba",
-      "sourceBytes": 957370,
-      "sourceWidth": 1200,
-      "sourceHeight": 800,
-      "variant": "thumb",
-      "settings": "thumb:webp:500x500:q85",
-      "contentType": "image/webp",
-      "sha256": "3928f1032dcb8f8ce6de7c3b5e97cd32ceeb4d49375df1726a23805deb67e3ff",
-      "bytes": 42252,
-      "width": 500,
-      "height": 333,
-      "uploadedAt": "2026-10-08T13:40:27.274Z"
     },
     "seed/tulumbe.webp": {
       "source": "seed/tulumbe.jpg",

@@ -28,7 +28,7 @@ import recipeJob from './recipe-job.ts'
 
 type Client = Awaited<ReturnType<typeof connect>>['client']
 
-interface Table {
+export interface Table {
   name: 'recipes' | 'ingredients'
   table: 'recipe_images' | 'ingredients'
   bucket: string
@@ -39,7 +39,7 @@ interface Table {
   read(client: Client): Promise<(FlipRow & { thumb: string | null })[]>
 }
 
-const TABLES: Table[] = [
+export const TABLES: Table[] = [
   {
     name: 'recipes',
     table: 'recipe_images',

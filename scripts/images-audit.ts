@@ -18,8 +18,14 @@ import { formatBytes, mapPool } from './lib/util.ts'
 
 const OUTPUT = 'docs/images-audit.md'
 
+// Storage answers 429 to bursts of HEADs (e.g. right after an images:* run),
+// so back off and retry those a few times before reporting them.
 async function head(url: string): Promise<HeadResult> {
-  const res = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(30_000) })
+  let res = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(30_000) })
+  for (let attempt = 1; res.status === 429 && attempt <= 5; attempt++) {
+    await new Promise((resolve) => setTimeout(resolve, 1000 * 2 ** attempt))
+    res = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(30_000) })
+  }
   const length = res.headers.get('content-length')
   return {
     status: res.status,

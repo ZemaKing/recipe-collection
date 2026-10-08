@@ -133,32 +133,40 @@ export interface ImageReference {
   path: string
 }
 
-// Every Storage path the database points at, per bucket.
+// Every Storage path the database points at, per bucket: the image, a recipe
+// photo's thumbnail and, until Phase 39 retires them, pre-WebP originals.
 export async function readImageReferences(client: SupabaseClient): Promise<ImageReference[]> {
-  const recipeRows = await readAllRows<{ id: string; storage_path: string }>(
-    client,
-    'recipe_images',
-    'id, storage_path',
-  )
-  const ingredientRows = await readAllRows<{ id: string; image_storage_path: string | null }>(
-    client,
-    'ingredients',
-    'id, image_storage_path',
-  )
+  const recipeRows = await readAllRows<{
+    id: string
+    storage_path: string
+    thumb_path: string | null
+    original_path: string | null
+  }>(client, 'recipe_images', 'id, storage_path, thumb_path, original_path')
+  const ingredientRows = await readAllRows<{
+    id: string
+    image_storage_path: string | null
+    image_original_path: string | null
+  }>(client, 'ingredients', 'id, image_storage_path, image_original_path')
   return [
-    ...recipeRows.map((row): ImageReference => ({
-      bucket: RECIPE_BUCKET,
-      table: 'recipe_images',
-      rowId: row.id,
-      path: row.storage_path,
-    })),
-    ...ingredientRows
-      .filter((row) => row.image_storage_path)
-      .map((row): ImageReference => ({
-        bucket: INGREDIENT_BUCKET,
-        table: 'ingredients',
-        rowId: row.id,
-        path: row.image_storage_path as string,
-      })),
+    ...recipeRows.flatMap((row) =>
+      [row.storage_path, row.thumb_path, row.original_path]
+        .filter((path): path is string => !!path)
+        .map((path): ImageReference => ({
+          bucket: RECIPE_BUCKET,
+          table: 'recipe_images',
+          rowId: row.id,
+          path,
+        })),
+    ),
+    ...ingredientRows.flatMap((row) =>
+      [row.image_storage_path, row.image_original_path]
+        .filter((path): path is string => !!path)
+        .map((path): ImageReference => ({
+          bucket: INGREDIENT_BUCKET,
+          table: 'ingredients',
+          rowId: row.id,
+          path,
+        })),
+    ),
   ]
 }

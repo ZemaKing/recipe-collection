@@ -38,7 +38,20 @@ There is deliberately no restore script: a wrong run against the live project wo
    select * from json_populate_recordset(null::public.<table>, '<contents of <table>.json>');
    ```
    Keep the ids, since child tables point at them. For a single table that already has rows, delete the affected rows first or add `on conflict (id) do update …`.
-3. **Photos:** upload `backups/images/recipe-images/` and `backups/images/ingredient-images/` back to their buckets **under the same paths**, since `recipe_images.storage_path` and `ingredients.image_storage_path` point at them. Re-uploading one file: Dashboard → Storage → bucket → folder → Upload.
+3. **Photos:** `backups/images/` holds the **pre-WebP originals** (Phase 34). Since Phase 36 the rows point at WebP files, which aren't in that backup but can be regenerated from it with the same settings: run the `--restore` below first (it re-uploads the originals *and* sets `original_path` again, which `images:migrate` reads its sources from), then `npm run images:migrate -- --force --apply` rebuilds every WebP at the paths the rows use, and `npm run images:check -- --full` confirms. Photos uploaded after Phase 38 exist only in Storage: run `npm run images:backup -- --apply` from time to time to add them to the backup.
 4. **Check:** `npm run images:audit` (0 missing, 0 orphans) and `npm run verify:rls`.
 
 One wrong edit doesn't need any of this: fix it in the admin, using the JSON in `backups/db/` as the reference.
+
+## Pre-WebP originals (after Phase 39)
+
+`npm run images:prune-originals -- --apply` deleted the originals from Storage and cleared `original_path` / `image_original_path`; every deleted path is in `scripts/migrate-images/prune-log.json`. To bring them back (e.g. to roll a photo back to its original):
+
+1. Both buckets accept only WebP + PNG since Phase 38, and some originals are JPEG. Allow JPEG for the restore in the SQL editor:
+   ```sql
+   update storage.buckets set allowed_mime_types = array['image/webp', 'image/png', 'image/jpeg']
+   where id in ('recipe-images', 'ingredient-images');
+   ```
+2. `npm run images:prune-originals -- --restore` (dry run), then `-- --restore --apply`: re-uploads each logged original from `backups/images/` to its old path and sets `original_path` again (one transaction per table).
+3. Now `npm run images:flip -- --rollback --apply` points rows back at the originals, exactly as before Phase 39.
+4. Put the bucket types back: `supabase/migrations/20261008150000_image_buckets_webp.sql`.
