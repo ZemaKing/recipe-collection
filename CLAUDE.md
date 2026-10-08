@@ -21,9 +21,11 @@ npm run verify:rls # checks live RLS/Storage policies as anon, a non-admin and t
 npm run images:audit   # rows vs Storage objects → docs/images-audit.md (read-only, HEADs only)
 npm run images:backup  # dry run; `-- --apply` downloads both buckets to git-ignored backups/images/, `-- --verify` re-hashes
 npm run db:export      # every table as JSON → git-ignored backups/db/{timestamp}/ (see docs/backup.md)
+npm run images:migrate # dry run: originals (from backups/images/) → WebP q85 variants; `-- --apply` uploads (scripts/images/README.md)
+npm run images:check   # uploaded WebP vs the manifests (`-- --full` downloads + sha256)
 ```
 
-The `.ts` scripts run directly on Node 24 (type stripping, so relative imports need the `.ts` extension). They use `SUPABASE_SERVICE_ROLE_KEY` if set, otherwise the `RLS_ADMIN_*` login.
+The `.ts` scripts run directly on Node 24 (type stripping, so relative imports need the `.ts` extension); `tsconfig.scripts.json` puts them under `tsc -b`. They use `SUPABASE_SERVICE_ROLE_KEY` if set, otherwise the `RLS_ADMIN_*` login.
 
 Run a single test file: `npx vitest run src/lib/recipeFilter.test.ts`. Tests use Vitest + Testing Library with jsdom (setup file: `src/test/setup.ts`); test files live next to the code they cover (`*.test.ts(x)`).
 

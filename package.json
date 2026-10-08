@@ -13,7 +13,9 @@
     "verify:rls": "node scripts/verify-rls.mjs",
     "images:audit": "node scripts/images-audit.ts",
     "images:backup": "node scripts/images-backup.ts",
-    "db:export": "node scripts/db-export.ts"
+    "db:export": "node scripts/db-export.ts",
+    "images:migrate": "node scripts/images/cli.ts scripts/migrate-images/recipe-job.ts scripts/migrate-images/ingredient-job.ts upload",
+    "images:check": "node scripts/images/cli.ts scripts/migrate-images/recipe-job.ts scripts/migrate-images/ingredient-job.ts verify"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.23",
@@ -51,6 +53,7 @@
     "globals": "^17.12.0",
     "jsdom": "^30.0.1",
     "prettier": "^3.9.6",
+    "sharp": "^0.35.5",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.70.0",
     "vite": "^8.2.2",

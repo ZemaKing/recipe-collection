@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { pickPrimaryImage } from '@/lib/recipeQueries'
+import { pickPrimaryImage, RECIPE_IMAGE_COLUMNS, type RawImageRow } from '@/lib/recipeQueries'
 import { supabase } from '@/lib/supabaseClient'
 import type { IngredientNutritionRef } from '@/types/ingredient'
 import type { RecipeImageRef } from '@/types/recipe'
@@ -53,7 +53,7 @@ const RECIPE_DETAIL_SELECT = `
   prep_notes_en, prep_notes_sr, tips_en, tips_sr,
   prep_time_minutes, cook_time_minutes, servings, weight_grams, difficulty, rating, is_favorite,
   category:categories(slug, name_en, name_sr),
-  images:recipe_images(storage_path, alt_en, alt_sr, is_primary),
+  images:recipe_images(${RECIPE_IMAGE_COLUMNS}),
   ingredients:recipe_ingredients(id, order_index, name_en, name_sr, quantity, unit_en, unit_sr,
     ingredient:ingredients(calories_kcal, protein_g, fat_g, carbs_g, fiber_g, micronutrients, unit_conversions)
   ),
@@ -89,7 +89,7 @@ export function useRecipeBySlug(slug: string) {
         setNotFound(true)
       } else {
         const { images, ...rest } = data as unknown as RecipeDetail & {
-          images: { storage_path: string; alt_en: string | null; alt_sr: string | null; is_primary: boolean }[]
+          images: RawImageRow[]
         }
         setRecipe({ ...rest, image: pickPrimaryImage(images) })
       }

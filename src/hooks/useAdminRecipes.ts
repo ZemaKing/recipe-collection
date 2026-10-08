@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { expandDiacriticVariants } from '@/lib/diacritics'
 import type { SupportedLanguage } from '@/lib/i18n'
-import { pickPrimaryImage, type RawImageRow } from '@/lib/recipeQueries'
+import { pickPrimaryImage, RECIPE_IMAGE_COLUMNS, type RawImageRow } from '@/lib/recipeQueries'
 import { supabase } from '@/lib/supabaseClient'
 import type { RecipeImageRef } from '@/types/recipe'
 
@@ -66,7 +66,7 @@ export function useAdminRecipes({ search, sort, sortDirection, lang, page, categ
       let query = supabase
         .from('recipes')
         .select(
-          'id, slug, name_en, name_sr, category:categories(slug, name_en, name_sr), subcategory:subcategories(slug, name_en, name_sr), images:recipe_images(storage_path, alt_en, alt_sr, is_primary)',
+          `id, slug, name_en, name_sr, category:categories(slug, name_en, name_sr), subcategory:subcategories(slug, name_en, name_sr), images:recipe_images(${RECIPE_IMAGE_COLUMNS})`,
           { count: 'exact' },
         )
         .order(column, { ascending })

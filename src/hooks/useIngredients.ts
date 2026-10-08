@@ -9,7 +9,7 @@ export interface IngredientWithCategory extends Ingredient {
 const INGREDIENT_SELECT = `
   id, slug, ingredient_category_id, name_en, name_sr, latin_name, regional_names, fact_en, fact_sr,
   default_unit_en, default_unit_sr, calories_kcal, protein_g, fat_g, carbs_g, fiber_g,
-  micronutrients, unit_conversions, image_storage_path, image_alt_en, image_alt_sr,
+  micronutrients, unit_conversions, image_storage_path, image_width, image_height, image_alt_en, image_alt_sr,
   ingredient_category:ingredient_categories(slug, name_en, name_sr)
 `
 

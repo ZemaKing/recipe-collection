@@ -4,7 +4,7 @@ Follow-up to the build log in [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md). Its 
 
 The image pipeline reuses the one built for the diecast app (`../diecast-collection/scripts/images/` + `src/lib/image-resize.ts`). That code was written app-agnostic so it could be reused here (diecast ROADMAP Phase 21). Its README even uses "recipe photos" as the example job.
 
-**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08. ⚠ Org grace period ends 31 Oct 2026 (Storage 117 %): see Open decision 1.** Research done 2026-10-04 (findings below).
+**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08. Phase 35 done 2026-10-08. ⚠ Org grace period ends 31 Oct 2026 (Storage 117 %): see Open decision 1.** Research done 2026-10-04 (findings below).
 
 ---
 
@@ -31,7 +31,7 @@ Root causes in code:
 
 **What this costs:** Supabase Free quotas are **per organization**: 1 GB Storage and 5 GB egress a month. This org is shared with the game-collection project, which alone holds ≈ 2.0 GB, so the org is at **≈ 2.1 GB of 1 GB**. That means uploads here can be blocked too. A grid of 20 recipe cards ≈ 20 × 1.3 MB ≈ **26 MB** of images; with WebP thumbnails it's ≈ 1 MB.
 
-**Target after this roadmap:** 62 × (154 KB + ~45 KB) + 69 × 12 KB ≈ **13 MB** (from 84 MB, −85 %).
+**Target after this roadmap:** 62 × (154 KB + ~45 KB) + 69 × 12 KB ≈ **13 MB** (from 84 MB, −85 %). With q85 (owner's choice) the Phase 35 dry run measured **15.3 MB** (−82 %).
 
 ### Security & privacy — urgent
 
@@ -77,9 +77,10 @@ Read:              RecipeCard / admin lists ─► thumb_path ?? storage_path   
 Existing files:    scripts/images (sharp) ─► WebP at new paths ─► verify ─► flip rows in one transaction ─► (later) delete originals
 ```
 
-- **Recipe variants:** `full` fits inside 1600×1600, q82 (all current originals are ≤ 1536 px, so this is a re-encode, not a resize). `thumb` fits inside 600×600, q75: cards are `aspect-square` at ≤ ~300 CSS px, so 600 covers 2× screens.
-- **Ingredient photo:** one WebP that fits inside 600×400, q80, with alpha kept. Today's are 300×200, so they keep their size; uploads larger than that are downscaled. No thumb is needed.
-- **Paths:** `{recipe_id}/{uuid}.webp` + `{uuid}.thumb.webp`; `{ingredient_id}/{uuid}.webp`. New photo = new UUID, so `Cache-Control: max-age=31536000, immutable`.
+- **WebP quality: 85 for every variant** (owner's choice, 2026-10-08; replaces the q82/q75/q80 first planned here). Applies to the migration scripts and the browser upload path (Phase 38).
+- **Recipe variants:** `full` fits inside 1600×1600 (all current originals are ≤ 1536 px, so this is a re-encode, not a resize). `thumb` fits inside 600×600: cards are `aspect-square` at ≤ ~300 CSS px, so 600 covers 2× screens.
+- **Ingredient photo:** one WebP that fits inside 600×400, with alpha kept. Today's are 300×200, so they keep their size; uploads larger than that are downscaled. No thumb is needed.
+- **Paths:** `{recipe_id}/{uuid}.webp` + `{uuid}.thumb.webp`; `{ingredient_id}/{uuid}.webp`. New photo = new UUID, so `Cache-Control: max-age=31536000` (Storage's `cacheControl` sets `max-age` only; no `immutable`). The migration keeps each original's UUID and swaps the extension (`…/{uuid}.png` → `…/{uuid}.webp`).
 - **Rollback columns:** `original_path` (recipes) / `image_original_path` (ingredients) until Phase 39.
 
 ## Status
@@ -88,7 +89,7 @@ Existing files:    scripts/images (sharp) ─► WebP at new paths ─► verify
 | --- | --- | --- | --- |
 | 33 | Security & Privacy Lockdown | 🟡 DB locked down & verified; frontend not deployed | Deploy; admin CRUD check on the deployed site |
 | 34 | Image Audit & Local Backup | ✅ Done 2026-10-08 | — |
-| 35 | Image Pipeline Port & Schema | ⬜ Not started | Apply migration |
+| 35 | Image Pipeline Port & Schema | ✅ Done 2026-10-08 | — |
 | 36 | WebP Migration of Existing Images | ⬜ Not started | Run the scripts |
 | 37 | Read Path: Thumbnails & Loading Priority | ⬜ Not started | — |
 | 38 | Upload Path: WebP in the Browser | ⬜ Not started | Upload a test photo by hand |
@@ -158,15 +159,17 @@ Verified local copy of every image + DB export, in two places. ✅
 Bring in the diecast converter and add variant columns. No row changes yet.
 
 ### Tasks
-- [ ] Copy `scripts/images/` from diecast with its tests. Dev dependencies: **`sharp`** (WebP encoding, scripts only), **`tsx`** (runs TS scripts)
-- [ ] Local source support: read originals from `backups/images/` (Phase 34) instead of URLs, so the migration needs no download egress (the same change as the game app's; keep the copies in step)
-- [ ] Migration: `recipe_images` add `thumb_path`, `width`, `height`, `original_path`; `ingredients` add `image_width`, `image_height`, `image_original_path`. Update `src/types/recipe.ts` / `ingredient.ts`, the `SEARCHABLE_RECIPE_SELECT` / summary selects and `mapRecipeSummaryRow`
-- [ ] Two jobs in `scripts/migrate-images/`: `recipe-job.ts` (full + thumb) and `ingredient-job.ts` (one variant), as described in the architecture target
-- [ ] `tsconfig.scripts.json` so `tsc -b` covers `scripts/`; npm scripts `images:migrate`, `images:check`
+- [x] Copy `scripts/images/` from diecast with its tests (reformatted with this repo's Prettier). Dev dependency: **`sharp`** (WebP encoding, scripts only). **No `tsx`**: Node 24 runs the `.ts` scripts directly, like the Phase 34 scripts
+- [x] Local source support: `ImageSource.file` + `sha256` read originals from `backups/images/` (Phase 34) instead of URLs, so the migration needs no download egress. Also per-variant `pathPattern` and several jobs per CLI run. The differences are listed in `scripts/images/README.md` so the game app's copy can take the same change (it hasn't started its Phase 33 yet; diecast's copy is unchanged)
+- [x] Migration `20261008130000_image_variants.sql`: `recipe_images` add `thumb_path`, `width`, `height`, `original_path`; `ingredients` add `image_width`, `image_height`, `image_original_path` (all nullable, dims both-or-neither and > 0). `src/types/recipe.ts` / `ingredient.ts` (`original_path` columns stay script-only), one `RECIPE_IMAGE_COLUMNS` fragment for the summary/searchable, admin-list and detail selects, `pickPrimaryImage`/`mapRecipeSummaryRow` (+ tests), `useIngredients` select
+- [x] Two jobs in `scripts/migrate-images/`: `recipe-job.ts` (full ≤ 1600 + thumb ≤ 600) and `ingredient-job.ts` (one ≤ 600×400 variant), all q85, `cacheControl` one year; `sources.ts` maps rows (`original_path ?? storage_path`) to sources, keyed by the original's path (+ tests)
+- [x] `tsconfig.scripts.json` so `tsc -b` covers `scripts/`; npm scripts `images:migrate`, `images:check` (both run both jobs)
+- [x] **Owner:** applied `20261008130000_image_variants.sql` in the SQL editor (2026-10-08). The app's recipe queries select the new columns, so this frontend needs it
 
 ### Verification
-- [ ] Dry run over all 131 images: 0 failures; expected ≈ 84 MB → ≈ 13 MB
-- [ ] App unchanged with the new nullable columns
+- [x] Dry run over all 131 images (2026-10-08): **0 failures, 131/131 from local files, 0 B downloaded. 83.6 MB → 15.3 MB (−82 %)**: recipe full 62 × avg 171 KB = 10.4 MB, thumb 62 × avg 66 KB = 4.0 MB, ingredients 69 × avg 13.5 KB = 0.93 MB. (q85 instead of q82/75/80, hence ≈ 15 MB rather than the ≈ 13 MB estimated)
+- [x] `npm run lint` ✅, `npm test` ✅ 166 tests / 22 files, `npm run build` ✅ (`tsc -b` now includes `scripts/`)
+- [x] App unchanged with the new nullable columns (2026-10-08): dev server, home, `/sr/recepti` + `/en/recepti`, a recipe detail and a category page render with their photos and no console errors; the admin recipe-list, ingredients and image-manager selects run with the admin login (the admin UI itself wasn't signed into). New columns all null, no row changed
 
 ### Definition of Done
 Pipeline and schema ready; no user-visible change.
@@ -180,7 +183,7 @@ Upload WebP for every recipe and ingredient photo, verify, and switch rows in on
 
 ### Tasks
 - [ ] `images:migrate -- --limit=5 --apply`, check, then the rest (both jobs). If uploads are blocked by the org quota, follow Open decision 1
-- [ ] `images:check -- --full` (small enough here to sha256-check everything: ~13 MB)
+- [ ] `images:check -- --full` (small enough here to sha256-check everything: ~15 MB)
 - [ ] DB functions `set_recipe_image_variants(jsonb)` / `set_ingredient_image_variants(jsonb)` (service role only, one transaction): move the current path to `original_path`, set the WebP paths and dims. They refuse if any row's current path isn't the one in the manifest
 - [ ] `images:flip` (dry run default, `--apply`, `--rollback`)
 - [ ] Commit the manifests
@@ -247,7 +250,7 @@ Delete the 131 original files once WebP has been stable.
 - [ ] Document restore: re-upload from the backup + `images:flip -- --rollback`
 
 ### Verification
-- [ ] Buckets ≈ 13 MB; every row still resolves; app checked
+- [ ] Buckets ≈ 15 MB; every row still resolves; app checked
 
 ### Definition of Done
 Only WebP remains in Storage.
@@ -346,8 +349,8 @@ Docs match the app; production verified by the owner.
 
 | # | Question | Needed by |
 | --- | --- | --- |
-| 1 | **The org is over its Storage quota: 1.173 GB of 1 GB on 2026-10-08 (was ≈ 2.1 GB on 2026-10-04), mostly the game app.** Uploads still work, but the grace period ends **31 Oct 2026**; if the org is still over 1 GB then, all its projects (this site too) get 402s. It needs ≥ 173 MB freed, plus headroom. This app frees ~71 MB at most (84 MB originals → ~13 MB WebP, only after Phase 39), so **the game app must free ≥ ~110 MB by 31 Oct** whatever happens here. Plan: Phases 35–36 by ~15 Oct, Phase 39 (needs the 7-day wait + approval) by ~25 Oct; game app's image phase in parallel. Fallbacks: a month of Pro ($25), or shorten Phase 39's wait (the originals are backed up in two places) | Ph 36 / 39, **by 31 Oct** |
+| 1 | **The org is over its Storage quota: 1.173 GB of 1 GB on 2026-10-08 (was ≈ 2.1 GB on 2026-10-04), mostly the game app.** Uploads still work, but the grace period ends **31 Oct 2026**; if the org is still over 1 GB then, all its projects (this site too) get 402s. It needs ≥ 173 MB freed, plus headroom. This app frees ~68 MB at most (84 MB originals → 15.3 MB WebP, only after Phase 39; Phase 36 first *adds* those 15 MB), so **the game app must free ≥ ~110 MB by 31 Oct** whatever happens here. Plan: Phases 35–36 by ~15 Oct, Phase 39 (needs the 7-day wait + approval) by ~25 Oct; game app's image phase in parallel. Fallbacks: a month of Pro ($25), or shorten Phase 39's wait (the originals are backed up in two places) | Ph 36 / 39, **by 31 Oct** |
 | 2 | ~~`kitchen_notes` and `meal_plan_entries`: private or public?~~ **Decided 2026-10-08: both stay publicly readable**; only writes are admin-only | Ph 33 ✅ |
 | 3 | ~~Favourites for visitors: hide or localStorage?~~ **Decided 2026-10-08: per-visitor localStorage**; the admin's hearts keep writing `is_favorite`. (The finding above was partly stale: visitors already saw a read-only heart; the silent revert hit only signed-in non-admins) | Ph 33 ✅ |
 | 4 | E2E: a separate Supabase test project (allows admin-flow E2E; this org's two free slots are used, so it would go in another org) or read-only E2E against production? | Ph 42 |
-| 5 | Recipe thumb size 600 px (sharp on 2× screens) vs 400 px (~24 KB measured, slightly soft) | Ph 35 |
+| 5 | Recipe thumb size 600 px (sharp on 2× screens) vs 400 px (~24 KB measured, slightly soft). **Phase 35 uses 600 px** (architecture default): q85 averages 66 KB, 4.0 MB for all 62. Say so before Phase 36's `--apply` if 400 px is preferred | Ph 36 |

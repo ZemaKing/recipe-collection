@@ -8,6 +8,11 @@ export interface Subcategory {
 
 export interface RecipeImageRef {
   storage_path: string
+  /** Thumbnail WebP (Phase 35); null until migrated → fall back to storage_path. */
+  thumb_path: string | null
+  /** Of the image at storage_path; null when unknown. */
+  width: number | null
+  height: number | null
   alt_en: string | null
   alt_sr: string | null
 }

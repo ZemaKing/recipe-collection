@@ -46,6 +46,9 @@ export interface Ingredient {
   micronutrients: Record<string, MicronutrientAmount>
   unit_conversions: Record<string, number>
   image_storage_path: string | null
+  /** Of the image at image_storage_path (Phase 35); null when unknown. */
+  image_width: number | null
+  image_height: number | null
   image_alt_en: string | null
   image_alt_sr: string | null
 }

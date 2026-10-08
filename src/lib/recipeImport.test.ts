@@ -41,6 +41,8 @@ const ingredients: IngredientWithCategory[] = [
     micronutrients: {},
     unit_conversions: {},
     image_storage_path: null,
+    image_width: null,
+    image_height: null,
     image_alt_en: null,
     image_alt_sr: null,
     ingredient_category: null,
