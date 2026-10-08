@@ -10,7 +10,10 @@
     "format": "prettier --write .",
     "preview": "vite preview",
     "test": "vitest run",
-    "verify:rls": "node scripts/verify-rls.mjs"
+    "verify:rls": "node scripts/verify-rls.mjs",
+    "images:audit": "node scripts/images-audit.ts",
+    "images:backup": "node scripts/images-backup.ts",
+    "db:export": "node scripts/db-export.ts"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.23",

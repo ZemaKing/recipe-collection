@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Local image + DB backups (Phase 34, docs/backup.md). Contain every
+# original photo and the full database; never commit them.
+backups/
+
 # Personal reference material used to hand-write seed data (Phase 6) —
 # not meant to be served as static assets or committed.
 public/*.pdf

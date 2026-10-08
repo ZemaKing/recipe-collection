@@ -18,7 +18,12 @@ npm run format    # prettier --write .
 npm test          # vitest run (single run, not watch)
 npm run preview   # preview production build
 npm run verify:rls # checks live RLS/Storage policies as anon, a non-admin and the admin (RLS_* logins in .env.local)
+npm run images:audit   # rows vs Storage objects → docs/images-audit.md (read-only, HEADs only)
+npm run images:backup  # dry run; `-- --apply` downloads both buckets to git-ignored backups/images/, `-- --verify` re-hashes
+npm run db:export      # every table as JSON → git-ignored backups/db/{timestamp}/ (see docs/backup.md)
 ```
+
+The `.ts` scripts run directly on Node 24 (type stripping, so relative imports need the `.ts` extension). They use `SUPABASE_SERVICE_ROLE_KEY` if set, otherwise the `RLS_ADMIN_*` login.
 
 Run a single test file: `npx vitest run src/lib/recipeFilter.test.ts`. Tests use Vitest + Testing Library with jsdom (setup file: `src/test/setup.ts`); test files live next to the code they cover (`*.test.ts(x)`).
 
