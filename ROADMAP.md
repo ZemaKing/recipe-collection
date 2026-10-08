@@ -4,7 +4,7 @@ Follow-up to the build log in [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md). Its 
 
 The image pipeline reuses the one built for the diecast app (`../diecast-collection/scripts/images/` + `src/lib/image-resize.ts`). That code was written app-agnostic so it could be reused here (diecast ROADMAP Phase 21). Its README even uses "recipe photos" as the example job.
 
-**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08. Phase 35 done 2026-10-08. Phase 36 done 2026-10-08 (all images served as WebP). Phase 37 done 2026-10-08 (card thumbs re-done per Open decision 6). Phase 38 code done 2026-10-08, bucket migration applied; waiting on a hand upload. ⚠ Org grace period ends 31 Oct 2026 (Storage 117 %): see Open decision 1.** Research done 2026-10-04 (findings below).
+**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08. Phase 35 done 2026-10-08. Phase 36 done 2026-10-08 (all images served as WebP). Phase 37 done 2026-10-08 (card thumbs re-done per Open decision 6). Phase 38 done 2026-10-08. ⚠ Org grace period ends 31 Oct 2026 (Storage 117 %): see Open decision 1.** Research done 2026-10-04 (findings below).
 
 ---
 
@@ -92,7 +92,7 @@ Existing files:    scripts/images (sharp) ─► WebP at new paths ─► verify
 | 35 | Image Pipeline Port & Schema | ✅ Done 2026-10-08 | — |
 | 36 | WebP Migration of Existing Images | ✅ Done 2026-10-08 | Admin pages check when next signed in |
 | 37 | Read Path: Thumbnails & Loading Priority | ✅ Done 2026-10-08 | Admin pages check when next signed in |
-| 38 | Upload Path: WebP in the Browser | 🟡 Code done + migration applied 2026-10-08 | Upload a test photo by hand |
+| 38 | Upload Path: WebP in the Browser | ✅ Done 2026-10-08 | — |
 | 39 | Retire Originals | ⬜ Not started | **Explicit approval to delete ~84 MB of originals** |
 | 40 | Data Layer & Performance | ⬜ Not started | — |
 | 41 | Deployment Hardening | ⬜ Not started | — |
@@ -239,8 +239,8 @@ New uploads are stored as small WebP files, PNGs included.
 ### Verification
 - [x] Unit tests: the fit maths (incl. `outside`), the upload/rollback order and the cleanup (mocked Storage + resizer, `storage.upload.test.ts`)
 - [x] Real Chromium (dev server, no upload): a real 2.97 MB PNG original (1536×1024) → full 1536×1024 **403 KB** + card 750×500 **118 KB** WebP in 176 ms (sharp gave 390 + 135 KB); a transparent 300×200 PNG → 300×200 WebP with alpha 0 in the corner
-- [ ] Owner uploads a dish photo and a transparent ingredient PNG by hand (signed in): rows get WebP paths + dimensions, the card shows the new thumb, transparency kept; replace + remove leave no files behind
-- [ ] "No new object over ~300 KB": **the largest full image is ≈ 400 KB** (1536 px at q85, same as the migrated ones; cards ≤ ~135 KB). Within the bucket limit; lowering it would need a lower quality or max width
+- [x] Owner uploaded a dish photo and an ingredient photo by hand (2026-10-08) and checked replace/remove ("all works"). Checked by script: dish → full 1200×800 **187 KB** + card 750×500 **83 KB**, ingredient → 600×400 **60 KB**, all `image/webp`, `max-age=31536000`, rows carry the paths + dimensions; the two folders hold exactly the referenced files (nothing left behind)
+- [x] "No new object over ~300 KB": met by the hand uploads (≤ 187 KB). Note: **the largest full image is ≈ 400 KB** (1536 px at q85, same as the migrated ones; cards ≤ ~135 KB). Within the bucket limit; lowering it would need a lower quality or max width
 
 ### Definition of Done
 No new object over ~300 KB reaches either bucket (see the note above: ≈ 400 KB for the biggest full images at q85).
