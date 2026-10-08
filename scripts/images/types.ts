@@ -9,6 +9,9 @@ export type Variant = {
   maxWidth: number
   maxHeight?: number // default: maxWidth, i.e. the longest edge is bounded
   quality: number // WebP quality, 1–100
+  // 'inside' (default): both edges ≤ the box. 'outside' (recipes port): the box is covered, i.e.
+  // the *short* edge is bounded — for thumbs that get cropped to a square in the UI.
+  fit?: 'inside' | 'outside'
   // Overrides the job's pathPattern for this variant, e.g. "{folder}/{name}.thumb.{ext}" next to
   // a full variant at "{folder}/{name}.{ext}" (recipes port).
   pathPattern?: string

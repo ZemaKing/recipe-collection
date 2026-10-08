@@ -9,6 +9,7 @@ export interface FlipRow {
   id: string
   path: string | null // storage_path / image_storage_path
   original: string | null // original_path / image_original_path
+  thumb?: string | null // thumb_path (recipes only)
 }
 
 /** What set_*_image_variants() takes, per row. */
@@ -62,11 +63,22 @@ export function planFlip(
       if (!full || (variants.thumb && !thumb)) {
         plan.problems.push(`${row.id}: no uploaded WebP for ${source} in the manifest`)
       } else if (flipped) {
-        if (row.path === full.path) plan.done.push(row.id)
-        else
+        if (row.path !== full.path) {
           plan.problems.push(
             `${row.id}: has original_path but points at ${row.path}, not ${full.path}`,
           )
+        } else if (thumb && row.thumb !== thumb.path) {
+          // Already on WebP, but the job's thumb changed (Open decision 6): swap just the thumb.
+          plan.entries.push({
+            id: row.id,
+            from_path: row.path,
+            to_path: row.path,
+            original_path: row.original,
+            thumb_path: thumb.path,
+            width: full.width,
+            height: full.height,
+          })
+        } else plan.done.push(row.id)
       } else {
         plan.entries.push({
           id: row.id,

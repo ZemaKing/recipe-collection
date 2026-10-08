@@ -57,7 +57,7 @@ describe('planFlip apply', () => {
   it('skips rows already flipped and photo-less rows', () => {
     const plan = planFlip(
       [
-        { id: '1', path: 'r1/a.webp', original: 'r1/a.png' },
+        { id: '1', path: 'r1/a.webp', original: 'r1/a.png', thumb: 'r1/a.thumb.webp' },
         { id: '2', path: null, original: null },
       ],
       manifest,
@@ -65,6 +65,31 @@ describe('planFlip apply', () => {
       variants,
     )
     expect(plan).toEqual({ entries: [], done: ['1'], problems: [] })
+  })
+
+  it('swaps only the thumb of a flipped row when the job has a new thumb variant', () => {
+    const withCard: Manifest = {
+      ...manifest,
+      objects: { ...manifest.objects, 'r1/a.card.webp': entry('r1/a.png', 'card', 750, 500) },
+    }
+    const plan = planFlip(
+      [{ id: '1', path: 'r1/a.webp', original: 'r1/a.png', thumb: 'r1/a.thumb.webp' }],
+      withCard,
+      'apply',
+      { full: 'full', thumb: 'card' },
+    )
+    expect(plan.problems).toEqual([])
+    expect(plan.entries).toEqual([
+      {
+        id: '1',
+        from_path: 'r1/a.webp',
+        to_path: 'r1/a.webp',
+        original_path: 'r1/a.png',
+        thumb_path: 'r1/a.card.webp',
+        width: 1536,
+        height: 1024,
+      },
+    ])
   })
 
   it('reports rows without uploads, or a missing thumb', () => {

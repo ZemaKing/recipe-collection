@@ -28,7 +28,9 @@ The browser counterpart for upload forms is [`src/lib/image-resize.ts`](../../sr
 2. **Per-variant paths.** `Variant.pathPattern` overrides the job's pattern, so the full image can be `{folder}/{name}.webp` and the thumb `{folder}/{name}.thumb.webp`.
 3. **Several jobs per run.** `cli.ts a.ts b.ts upload …` runs the jobs one after the other (`--limit` per job, `--only` across them) and prints a combined before/after.
 4. **Connection.** `cli.ts` uses `scripts/lib/supabase-script.ts` `connect()`: the service-role key if set, else the admin login (`RLS_ADMIN_*`), whose `is_admin()` policies can write both buckets. It reads `.env.local` itself, so it runs on plain `node` (Node 24 type stripping) — no `tsx`. `checkBucket()` falls back to a listing when bucket settings can't be read (admin login).
-5. Every variant here uses **WebP quality 85** (owner's choice, 2026-10-08).
+5. **`Variant.fit: 'outside'`** bounds the short edge instead of the long one (for thumbs the UI crops to a square). `variantSettings()` only mentions it when set, so older manifest entries stay valid.
+6. **Per-variant resume.** A source with some variants done converts and uploads only the missing ones, so adding a variant to a job doesn't re-upload the rest.
+7. Every variant here uses **WebP quality 85** (owner's choice, 2026-10-08).
 
 ## Running the recipe migration
 

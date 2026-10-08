@@ -4,7 +4,7 @@ Follow-up to the build log in [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md). Its 
 
 The image pipeline reuses the one built for the diecast app (`../diecast-collection/scripts/images/` + `src/lib/image-resize.ts`). That code was written app-agnostic so it could be reused here (diecast ROADMAP Phase 21). Its README even uses "recipe photos" as the example job.
 
-**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08. Phase 35 done 2026-10-08. Phase 36 done 2026-10-08 (all images served as WebP). Phase 37 code done 2026-10-08 (thumb sharpness: Open decision 6). ⚠ Org grace period ends 31 Oct 2026 (Storage 117 %): see Open decision 1.** Research done 2026-10-04 (findings below).
+**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08. Phase 35 done 2026-10-08. Phase 36 done 2026-10-08 (all images served as WebP). Phase 37 done 2026-10-08 (card thumbs re-done per Open decision 6). ⚠ Org grace period ends 31 Oct 2026 (Storage 117 %): see Open decision 1.** Research done 2026-10-04 (findings below).
 
 ---
 
@@ -78,9 +78,9 @@ Existing files:    scripts/images (sharp) ─► WebP at new paths ─► verify
 ```
 
 - **WebP quality: 85 for every variant** (owner's choice, 2026-10-08; replaces the q82/q75/q80 first planned here). Applies to the migration scripts and the browser upload path (Phase 38).
-- **Recipe variants:** `full` fits inside 1600×1600 (all current originals are ≤ 1536 px, so this is a re-encode, not a resize). `thumb` fits inside **500×500** (owner's pick 2026-10-08, Open decision 5): cards are `aspect-square` at ≤ ~300 CSS px.
+- **Recipe variants:** `full` fits inside 1600×1600 (all current originals are ≤ 1536 px, so this is a re-encode, not a resize). The thumb (`card` variant) **covers 500×500**, i.e. its short edge is 500 (3:2 → 750×500), because cards crop it to a square of ≤ ~230 CSS px (Open decision 6, option b; it replaced the first 500×333 `.thumb.webp`).
 - **Ingredient photo:** one WebP that fits inside 600×400, with alpha kept. Today's are 300×200, so they keep their size; uploads larger than that are downscaled. No thumb is needed.
-- **Paths:** `{recipe_id}/{uuid}.webp` + `{uuid}.thumb.webp`; `{ingredient_id}/{uuid}.webp`. New photo = new UUID, so `Cache-Control: max-age=31536000` (Storage's `cacheControl` sets `max-age` only; no `immutable`). The migration keeps each original's UUID and swaps the extension (`…/{uuid}.png` → `…/{uuid}.webp`).
+- **Paths:** `{recipe_id}/{uuid}.webp` + `{uuid}.card.webp`; `{ingredient_id}/{uuid}.webp`. New photo = new UUID, so `Cache-Control: max-age=31536000` (Storage's `cacheControl` sets `max-age` only; no `immutable`). The migration keeps each original's UUID and swaps the extension (`…/{uuid}.png` → `…/{uuid}.webp`).
 - **Rollback columns:** `original_path` (recipes) / `image_original_path` (ingredients) until Phase 39.
 
 ## Status
@@ -91,7 +91,7 @@ Existing files:    scripts/images (sharp) ─► WebP at new paths ─► verify
 | 34 | Image Audit & Local Backup | ✅ Done 2026-10-08 | — |
 | 35 | Image Pipeline Port & Schema | ✅ Done 2026-10-08 | — |
 | 36 | WebP Migration of Existing Images | ✅ Done 2026-10-08 | Admin pages check when next signed in |
-| 37 | Read Path: Thumbnails & Loading Priority | 🟡 Code done 2026-10-08 | Open decision 6 (thumb crop sharpness) |
+| 37 | Read Path: Thumbnails & Loading Priority | ✅ Done 2026-10-08 | Admin pages check when next signed in |
 | 38 | Upload Path: WebP in the Browser | ⬜ Not started | Upload a test photo by hand |
 | 39 | Retire Originals | ⬜ Not started | **Explicit approval to delete ~84 MB of originals** |
 | 40 | Data Layer & Performance | ⬜ Not started | — |
@@ -215,11 +215,11 @@ Cards load thumbnails; the detail hero loads the full image first.
 ### Verification
 - [x] `/recepti` with all 62 recipes references **only thumbnails: 62 × `.thumb.webp` = 3.00 MB in total** (was ≈ 79 MB of originals); first 5 eager, the rest lazy; no `full` URL on home, `/recepti` (sr + en), a category or recently added. The recipe detail requests only its full `.webp`, eager + `fetchpriority=high`, with `width`/`height`. (Byte totals from the manifest: the browser pane was hidden, so lazy images didn't load during the check, and Storage sends no `Timing-Allow-Origin`, so resource timing reports 0 bytes)
 - [x] No layout shift while cards load: every image sits in a fixed `aspect-square` / `aspect-video` box
-- [ ] No visible blur on a 2× screen: **not met for cards.** A card crops the 500×333 thumb to a 333×333 square; cards measure ≈ 148 CSS px on a phone, 150 at 1024 px, 220 at 767 px, so a 2× screen wants ~300–460 px and a 3× phone ~450. Up to ~1.4× upscaling → slightly soft. See Open decision 6
+- [x] No visible blur on a 2× screen: the first thumbs (fit inside 500×500 → 500×333, cropped to 333×333) were up to ~1.4× upscaled on cards (≈ 148 CSS px on a phone, 150 at 1024 px, 220 at 767 px). **Fixed with Open decision 6 (b):** new `card` variant covering 500×500 (750×500, crop 500×500 ≥ 2.2× of the largest card), q85, avg 93 KB = **5.6 MB for all 62** on `/recepti`. Uploaded at new paths `{uuid}.card.webp` (full images not re-uploaded: the pipeline now skips variants already done), `images:check --full` 186/186 + 69/69, `thumb_path` switched with `images:flip --job=recipes --apply` (62 rows, one transaction; the existing function, from_path = to_path). Browser: all 62 cards load `.card.webp` (749–750×500); hero still the full `.webp`
 - [ ] Admin recipes/ingredients pages checked signed in (owner)
 
 ### Definition of Done
-No list view downloads a full-size recipe photo. ✅ (sharpness pending decision 6)
+No list view downloads a full-size recipe photo. ✅
 
 ---
 
@@ -253,6 +253,7 @@ Delete the 131 original files once WebP has been stable.
 - [ ] Wait period (≥ 7 days of normal use) without image issues
 - [ ] Re-verify the backup (sha256) in both places
 - [ ] `images:prune-originals` (dry run default, `--apply`): deletes only objects in `original_path` / `image_original_path` whose row points at a verified WebP, clears the column, writes a deletion log
+- [ ] Also delete the 62 superseded `{uuid}.thumb.webp` objects (3.0 MB, first thumbs, unreferenced since Phase 37; in `recipe-manifest.json` as variant `thumb`)
 - [ ] Document restore: re-upload from the backup + `images:flip -- --rollback`
 
 ### Verification
@@ -360,4 +361,4 @@ Docs match the app; production verified by the owner.
 | 3 | ~~Favourites for visitors: hide or localStorage?~~ **Decided 2026-10-08: per-visitor localStorage**; the admin's hearts keep writing `is_favorite`. (The finding above was partly stale: visitors already saw a read-only heart; the silent revert hit only signed-in non-admins) | Ph 33 ✅ |
 | 4 | E2E: a separate Supabase test project (allows admin-flow E2E; this org's two free slots are used, so it would go in another org) or read-only E2E against production? | Ph 42 |
 | 5 | ~~Recipe thumb size 600 vs 400 px~~ **Decided 2026-10-08: 500 px** (q85: avg 49.5 KB, 3.0 MB for all 62) | Ph 36 ✅ |
-| 6 | **Card thumbs are slightly soft on 2×/3× screens** (Phase 37): thumbs fit inside 500×500, so landscape photos are 500×333 and the square card crops 333×333. Options: (a) keep as is (3.0 MB for all 62); (b) bound the *short* side instead (`fit: outside`, e.g. 750×500 → 500×500 crop, roughly +60–80 % thumb bytes, est. ~5 MB); (c) square-cropped 480×480 thumbs (sharp, ≈ today's bytes, but the admin table's 3:2 tiles lose the sides). Re-upload of 62 thumbs at new paths + a flip of `thumb_path` | Ph 38 |
+| 6 | ~~**Card thumbs are slightly soft on 2×/3× screens**~~ **Decided 2026-10-08: (b), done in Phase 37** (750×500 `card` variant, 5.6 MB for all 62). Was: thumbs fit inside 500×500, so landscape photos are 500×333 and the square card crops 333×333. Options: (a) keep as is (3.0 MB for all 62); (b) bound the *short* side instead (`fit: outside`, e.g. 750×500 → 500×500 crop, roughly +60–80 % thumb bytes, est. ~5 MB); (c) square-cropped 480×480 thumbs (sharp, ≈ today's bytes, but the admin table's 3:2 tiles lose the sides). Re-upload of 62 thumbs at new paths + a flip of `thumb_path` | Ph 37 ✅ |

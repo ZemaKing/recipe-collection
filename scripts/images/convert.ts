@@ -22,8 +22,9 @@ export const sha256 = (data: Buffer | Uint8Array): string =>
 
 // Identifies a variant's output settings. A manifest entry made with other settings is redone.
 export function variantSettings(variant: Variant): string {
-  const { name, maxWidth, maxHeight = maxWidth, quality } = variant
-  return `${name}:${OUTPUT_EXT}:${maxWidth}x${maxHeight}:q${quality}`
+  const { name, maxWidth, maxHeight = maxWidth, quality, fit = 'inside' } = variant
+  // 'inside' adds nothing, so settings recorded before `fit` existed still match.
+  return `${name}:${OUTPUT_EXT}:${maxWidth}x${maxHeight}:q${quality}${fit === 'outside' ? ':outside' : ''}`
 }
 
 export async function readImageInfo(data: Buffer): Promise<ImageInfo> {
@@ -50,7 +51,7 @@ export async function convertVariant(input: Buffer, variant: Variant): Promise<C
     .resize({
       width: variant.maxWidth,
       height: variant.maxHeight ?? variant.maxWidth,
-      fit: 'inside',
+      fit: variant.fit ?? 'inside',
       withoutEnlargement: true,
     })
     .webp({ quality: variant.quality, effort: 6 })

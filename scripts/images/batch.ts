@@ -165,16 +165,21 @@ export async function runBatch(
       })
 
     try {
-      if (!force && planned.every(({ path, variant }) => isDone(manifest, path, source, variant))) {
-        // In a real run, also make sure the objects are still there with the recorded size.
-        const present =
-          !apply ||
-          (
-            await Promise.all(
-              planned.map(({ path }) => retry(`stat ${path}`, () => target.stat(path))),
-            )
-          ).every((stat, i) => stat?.size === manifest.objects[planned[i].path].bytes)
-        if (present) return { key: source.key, status: 'skipped', outputs: fromManifest() }
+      // A variant is done when the manifest has it with the same source and settings and, in a
+      // real run, Storage still has it at the recorded size. Done variants aren't redone (so adding
+      // a variant to a job uploads just that one) unless --force.
+      const done = new Set<string>()
+      if (!force) {
+        await Promise.all(
+          planned.map(async ({ path, variant }) => {
+            if (!isDone(manifest, path, source, variant)) return
+            const stat = apply ? await retry(`stat ${path}`, () => target.stat(path)) : null
+            if (!apply || stat?.size === manifest.objects[path].bytes) done.add(path)
+          }),
+        )
+      }
+      if (done.size === planned.length) {
+        return { key: source.key, status: 'skipped', outputs: fromManifest() }
       }
 
       const { data: original, downloaded } = await retry(`read ${source.key}`, () =>
@@ -184,6 +189,17 @@ export async function runBatch(
       const sourceSha256 = sha256(original)
       const outputs: OutputInfo[] = []
       for (const { path, variant } of planned) {
+        if (done.has(path)) {
+          const e = manifest.objects[path]
+          outputs.push({
+            path,
+            variant: variant.name,
+            bytes: e.bytes,
+            width: e.width,
+            height: e.height,
+          })
+          continue
+        }
         const out = await convertVariant(original, variant)
         if (apply) {
           await retry(`upload ${path}`, () =>

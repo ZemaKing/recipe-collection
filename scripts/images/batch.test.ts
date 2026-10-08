@@ -108,6 +108,25 @@ describe('convertVariant', () => {
   })
 })
 
+describe('fit: outside (recipes port)', () => {
+  it('bounds the short edge instead, so a square crop stays sharp', async () => {
+    const card = await convertVariant(png, {
+      name: 'card',
+      maxWidth: 400,
+      maxHeight: 400,
+      quality: 70,
+      fit: 'outside',
+    })
+    expect([card.width, card.height]).toEqual([533, 400]) // 1200×900 → short edge 400
+    expect(variantSettings({ name: 'card', maxWidth: 400, quality: 70, fit: 'outside' })).toBe(
+      'card:webp:400x400:q70:outside',
+    )
+    expect(variantSettings({ name: 'full', maxWidth: 1600, quality: 80 })).toBe(
+      'full:webp:1600x1600:q80',
+    )
+  })
+})
+
 describe('download', () => {
   it('fails on a non-2xx status, a non-image type and a truncated body', async () => {
     const notFound = fakeFetch(
@@ -306,6 +325,36 @@ describe('runBatch', () => {
     expect(summary.counts.failed).toBe(1)
     expect(summary.results[0].error).toContain('Storage reports 1')
     expect(manifest.objects).toEqual({})
+  })
+})
+
+describe('adding a variant to a job', () => {
+  it('uploads just the new variant; the done ones are neither redone nor re-uploaded', async () => {
+    const net = fakeFetch(() => image(png))
+    const storage = fakeStorage()
+    const manifest = emptyManifest('test', 'b')
+    const opts = { apply: true, fetchImpl: net.impl, sleep: noSleep }
+    await runBatch(job, [source('a')], storage.target, manifest, opts)
+    storage.uploads.length = 0
+
+    const extended = {
+      ...job,
+      variants: [
+        ...job.variants,
+        { name: 'card', maxWidth: 300, quality: 70, fit: 'outside' as const },
+      ],
+    }
+    const dry = await runBatch(extended, [source('a')], storage.target, manifest, {
+      ...opts,
+      apply: false,
+    })
+    expect(dry.byVariant.card.count).toBe(1)
+    expect(dry.byVariant.full.bytes).toBe(manifest.objects['items/a/0-full.webp'].bytes)
+
+    const summary = await runBatch(extended, [source('a')], storage.target, manifest, opts)
+    expect(summary.counts.uploaded).toBe(1)
+    expect(storage.uploads).toEqual(['items/a/0-card.webp'])
+    expect(manifest.objects['items/a/0-card.webp']).toMatchObject({ width: 400, height: 300 })
   })
 })
 

@@ -47,7 +47,7 @@ const TABLES: Table[] = [
     rpc: 'set_recipe_image_variants',
     manifest: recipeJob.manifest,
     job: recipeJob.name,
-    variants: { full: 'full', thumb: 'thumb' },
+    variants: { full: 'full', thumb: 'card' }, // the job's thumbnail variant (recipe-job.ts)
     async read(client) {
       const rows = await readAllRows<{
         id: string
@@ -112,7 +112,7 @@ async function checkServed(url: string, client: Client, table: Table, webp: bool
           if (!r.ok) throw Object.assign(new Error(`HTTP ${r.status}`), { status: r.status })
           return r
         },
-        { retries: 3 },
+        { retries: 5 }, // Storage answers 429 to bursts of HEADs
       )
       const type = response.headers.get('content-type') ?? ''
       if ((type === 'image/webp') !== webp) bad.push(`${path}: ${type}`)

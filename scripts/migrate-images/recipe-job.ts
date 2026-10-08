@@ -8,13 +8,23 @@ import { loadBackupIndex, rowsToSources } from './sources.ts'
 const job: ImageJob = {
   name: 'recipe photos',
   bucket: RECIPE_BUCKET,
-  // {recipe_id}/{uuid}.png → {recipe_id}/{uuid}.webp + {recipe_id}/{uuid}.thumb.webp
+  // {recipe_id}/{uuid}.png → {recipe_id}/{uuid}.webp + {recipe_id}/{uuid}.card.webp
   pathPattern: '{folder}/{name}.{ext}',
   variants: [
     // Originals are ≤ 1536 px wide, so full is a re-encode, not a resize.
     { name: 'full', maxWidth: 1600, quality: 85 },
-    // Cards are aspect-square at ≤ ~300 CSS px; 500 is the owner's pick (Open decision 5).
-    { name: 'thumb', maxWidth: 500, quality: 85, pathPattern: '{folder}/{name}.thumb.{ext}' },
+    // Cards crop the thumb to a square of ≤ ~230 CSS px, so its *short* edge is bounded at 500
+    // (3:2 → 750×500): sharp on 2× screens (Open decision 6, option b). It replaced the first
+    // thumb (fit inside 500×500, `{name}.thumb.webp`, Open decision 5); a new name because
+    // objects are cached for a year.
+    {
+      name: 'card',
+      maxWidth: 500,
+      maxHeight: 500,
+      fit: 'outside',
+      quality: 85,
+      pathPattern: '{folder}/{name}.card.{ext}',
+    },
   ],
   manifest: new URL('./recipe-manifest.json', import.meta.url),
   // Every new image gets a new path, so objects can be cached for a year.
