@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { invalidateTagsCache } from '@/hooks/useTags'
 import { supabase } from '@/lib/supabaseClient'
 
 export interface SaveTagInput {
@@ -21,7 +20,6 @@ export function useSaveTag() {
         ? await supabase.from('tags').update(fields).eq('id', id)
         : await supabase.from('tags').insert(fields)
       if (error) throw error
-      invalidateTagsCache()
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unknown error'
       setError(message)

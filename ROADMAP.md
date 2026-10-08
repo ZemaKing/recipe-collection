@@ -4,7 +4,7 @@ Follow-up to the build log in [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md). Its 
 
 The image pipeline reuses the one built for the diecast app (`../diecast-collection/scripts/images/` + `src/lib/image-resize.ts`). That code was written app-agnostic so it could be reused here (diecast ROADMAP Phase 21). Its README even uses "recipe photos" as the example job.
 
-**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08. Phase 35 done 2026-10-08. Phase 36 done 2026-10-08 (all images served as WebP). Phase 37 done 2026-10-08 (card thumbs re-done per Open decision 6). Phase 38 done 2026-10-08. Phase 39 done 2026-10-08 (owner shortened the wait): only WebP left, buckets 16.3 + 1.0 MB. ⚠ Org grace period ends 31 Oct 2026 (Storage 117 %): see Open decision 1.** Research done 2026-10-04 (findings below).
+**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08. Phase 35 done 2026-10-08. Phase 36 done 2026-10-08 (all images served as WebP). Phase 37 done 2026-10-08 (card thumbs re-done per Open decision 6). Phase 38 done 2026-10-08. Phase 39 done 2026-10-08 (owner shortened the wait): only WebP left, buckets 16.3 + 1.0 MB. Phase 40 done 2026-10-08 (mobile LCP gap accepted, Open decision 7). ⚠ Org grace period ends 31 Oct 2026 (Storage 117 %): see Open decision 1.** Research done 2026-10-04 (findings below).
 
 ---
 
@@ -94,7 +94,7 @@ Existing files:    scripts/images (sharp) ─► WebP at new paths ─► verify
 | 37 | Read Path: Thumbnails & Loading Priority | ✅ Done 2026-10-08 | Admin pages check when next signed in |
 | 38 | Upload Path: WebP in the Browser | ✅ Done 2026-10-08 | — |
 | 39 | Retire Originals | ✅ Done 2026-10-08 | Confirm the second backup copy is still intact |
-| 40 | Data Layer & Performance | ⬜ Not started | — |
+| 40 | Data Layer & Performance | ✅ Done 2026-10-08 (mobile LCP 2.9–4.3 s accepted) | — |
 | 41 | Deployment Hardening | ⬜ Not started | — |
 | 42 | Quality Gates (CI & E2E) | ⬜ Not started | Make CI a required check (GitHub setting) |
 | 43 | Docs, Backup & Production Verification | ⬜ Not started | Go/no-go |
@@ -276,18 +276,21 @@ Only WebP remains in Storage. ✅
 Measure, then fix what the numbers show. Don't add machinery on a hunch.
 
 ### Tasks
-- [ ] Lab Web Vitals for home, `/recepti`, a recipe, a category, on mobile (slow 4G, 4× CPU) and desktop. Option: port diecast's `scripts/perf/vitals.mjs` + `scripts/lib/headless.mjs` (local Edge/Chrome, no new dependency) → `docs/performance.md` with a budget
-- [ ] Duplicate fetching: the same recipe list is fetched separately by home, `/recepti`, favourites and recently added, with no cache between pages. Add TanStack Query only if the measurements show it matters (justify the dependency); otherwise a small shared cache in `recipeQueries`
-- [ ] Payload: list selects only card columns + the primary image (not every image), checked against `SEARCHABLE_RECIPE_SELECT`
-- [ ] Bundle: check what's in `Combination` (68 kB gzip), `localizedField` (55 kB, i18next + both locale files?) and `CategorySelect` (`react-select`, 30 kB). Lazy-load the inactive locale; keep admin-only code (`react-select`, JSON editor, AI prompts) out of public routes
-- [ ] `index.html`: `preconnect` to the Supabase URL
-- [ ] Phase 32 (FTS) stays deferred. Record the trigger here: revisit when recipes > ~1,000 or the `/recepti` payload > ~500 kB gzip
+- [x] Lab Web Vitals: ported diecast's `scripts/perf/vitals.mjs` + `scripts/lib/headless.mjs` (`npm run perf:vitals`, local Edge, no dependency; counts Supabase REST GETs/preflights too) → **`docs/performance.md`** with the budget, before/after and decisions. Routes: `/sr`, `/sr/recepti`, a recipe, a category; mobile (Slow 4G, 4× CPU) + desktop
+- [x] What the numbers showed: **images, not data.** Native lazy loading fetched 13–15 card photos at once on a phone (36 on desktop `/recepti`), sharing bandwidth with the LCP photo. Fix: `useNearViewport` (on-screen cards only before the first scroll, then 600 px ahead of `<main>`), only the first 2 cards eager. The hero gets a `srcset` with the existing `card` variant (`getRecipeImageSrcSet`)
+- [x] Duplicate fetching: concurrent mounts fetched `categories` twice on `/recepti`; going back re-showed skeletons. **No TanStack Query** (calls are 1–17 kB, parallel): `src/lib/sharedQuery.ts` + `useSharedQuery` (one request per concurrent mount, stale-while-revalidate) for categories, subcategories, tags and the full recipe list; replaces `useTags`' own cache and its invalidation
+- [x] Payload: card columns are all used; list queries embed only the primary image (`withPrimaryImageOnly`; one recipe already has 2 photos). `/recepti` recipes GET: 17 kB on the wire for 62
+- [x] Bundle: `Combination` = shared vendor (i18next, react-i18next, react-router, tailwind-merge), `localizedField` = supabase-js (not the locales), `CategorySelect` (react-select) and zod already admin-only. Done: **realtime-js stubbed** (diecast pattern + contract test), the 28 kB inline mom-icon SVG moved to an asset. Initial JS 245 → 214 kB gzip. Inactive locale (6 kB gzip) stays bundled: lazy-loading it costs an `/en` round trip
+- [x] Fonts (found while measuring): Google Fonts (130 kB + render-blocking cross-origin CSS) → **self-hosted Inter**, `latin-ext` subset to the 10 Serbian letters (83 → 3.6 kB)
+- [x] `index.html`: `preconnect` to the Supabase URL (both pools)
+- [x] Phase 32 (FTS) stays deferred. **Trigger: recipes > ~1,000 or the `/recepti` recipes GET > ~500 kB gzip** (today 62 / 17 kB)
 
 ### Verification
-- [ ] Before/after numbers recorded; the budget is met or the gaps are listed
+- [x] Before/after recorded (`docs/performance.md`). Mobile LCP: home 5.6 → 4.3 s, `/recepti` 6.9 → 3.7 s, recipe 3.5 → 2.9 s, category 9.2 → 4.2 s; desktop ≤ 2.1 s (`/recepti` 3.2 → 1.9 s). FCP, CLS, TBT and JS budgets met. **Gap: mobile LCP > 2.5 s**, accepted by the owner (Open decision 7 → b)
+- [x] Browser: sr + en, desktop + mobile, dark + light: fonts incl. Serbian letters, mom icon, cards load on screen and ahead after scrolling (headless check), hero picks the card at DPR 1.5, no console errors; back to `/recepti` shows the list at once
 
 ### Definition of Done
-Public pages meet the recorded budget on mobile.
+Public pages meet the recorded budget on mobile. ✅ All but LCP, whose gap the owner accepted (Open decision 7).
 
 ---
 
@@ -352,7 +355,7 @@ Docs match the app; production verified by the owner.
 
 ## Backlog (not scheduled)
 
-- **Phase 32 — Postgres full-text search** (in `DEVELOPMENT_PLAN.md`): only when the trigger in Phase 40 fires.
+- **Phase 32 — Postgres full-text search** (in `DEVELOPMENT_PLAN.md`): only when the trigger in Phase 40 fires (recipes > ~1,000 or the `/recepti` recipes GET > ~500 kB gzip).
 - Recipe galleries with several photos per recipe (the schema already supports it; today every recipe has 1).
 - Shared image-pipeline package for diecast/games/recipes, only if the three copies start to diverge.
 
@@ -366,3 +369,4 @@ Docs match the app; production verified by the owner.
 | 4 | E2E: a separate Supabase test project (allows admin-flow E2E; this org's two free slots are used, so it would go in another org) or read-only E2E against production? | Ph 42 |
 | 5 | ~~Recipe thumb size 600 vs 400 px~~ **Decided 2026-10-08: 500 px** (q85: avg 49.5 KB, 3.0 MB for all 62) | Ph 36 ✅ |
 | 6 | ~~**Card thumbs are slightly soft on 2×/3× screens**~~ **Decided 2026-10-08: (b), done in Phase 37** (750×500 `card` variant, 5.6 MB for all 62). Was: thumbs fit inside 500×500, so landscape photos are 500×333 and the square card crops 333×333. Options: (a) keep as is (3.0 MB for all 62); (b) bound the *short* side instead (`fit: outside`, e.g. 750×500 → 500×500 crop, roughly +60–80 % thumb bytes, est. ~5 MB); (c) square-cropped 480×480 thumbs (sharp, ≈ today's bytes, but the admin table's 3:2 tiles lose the sides). Re-upload of 62 thumbs at new paths + a flip of `thumb_path` | Ph 37 ✅ |
+| 7 | ~~**Mobile LCP is 2.9–4.3 s on Slow 4G (budget 2.5 s; desktop ≤ 2.1 s).** It's bytes: JS 214 kB + font 47 kB + 4–6 on-screen card photos (~96 kB each). Options: (a) a phone card variant (510×340, measured avg 53 kB vs 96 kB) in a card `srcset`: est. −0.9 s, costs 62 new objects (~3.3 MB), a column/path rule, upload path + migration job; (b) accept it, as the diecast app did. See `docs/performance.md`~~ **Decided 2026-10-08: (b), accepted**; (a) stays an option if mobile matters more later | Ph 40 ✅ |

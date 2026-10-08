@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import type { QuickFilter } from '@/components/recipes/QuickFilterChips'
 import { favoriteIdsKey, idsFromKey } from '@/lib/localFavorites'
-import { mapRecipeSummaryRow, RECIPE_SUMMARY_SELECT, type RawImageRow } from '@/lib/recipeQueries'
+import { mapRecipeSummaryRow, RECIPE_SUMMARY_SELECT, withPrimaryImageOnly, type RawImageRow } from '@/lib/recipeQueries'
 import type { RecipeSummary } from '@/types/recipe'
 
 export type { RecipeSummary as RecentRecipe } from '@/types/recipe'
@@ -27,7 +27,7 @@ export function useRecentRecipes(filter: QuickFilter, localIds: readonly string[
 
     async function load() {
       setIsLoading(true)
-      let query = supabase.from('recipes').select(RECIPE_SUMMARY_SELECT).limit(RECENT_LIMIT)
+      let query = withPrimaryImageOnly(supabase.from('recipes').select(RECIPE_SUMMARY_SELECT)).limit(RECENT_LIMIT)
 
       query =
         filter === 'topRated'

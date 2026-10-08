@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useSharedQuery } from '@/hooks/useSharedQuery'
+import { createSharedQuery } from '@/lib/sharedQuery'
 import { PINNED_TAG_SLUG } from '@/lib/tagIcons'
 import { supabase } from '@/lib/supabaseClient'
 
@@ -9,19 +10,15 @@ export interface Tag {
   name_sr: string | null
 }
 
-// A simple module-level cache dedupes the fetch when multiple consumers
-// mount at once (e.g. the sidebar's quick filters and the browse page both
-// call useTags on the same navigation). Admin tag edits call
-// invalidateTagsCache() so the next mount picks up fresh data.
-let cachedTags: Tag[] | null = null
-let pendingFetch: Promise<Tag[]> | null = null
-
-export function invalidateTagsCache() {
-  cachedTags = null
-}
-
-async function fetchTags(): Promise<Tag[]> {
-  const { data } = await supabase.from('tags').select('id, slug, name_en, name_sr').order('name_en')
+// Shared: the sidebar's quick filters and the browse page ask on the same
+// navigation. Revalidated on every mount, so admin tag edits show up without
+// invalidation.
+const tagsQuery = createSharedQuery(async (): Promise<Tag[]> => {
+  const { data, error } = await supabase
+    .from('tags')
+    .select('id, slug, name_en, name_sr')
+    .order('name_en')
+  if (error) throw new Error(error.message)
   const tags = data ?? []
   // Pin one tag to the front regardless of alphabetical order; the rest
   // keep the query's alphabetical order (stable sort).
@@ -31,30 +28,11 @@ async function fetchTags(): Promise<Tag[]> {
     tags.unshift(pinned)
   }
   return tags
-}
+})
+
+const NO_TAGS: Tag[] = []
 
 export function useTags() {
-  const [tags, setTags] = useState<Tag[]>(cachedTags ?? [])
-  const [isLoading, setIsLoading] = useState(cachedTags === null)
-
-  useEffect(() => {
-    if (cachedTags) return
-
-    let cancelled = false
-    pendingFetch ??= fetchTags()
-    void pendingFetch.then((data) => {
-      cachedTags = data
-      pendingFetch = null
-      if (!cancelled) {
-        setTags(data)
-        setIsLoading(false)
-      }
-    })
-
-    return () => {
-      cancelled = true
-    }
-  }, [])
-
+  const { data: tags, isLoading } = useSharedQuery(tagsQuery, NO_TAGS)
   return { tags, isLoading }
 }

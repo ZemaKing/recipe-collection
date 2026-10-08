@@ -1,4 +1,4 @@
-import { resizeImageVariants, type ResizeVariant } from '@/lib/image-resize'
+import { fitWithin, resizeImageVariants, type ResizeVariant } from '@/lib/image-resize'
 import { supabase } from '@/lib/supabaseClient'
 import type { RecipeImageRef } from '@/types/recipe'
 
@@ -67,6 +67,23 @@ export function getRecipeImageUrls(image: Pick<RecipeImageRef, 'storage_path' | 
 } {
   const full = getRecipeImageUrl(image.storage_path)
   return { full, thumb: image.thumb_path ? getRecipeImageUrl(image.thumb_path) : full }
+}
+
+// srcset for the detail hero: the card variant is sharp enough where the hero
+// is narrow (phones, and the 380 px desktop column), so those don't download
+// the full image. Its width follows from the stored full-image size by the
+// same rule that made it (RECIPE_IMAGE_VARIANTS card). Undefined when the
+// card isn't a smaller copy, or the size isn't known.
+export function getRecipeImageSrcSet(
+  image: Pick<RecipeImageRef, 'storage_path' | 'thumb_path' | 'width' | 'height'>,
+): string | undefined {
+  const { width, height } = image
+  if (!image.thumb_path || !width || !height) return undefined
+  const card = RECIPE_IMAGE_VARIANTS[1]
+  const cardWidth = fitWithin(width, height, card.maxWidth, card.maxHeight, card.fit).width
+  if (cardWidth >= width) return undefined
+  const urls = getRecipeImageUrls(image)
+  return `${urls.thumb} ${cardWidth}w, ${urls.full} ${width}w`
 }
 
 export function getIngredientImageUrl(storagePath: string): string {

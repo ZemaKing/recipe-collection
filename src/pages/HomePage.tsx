@@ -55,8 +55,8 @@ function HomePage() {
                 <RecipeCard
                   key={recipe.id}
                   recipe={favorites.apply(recipe)}
-                  // The widest layout shows 4 per row.
-                  eager={index < 4}
+                  // A phone's first row; the rest load once on screen (useNearViewport).
+                  eager={index < 2}
                   onToggleFavorite={() => favorites.toggle(recipe.id, () => toggleFavorite(recipe.id))}
                 />
               ))}

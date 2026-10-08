@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
-import { mapRecipeSummaryRow, RECIPE_SUMMARY_SELECT, type RawImageRow } from '@/lib/recipeQueries'
+import { mapRecipeSummaryRow, RECIPE_SUMMARY_SELECT, withPrimaryImageOnly, type RawImageRow } from '@/lib/recipeQueries'
 import type { RecipeSummary } from '@/types/recipe'
 
 interface CategoryInfo {
@@ -72,9 +72,7 @@ export function useRecipesByCategory(slug: string, subcategorySlug?: string) {
         subcategoryId = subcategoryRow.id
       }
 
-      let query = supabase
-        .from('recipes')
-        .select(RECIPE_SUMMARY_SELECT)
+      let query = withPrimaryImageOnly(supabase.from('recipes').select(RECIPE_SUMMARY_SELECT))
         .eq('category_id', categoryRow.id)
         .order('created_at', { ascending: false })
       if (subcategoryId) {

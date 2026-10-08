@@ -25,6 +25,7 @@ npm run images:migrate # dry run: originals (from backups/images/) → WebP q85 
 npm run images:check   # uploaded WebP vs the manifests (`-- --full` downloads + sha256)
 npm run images:flip    # dry run: point rows at the uploaded WebP; `-- --apply`, `-- --rollback --apply` (one transaction per table)
 npm run images:prune-originals # dry run: delete pre-WebP originals + superseded thumbs (checks backup + served WebP); `-- --apply`, `-- --restore` (docs/backup.md)
+npm run perf:vitals    # lab Web Vitals against `npm run preview` (:4173), headless Edge → docs/performance.md
 ```
 
 The `.ts` scripts run directly on Node 24 (type stripping, so relative imports need the `.ts` extension); `tsconfig.scripts.json` puts them under `tsc -b`. They use `SUPABASE_SERVICE_ROLE_KEY` if set, otherwise the `RLS_ADMIN_*` login.
@@ -52,6 +53,8 @@ Favourites: the admin's hearts write `recipes.is_favorite`; every other viewer's
 Supabase schema: `recipes`, `ingredients`, `steps`, `categories`, `tags` (see `supabase/migrations/`, applied in order by filename timestamp). `src/types/recipe.ts` defines the shapes consumed by the UI (e.g. `RecipeSummary`, `SearchableRecipe`) — note the `_en`/`_sr` suffix convention for bilingual fields throughout the schema and types. Recipe images live in Supabase Storage; `src/lib/storage.ts` and `src/hooks/useRecipeImages.ts` handle upload/path resolution.
 
 Data fetching is done through small dedicated hooks in `src/hooks/` (`useAllRecipes`, `useRecipeBySlug`, `useRecipesByCategory`, `useAdminRecipes`, etc.) built on top of query helpers in `src/lib/recipeQueries.ts`, rather than a generic fetching abstraction — follow that pattern (one hook per query shape) when adding new data needs.
+
+Unparameterised lookups shared across pages (categories, subcategories, tags, the full recipe list) go through `createSharedQuery` (`src/lib/sharedQuery.ts`) + `useSharedQuery`: one request for consumers that mount together, cached result shown at once and revalidated on mount. Card photos load via `useNearViewport` (on screen only until the first scroll); see `docs/performance.md` before changing image loading.
 
 ### Admin recipe form
 

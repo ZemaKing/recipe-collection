@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useSharedQuery } from '@/hooks/useSharedQuery'
 import { compareCategoryOrder } from '@/lib/categoryOrder'
+import { createSharedQuery } from '@/lib/sharedQuery'
 import { supabase } from '@/lib/supabaseClient'
 
 export interface CategoryWithCount {
@@ -10,46 +11,31 @@ export interface CategoryWithCount {
   recipeCount: number
 }
 
+// Shared: the sidebar and the browse page/recipe form ask on the same navigation.
+const categoriesQuery = createSharedQuery(async (): Promise<CategoryWithCount[]> => {
+  const { data, error } = await supabase
+    .from('categories')
+    .select('id, slug, name_en, name_sr, recipes(count)')
+    .order('name_en')
+  if (error) throw new Error(error.message)
+
+  const mapped = (data ?? []).map((row) => {
+    const recipes = row.recipes as unknown as { count: number }[]
+    return {
+      id: row.id,
+      slug: row.slug,
+      name_en: row.name_en,
+      name_sr: row.name_sr,
+      recipeCount: recipes?.[0]?.count ?? 0,
+    }
+  })
+  mapped.sort((a, b) => compareCategoryOrder(a.slug, b.slug))
+  return mapped
+})
+
+const NO_CATEGORIES: CategoryWithCount[] = []
+
 export function useCategories() {
-  const [categories, setCategories] = useState<CategoryWithCount[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    let cancelled = false
-
-    async function load() {
-      setIsLoading(true)
-      const { data, error } = await supabase
-        .from('categories')
-        .select('id, slug, name_en, name_sr, recipes(count)')
-        .order('name_en')
-
-      if (cancelled) return
-      if (error) {
-        setError(error.message)
-      } else {
-        const mapped = (data ?? []).map((row) => {
-          const recipes = row.recipes as unknown as { count: number }[]
-          return {
-            id: row.id,
-            slug: row.slug,
-            name_en: row.name_en,
-            name_sr: row.name_sr,
-            recipeCount: recipes?.[0]?.count ?? 0,
-          }
-        })
-        mapped.sort((a, b) => compareCategoryOrder(a.slug, b.slug))
-        setCategories(mapped)
-      }
-      setIsLoading(false)
-    }
-
-    void load()
-    return () => {
-      cancelled = true
-    }
-  }, [])
-
+  const { data: categories, isLoading, error } = useSharedQuery(categoriesQuery, NO_CATEGORIES)
   return { categories, isLoading, error }
 }

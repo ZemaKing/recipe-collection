@@ -223,8 +223,8 @@ function AllRecipesPage() {
             <RecipeCard
               key={recipe.id}
               recipe={recipe}
-              // The widest layout shows 5 per row.
-              eager={index < 5}
+              // A phone's first row; the rest load once on screen (useNearViewport).
+              eager={index < 2}
               onToggleFavorite={() => favorites.toggle(recipe.id, () => toggleFavorite(recipe.id))}
             />
           ))}

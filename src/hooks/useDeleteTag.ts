@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { invalidateTagsCache } from '@/hooks/useTags'
 import { supabase } from '@/lib/supabaseClient'
 
 export function useDeleteTag() {
@@ -12,7 +11,6 @@ export function useDeleteTag() {
     try {
       const { error } = await supabase.from('tags').delete().eq('id', tagId)
       if (error) throw error
-      invalidateTagsCache()
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unknown error'
       setError(message)

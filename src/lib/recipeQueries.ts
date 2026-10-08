@@ -10,6 +10,21 @@ export const RECIPE_SUMMARY_SELECT = `id, slug, name_en, name_sr, prep_time_minu
 // matching), tag slugs (quick-filter chips), and created_at (recent sort).
 export const SEARCHABLE_RECIPE_SELECT = `${RECIPE_SUMMARY_SELECT}, created_at, ingredients:recipe_ingredients(name_en, name_sr), recipe_tags(tags(slug))`
 
+// Narrows the embedded `images` of a list query to the one a card shows: the
+// primary image, else the first by order_index (what pickPrimaryImage picks).
+// Cards never need the rest of a recipe's gallery.
+interface ImageEmbeddingQuery<Q> {
+  order(column: string, options: { ascending: boolean; referencedTable: string }): Q
+  limit(count: number, options: { referencedTable: string }): Q
+}
+
+export function withPrimaryImageOnly<Q extends ImageEmbeddingQuery<Q>>(query: Q): Q {
+  return query
+    .order('is_primary', { ascending: false, referencedTable: 'images' })
+    .order('order_index', { ascending: true, referencedTable: 'images' })
+    .limit(1, { referencedTable: 'images' })
+}
+
 export interface RawImageRow {
   storage_path: string
   thumb_path: string | null

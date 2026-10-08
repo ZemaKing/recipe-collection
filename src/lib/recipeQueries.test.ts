@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { mapRecipeSummaryRow, pickPrimaryImage, type RawImageRow } from './recipeQueries'
+import { PostgrestClient } from '@supabase/postgrest-js'
+import {
+  mapRecipeSummaryRow,
+  pickPrimaryImage,
+  RECIPE_SUMMARY_SELECT,
+  withPrimaryImageOnly,
+  type RawImageRow,
+} from './recipeQueries'
 
 const image = (overrides: Partial<RawImageRow>): RawImageRow => ({
   storage_path: 'r/a.png',
@@ -69,5 +76,19 @@ describe('mapRecipeSummaryRow', () => {
     const mapped = mapRecipeSummaryRow(row)
     expect(mapped).not.toHaveProperty('images')
     expect(mapped.image?.thumb_path).toBe('r/a.thumb.webp')
+  })
+})
+
+describe('withPrimaryImageOnly', () => {
+  it('orders the embedded images primary-first, then by order_index, and keeps one', () => {
+    const query = withPrimaryImageOnly(
+      new PostgrestClient('http://localhost/rest/v1').from('recipes').select(RECIPE_SUMMARY_SELECT),
+    ).order('created_at', { ascending: false })
+    const params = (query as unknown as { url: URL }).url.searchParams
+
+    expect(params.get('images.order')).toBe('is_primary.desc,order_index.asc')
+    expect(params.get('images.limit')).toBe('1')
+    // The main table's own order is untouched.
+    expect(params.get('order')).toBe('created_at.desc')
   })
 })

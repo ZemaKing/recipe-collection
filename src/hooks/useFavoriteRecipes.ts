@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { favoriteIdsKey, idsFromKey } from '@/lib/localFavorites'
-import { mapRecipeSummaryRow, RECIPE_SUMMARY_SELECT, type RawImageRow } from '@/lib/recipeQueries'
+import { mapRecipeSummaryRow, RECIPE_SUMMARY_SELECT, withPrimaryImageOnly, type RawImageRow } from '@/lib/recipeQueries'
 import { supabase } from '@/lib/supabaseClient'
 import type { RecipeSummary } from '@/types/recipe'
 
@@ -17,7 +17,9 @@ export function useFavoriteRecipes(localIds: readonly string[] | null) {
 
     async function load() {
       setIsLoading(true)
-      let query = supabase.from('recipes').select(RECIPE_SUMMARY_SELECT).order('created_at', { ascending: false })
+      let query = withPrimaryImageOnly(supabase.from('recipes').select(RECIPE_SUMMARY_SELECT)).order('created_at', {
+        ascending: false,
+      })
       if (localIdsKey === null) {
         query = query.eq('is_favorite', true)
       } else {

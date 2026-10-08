@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { ImageOff } from 'lucide-react'
-import { getRecipeImageUrls } from '@/lib/storage'
+import { useNearViewport } from '@/hooks/useNearViewport'
+import { getRecipeImageSrcSet, getRecipeImageUrls } from '@/lib/storage'
 import { cn } from '@/lib/utils'
 import type { RecipeImageRef } from '@/types/recipe'
 
@@ -10,11 +11,15 @@ interface RecipeImageProps {
   className?: string
   // Lists show the small thumbnail; only the detail hero needs the full image.
   variant?: 'thumb' | 'full'
-  // Grid thumbnails should lazy-load; an above-the-fold hero (e.g. the
-  // detail page gallery) or the first row of a grid should load eagerly so
-  // it doesn't delay LCP.
+  // Grid thumbnails should lazy-load (requested only once the card is on
+  // screen, or within ~600 px of it after the first scroll; see
+  // useNearViewport); an above-the-fold hero (e.g. the detail page gallery)
+  // or the first row of a grid should load eagerly so it doesn't delay LCP.
   loading?: 'lazy' | 'eager'
   fetchPriority?: 'high' | 'low' | 'auto'
+  // With variant 'full': the rendered width, so a narrow hero can pick the
+  // smaller card variant instead (getRecipeImageSrcSet).
+  sizes?: string
 }
 
 // Note: if this is reused for a recipe that can change without the component
@@ -28,8 +33,11 @@ function RecipeImage({
   variant = 'thumb',
   loading = 'lazy',
   fetchPriority,
+  sizes,
 }: RecipeImageProps) {
   const [status, setStatus] = useState<'loading' | 'loaded' | 'error'>(image ? 'loading' : 'error')
+  const containerRef = useRef<HTMLDivElement>(null)
+  const isNear = useNearViewport(containerRef, loading === 'lazy')
 
   if (!image || status === 'error') {
     return (
@@ -45,24 +53,31 @@ function RecipeImage({
   }
 
   return (
-    <div className={cn('relative overflow-hidden bg-surface-elevated', className)}>
+    <div
+      ref={containerRef}
+      className={cn('relative overflow-hidden bg-surface-elevated', className)}
+    >
       {status === 'loading' && <div className="absolute inset-0 animate-pulse bg-surface-hover" />}
-      <img
-        src={getRecipeImageUrls(image)[variant]}
-        alt={alt}
-        // Intrinsic size of the full image; the thumb has the same aspect ratio.
-        width={image.width ?? undefined}
-        height={image.height ?? undefined}
-        loading={loading}
-        fetchPriority={fetchPriority}
-        decoding="async"
-        onLoad={() => setStatus('loaded')}
-        onError={() => setStatus('error')}
-        className={cn(
-          'size-full object-cover transition-opacity duration-200',
-          status === 'loading' ? 'opacity-0' : 'opacity-100',
-        )}
-      />
+      {isNear && (
+        <img
+          src={getRecipeImageUrls(image)[variant]}
+          srcSet={variant === 'full' && sizes ? getRecipeImageSrcSet(image) : undefined}
+          sizes={variant === 'full' ? sizes : undefined}
+          alt={alt}
+          // Intrinsic size of the full image; the thumb has the same aspect ratio.
+          width={image.width ?? undefined}
+          height={image.height ?? undefined}
+          loading={loading}
+          fetchPriority={fetchPriority}
+          decoding="async"
+          onLoad={() => setStatus('loaded')}
+          onError={() => setStatus('error')}
+          className={cn(
+            'size-full object-cover transition-opacity duration-200',
+            status === 'loading' ? 'opacity-0' : 'opacity-100',
+          )}
+        />
+      )}
     </div>
   )
 }

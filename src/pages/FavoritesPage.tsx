@@ -30,10 +30,12 @@ function FavoritesPage() {
 
       {recipes.length > 0 && (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {recipes.map((recipe) => (
+          {recipes.map((recipe, index) => (
             <RecipeCard
               key={recipe.id}
               recipe={recipe}
+              // A phone's first row; the rest load once on screen (useNearViewport).
+              eager={index < 2}
               onToggleFavorite={() => favorites.toggle(recipe.id, () => toggleFavorite(recipe.id))}
             />
           ))}

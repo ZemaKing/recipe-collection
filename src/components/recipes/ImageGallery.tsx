@@ -18,6 +18,8 @@ function ImageGallery({ image, alt }: ImageGalleryProps) {
       variant="full"
       loading="eager"
       fetchPriority="high"
+      // RecipeDetailHero: a 380 px column from lg up, full width below.
+      sizes="(min-width: 1024px) 380px, 100vw"
     />
   )
 }

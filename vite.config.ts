@@ -10,6 +10,9 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(import.meta.dirname, './src'),
+      // The app never opens a Realtime channel (see src/lib/realtime-stub.ts, and its test
+      // guarding the stub against supabase-js upgrades).
+      '@supabase/realtime-js': path.resolve(import.meta.dirname, './src/lib/realtime-stub.ts'),
     },
   },
   test: {
