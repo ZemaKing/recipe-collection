@@ -51,10 +51,12 @@ function HomePage() {
 
           {visibleRecipes.length > 0 && (
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-              {visibleRecipes.map((recipe) => (
+              {visibleRecipes.map((recipe, index) => (
                 <RecipeCard
                   key={recipe.id}
                   recipe={favorites.apply(recipe)}
+                  // The widest layout shows 4 per row.
+                  eager={index < 4}
                   onToggleFavorite={() => favorites.toggle(recipe.id, () => toggleFavorite(recipe.id))}
                 />
               ))}

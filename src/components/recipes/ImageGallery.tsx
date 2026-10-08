@@ -11,7 +11,14 @@ interface ImageGalleryProps {
 // until that's actually needed.
 function ImageGallery({ image, alt }: ImageGalleryProps) {
   return (
-    <RecipeImage image={image} alt={alt} className="aspect-video w-full rounded-card" loading="eager" />
+    <RecipeImage
+      image={image}
+      alt={alt}
+      className="aspect-video w-full rounded-card"
+      variant="full"
+      loading="eager"
+      fetchPriority="high"
+    />
   )
 }
 

@@ -153,6 +153,8 @@ function AdminIngredientsPage() {
                         <Link to={editHref}>
                           <IngredientImage
                             storagePath={ingredient.image_storage_path}
+                            width={ingredient.image_width}
+                            height={ingredient.image_height}
                             alt={name}
                             className="aspect-[3/2] w-15 shrink-0 rounded-control"
                           />
@@ -234,6 +236,8 @@ function AdminIngredientsPage() {
                   <Link to={editHref}>
                     <IngredientImage
                       storagePath={ingredient.image_storage_path}
+                      width={ingredient.image_width}
+                      height={ingredient.image_height}
                       alt={name}
                       className="aspect-[3/2] w-full"
                     />

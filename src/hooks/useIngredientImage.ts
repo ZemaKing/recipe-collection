@@ -67,7 +67,11 @@ export function useIngredientImage(ingredientId: string | null) {
     const previousPath = imageRef.current.storagePath
     const storagePath = await uploadIngredientImage(ingredientId, file)
 
-    const { error } = await supabase.from('ingredients').update({ image_storage_path: storagePath }).eq('id', ingredientId)
+    // The stored dimensions belonged to the previous file.
+    const { error } = await supabase
+      .from('ingredients')
+      .update({ image_storage_path: storagePath, image_width: null, image_height: null })
+      .eq('id', ingredientId)
     if (error) {
       await deleteIngredientImageFile(storagePath).catch(() => undefined)
       throw error
@@ -87,7 +91,13 @@ export function useIngredientImage(ingredientId: string | null) {
 
     const { error } = await supabase
       .from('ingredients')
-      .update({ image_storage_path: null, image_alt_en: null, image_alt_sr: null })
+      .update({
+        image_storage_path: null,
+        image_width: null,
+        image_height: null,
+        image_alt_en: null,
+        image_alt_sr: null,
+      })
       .eq('id', ingredientId)
     if (error) throw error
 

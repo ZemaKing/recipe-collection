@@ -5,18 +5,28 @@ import { cn } from '@/lib/utils'
 
 interface IngredientImageProps {
   storagePath: string | null
+  // Stored dimensions (Phase 35), when known.
+  width?: number | null
+  height?: number | null
   alt: string
   className?: string
 }
 
 // Same loading/error handling as RecipeImage, adapted for the single
 // image_storage_path column on ingredients instead of a recipe_images ref.
-function IngredientImage({ storagePath, alt, className }: IngredientImageProps) {
-  const [status, setStatus] = useState<'loading' | 'loaded' | 'error'>(storagePath ? 'loading' : 'error')
+function IngredientImage({ storagePath, width, height, alt, className }: IngredientImageProps) {
+  const [status, setStatus] = useState<'loading' | 'loaded' | 'error'>(
+    storagePath ? 'loading' : 'error',
+  )
 
   if (!storagePath || status === 'error') {
     return (
-      <div className={cn('flex items-center justify-center bg-surface-elevated text-muted-foreground', className)}>
+      <div
+        className={cn(
+          'flex items-center justify-center bg-surface-elevated text-muted-foreground',
+          className,
+        )}
+      >
         <ImageOff className="size-5" aria-label={alt} />
       </div>
     )
@@ -28,6 +38,8 @@ function IngredientImage({ storagePath, alt, className }: IngredientImageProps) 
       <img
         src={getIngredientImageUrl(storagePath)}
         alt={alt}
+        width={width ?? undefined}
+        height={height ?? undefined}
         loading="lazy"
         decoding="async"
         onLoad={() => setStatus('loaded')}

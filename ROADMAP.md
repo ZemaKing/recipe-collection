@@ -4,7 +4,7 @@ Follow-up to the build log in [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md). Its 
 
 The image pipeline reuses the one built for the diecast app (`../diecast-collection/scripts/images/` + `src/lib/image-resize.ts`). That code was written app-agnostic so it could be reused here (diecast ROADMAP Phase 21). Its README even uses "recipe photos" as the example job.
 
-**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08. Phase 35 done 2026-10-08. Phase 36 done 2026-10-08 (all images served as WebP). ⚠ Org grace period ends 31 Oct 2026 (Storage 117 %): see Open decision 1.** Research done 2026-10-04 (findings below).
+**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08. Phase 35 done 2026-10-08. Phase 36 done 2026-10-08 (all images served as WebP). Phase 37 code done 2026-10-08 (thumb sharpness: Open decision 6). ⚠ Org grace period ends 31 Oct 2026 (Storage 117 %): see Open decision 1.** Research done 2026-10-04 (findings below).
 
 ---
 
@@ -91,7 +91,7 @@ Existing files:    scripts/images (sharp) ─► WebP at new paths ─► verify
 | 34 | Image Audit & Local Backup | ✅ Done 2026-10-08 | — |
 | 35 | Image Pipeline Port & Schema | ✅ Done 2026-10-08 | — |
 | 36 | WebP Migration of Existing Images | ✅ Done 2026-10-08 | Admin pages check when next signed in |
-| 37 | Read Path: Thumbnails & Loading Priority | ⬜ Not started | — |
+| 37 | Read Path: Thumbnails & Loading Priority | 🟡 Code done 2026-10-08 | Open decision 6 (thumb crop sharpness) |
 | 38 | Upload Path: WebP in the Browser | ⬜ Not started | Upload a test photo by hand |
 | 39 | Retire Originals | ⬜ Not started | **Explicit approval to delete ~84 MB of originals** |
 | 40 | Data Layer & Performance | ⬜ Not started | — |
@@ -206,17 +206,20 @@ All images served as WebP; originals untouched in Storage and backed up.
 Cards load thumbnails; the detail hero loads the full image first.
 
 ### Tasks
-- [ ] `storage.ts`: `getRecipeImageUrls(image) → { full, thumb }` (`thumb_path ?? storage_path`), unit-tested
-- [ ] `RecipeImage` gets `variant` (default `thumb`): **thumb** for `RecipeCard` (every grid), `AdminRecipesPage` table + cards, `ImageManager` tiles; **full** for `ImageGallery` / `RecipeDetailHero`
-- [ ] `width`/`height` on `<img>` when known; the detail hero keeps `loading="eager"` + `fetchpriority="high"`; the first row of cards on home and `/recepti` loads eager, the rest lazy
-- [ ] `IngredientImage` uses the stored dimensions
+- [x] `storage.ts`: `getRecipeImageUrls(image) → { full, thumb }` (`thumb_path ?? storage_path`), unit-tested
+- [x] `RecipeImage` gets `variant` (default `thumb`) + `fetchPriority`: **thumb** for `RecipeCard` (every grid), `AdminRecipesPage` table + cards, `ImageManager` tiles (`useRecipeImages` now selects `thumb_path`); **full** for `ImageGallery` / `RecipeDetailHero`
+- [x] `width`/`height` on `<img>` when known (the full image's; the thumb has the same aspect ratio); the detail hero keeps `loading="eager"` + gets `fetchpriority="high"`; the first row of cards loads eager (home: 4, `/recepti`: 5, the widest layouts), the rest lazy
+- [x] `IngredientImage` uses the stored dimensions (`image_width`/`image_height`)
+- [x] Found on the way: replacing a photo in the admin only rewrote `storage_path`, so cards would have kept the old thumb. Replace now clears `thumb_path`/`width`/`height` (and `image_width`/`image_height` for ingredients) and best-effort deletes the old thumb; removing a photo deletes its thumb too. `original_path` is left alone (Phase 38/39). Proper variant writes on upload are Phase 38
 
 ### Verification
-- [ ] Network: `/recepti` with all 62 recipes transfers ≲ 3 MB of images (was ≈ 80 MB if scrolled through); no `full` request on list pages
-- [ ] No visible blur on a 2× screen; no layout shift while cards load
+- [x] `/recepti` with all 62 recipes references **only thumbnails: 62 × `.thumb.webp` = 3.00 MB in total** (was ≈ 79 MB of originals); first 5 eager, the rest lazy; no `full` URL on home, `/recepti` (sr + en), a category or recently added. The recipe detail requests only its full `.webp`, eager + `fetchpriority=high`, with `width`/`height`. (Byte totals from the manifest: the browser pane was hidden, so lazy images didn't load during the check, and Storage sends no `Timing-Allow-Origin`, so resource timing reports 0 bytes)
+- [x] No layout shift while cards load: every image sits in a fixed `aspect-square` / `aspect-video` box
+- [ ] No visible blur on a 2× screen: **not met for cards.** A card crops the 500×333 thumb to a 333×333 square; cards measure ≈ 148 CSS px on a phone, 150 at 1024 px, 220 at 767 px, so a 2× screen wants ~300–460 px and a 3× phone ~450. Up to ~1.4× upscaling → slightly soft. See Open decision 6
+- [ ] Admin recipes/ingredients pages checked signed in (owner)
 
 ### Definition of Done
-No list view downloads a full-size recipe photo.
+No list view downloads a full-size recipe photo. ✅ (sharpness pending decision 6)
 
 ---
 
@@ -357,3 +360,4 @@ Docs match the app; production verified by the owner.
 | 3 | ~~Favourites for visitors: hide or localStorage?~~ **Decided 2026-10-08: per-visitor localStorage**; the admin's hearts keep writing `is_favorite`. (The finding above was partly stale: visitors already saw a read-only heart; the silent revert hit only signed-in non-admins) | Ph 33 ✅ |
 | 4 | E2E: a separate Supabase test project (allows admin-flow E2E; this org's two free slots are used, so it would go in another org) or read-only E2E against production? | Ph 42 |
 | 5 | ~~Recipe thumb size 600 vs 400 px~~ **Decided 2026-10-08: 500 px** (q85: avg 49.5 KB, 3.0 MB for all 62) | Ph 36 ✅ |
+| 6 | **Card thumbs are slightly soft on 2×/3× screens** (Phase 37): thumbs fit inside 500×500, so landscape photos are 500×333 and the square card crops 333×333. Options: (a) keep as is (3.0 MB for all 62); (b) bound the *short* side instead (`fit: outside`, e.g. 750×500 → 500×500 crop, roughly +60–80 % thumb bytes, est. ~5 MB); (c) square-cropped 480×480 thumbs (sharp, ≈ today's bytes, but the admin table's 3:2 tiles lose the sides). Re-upload of 62 thumbs at new paths + a flip of `thumb_path` | Ph 38 |

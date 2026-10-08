@@ -15,9 +15,11 @@ import type { RecipeSummary } from '@/types/recipe'
 interface RecipeCardProps {
   recipe: RecipeSummary
   onToggleFavorite?: () => void
+  // First row of a grid: load the thumbnail right away instead of lazily.
+  eager?: boolean
 }
 
-function RecipeCard({ recipe, onToggleFavorite }: RecipeCardProps) {
+function RecipeCard({ recipe, onToggleFavorite, eager = false }: RecipeCardProps) {
   const { t } = useTranslation()
   const lang = useCurrentLang()
 
@@ -54,6 +56,7 @@ function RecipeCard({ recipe, onToggleFavorite }: RecipeCardProps) {
           image={recipe.image}
           alt={imageAlt}
           className="aspect-square w-full rounded-[calc(var(--radius-card)-0.5rem)]"
+          loading={eager ? 'eager' : 'lazy'}
         />
         <FavoriteButton
           isFavorite={recipe.is_favorite}

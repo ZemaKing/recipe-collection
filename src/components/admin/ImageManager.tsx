@@ -3,7 +3,7 @@ import { ArrowDown, ArrowUp, ImageOff, Loader2, RefreshCw, Star, Trash2, UploadC
 import { useTranslation } from 'react-i18next'
 import type { AdminRecipeImage } from '@/hooks/useRecipeImages'
 import { useRecipeImages } from '@/hooks/useRecipeImages'
-import { getRecipeImageUrl, validateRecipeImageFile } from '@/lib/storage'
+import { getRecipeImageUrls, validateRecipeImageFile } from '@/lib/storage'
 
 interface ImageManagerProps {
   recipeId: string
@@ -126,7 +126,7 @@ function ImageManager({ recipeId }: ImageManagerProps) {
         >
           <div className="relative aspect-[3/2] w-full shrink-0 overflow-hidden rounded-control bg-surface-elevated sm:w-32">
             <img
-              src={getRecipeImageUrl(image.storage_path)}
+              src={getRecipeImageUrls(image).thumb}
               alt=""
               loading="lazy"
               decoding="async"

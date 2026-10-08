@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabaseClient'
+import type { RecipeImageRef } from '@/types/recipe'
 
 const RECIPE_IMAGES_BUCKET = 'recipe-images'
 const INGREDIENT_IMAGES_BUCKET = 'ingredient-images'
@@ -33,6 +34,16 @@ export function validateIngredientImageFile(file: File): RecipeImageValidationEr
 
 export function getRecipeImageUrl(storagePath: string): string {
   return supabase.storage.from(RECIPE_IMAGES_BUCKET).getPublicUrl(storagePath).data.publicUrl
+}
+
+// Cards and admin lists show the thumbnail; the detail hero shows the full
+// image. Rows not migrated yet (or uploaded before Phase 38) have no thumb, so
+// both fall back to storage_path.
+export function getRecipeImageUrls(
+  image: Pick<RecipeImageRef, 'storage_path' | 'thumb_path'>,
+): { full: string; thumb: string } {
+  const full = getRecipeImageUrl(image.storage_path)
+  return { full, thumb: image.thumb_path ? getRecipeImageUrl(image.thumb_path) : full }
 }
 
 export function getIngredientImageUrl(storagePath: string): string {

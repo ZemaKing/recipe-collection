@@ -5,13 +5,14 @@ import { deleteRecipeImageFile, uploadRecipeImage } from '@/lib/storage'
 export interface AdminRecipeImage {
   id: string
   storage_path: string
+  thumb_path: string | null
   alt_en: string
   alt_sr: string
   is_primary: boolean
   order_index: number
 }
 
-const IMAGE_SELECT = 'id, storage_path, alt_en, alt_sr, is_primary, order_index'
+const IMAGE_SELECT = 'id, storage_path, thumb_path, alt_en, alt_sr, is_primary, order_index'
 
 function fetchImages(recipeId: string) {
   return supabase
@@ -24,6 +25,7 @@ function fetchImages(recipeId: string) {
 function mapRow(row: {
   id: string
   storage_path: string
+  thumb_path: string | null
   alt_en: string | null
   alt_sr: string | null
   is_primary: boolean
@@ -32,6 +34,7 @@ function mapRow(row: {
   return {
     id: row.id,
     storage_path: row.storage_path,
+    thumb_path: row.thumb_path,
     alt_en: row.alt_en ?? '',
     alt_sr: row.alt_sr ?? '',
     is_primary: row.is_primary,
@@ -136,7 +139,9 @@ export function useRecipeImages(recipeId: string | null) {
 
     const { error } = await supabase
       .from('recipe_images')
-      .update({ storage_path: newStoragePath })
+      // The thumb and dimensions belonged to the old file; until Phase 38
+      // uploads write variants, lists fall back to the new storage_path.
+      .update({ storage_path: newStoragePath, thumb_path: null, width: null, height: null })
       .eq('id', image.id)
 
     if (error) {
@@ -147,14 +152,18 @@ export function useRecipeImages(recipeId: string | null) {
     // Old file is now unreferenced — best-effort cleanup, doesn't affect the
     // row we just successfully updated.
     await deleteRecipeImageFile(image.storage_path).catch(() => undefined)
+    if (image.thumb_path) await deleteRecipeImageFile(image.thumb_path).catch(() => undefined)
 
     applyImages((prev) =>
-      prev.map((img) => (img.id === image.id ? { ...img, storage_path: newStoragePath } : img)),
+      prev.map((img) =>
+        img.id === image.id ? { ...img, storage_path: newStoragePath, thumb_path: null } : img,
+      ),
     )
   }
 
   async function removeImage(image: AdminRecipeImage) {
     await deleteRecipeImageFile(image.storage_path)
+    if (image.thumb_path) await deleteRecipeImageFile(image.thumb_path).catch(() => undefined)
 
     const { error } = await supabase.from('recipe_images').delete().eq('id', image.id)
     if (error) throw error
