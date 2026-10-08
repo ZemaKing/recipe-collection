@@ -94,3 +94,37 @@ export function upsertEntry(
   entries.sort((a, b) => entryKey(a.bucket, a.path).localeCompare(entryKey(b.bucket, b.path)))
   return { version: 1, updatedAt: now, entries }
 }
+
+export interface RestorePlan {
+  /** Referenced by a row, missing from its bucket, and in the backup: re-upload these. */
+  upload: ManifestEntry[]
+  /** Referenced by a row, missing from its bucket and NOT in the backup. */
+  lost: { bucket: string; path: string }[]
+  /** Referenced paths that are still in their bucket (left alone). */
+  present: number
+}
+
+// `images:backup -- --restore`: only paths a row points at and Storage no longer has. Never
+// anything still in a bucket (no overwrites), never a backed-up file no row uses (e.g. the
+// pre-WebP originals retired in Phase 39).
+export function planRestore(
+  references: { bucket: string; path: string }[],
+  inBucket: Set<string>,
+  manifest: BackupManifest | null,
+): RestorePlan {
+  const entries = new Map(
+    (manifest?.entries ?? []).map((entry) => [entryKey(entry.bucket, entry.path), entry]),
+  )
+  const plan: RestorePlan = { upload: [], lost: [], present: 0 }
+  const seen = new Set<string>()
+  for (const { bucket, path } of references) {
+    const key = entryKey(bucket, path)
+    if (seen.has(key)) continue
+    seen.add(key)
+    const entry = entries.get(key)
+    if (inBucket.has(key)) plan.present++
+    else if (entry) plan.upload.push(entry)
+    else plan.lost.push({ bucket, path })
+  }
+  return plan
+}

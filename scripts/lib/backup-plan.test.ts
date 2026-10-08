@@ -1,4 +1,10 @@
-import { planBackup, upsertEntry, type BackupManifest, type ManifestEntry } from './backup-plan.ts'
+import {
+  planBackup,
+  planRestore,
+  upsertEntry,
+  type BackupManifest,
+  type ManifestEntry,
+} from './backup-plan.ts'
 import type { StorageObject } from './supabase-script.ts'
 
 const object = (path: string, bytes = 100, etag: string | null = 'e1'): StorageObject => ({
@@ -102,5 +108,45 @@ describe('upsertEntry', () => {
       ['c.png', 'new'],
     ])
     expect(next.updatedAt).toBe('later')
+  })
+})
+
+describe('planRestore', () => {
+  const ref = (path: string, bucket = 'recipe-images') => ({ bucket, path })
+
+  it('re-uploads only referenced paths that are missing from the bucket', () => {
+    const plan = planRestore(
+      [ref('a/1.webp'), ref('a/1.card.webp'), ref('b/2.webp')],
+      new Set(['recipe-images/a/1.webp']),
+      manifest(entry('a/1.webp'), entry('a/1.card.webp'), entry('b/2.webp')),
+    )
+    expect(plan.upload.map((item) => item.path)).toEqual(['a/1.card.webp', 'b/2.webp'])
+    expect(plan.present).toBe(1)
+    expect(plan.lost).toEqual([])
+  })
+
+  it('never touches backed-up files no row points at', () => {
+    const plan = planRestore(
+      [ref('a/1.webp')],
+      new Set(),
+      manifest(entry('a/1.webp'), entry('a/1.png')),
+    )
+    expect(plan.upload.map((item) => item.path)).toEqual(['a/1.webp'])
+  })
+
+  it('reports referenced, missing paths that the backup lacks', () => {
+    const plan = planRestore([ref('x/9.webp', 'ingredient-images')], new Set(), null)
+    expect(plan.lost).toEqual([{ bucket: 'ingredient-images', path: 'x/9.webp' }])
+    expect(plan.upload).toEqual([])
+  })
+
+  it('keys by bucket and counts a path referenced twice once', () => {
+    const plan = planRestore(
+      [ref('a/1.webp'), ref('a/1.webp'), ref('a/1.webp', 'ingredient-images')],
+      new Set(['ingredient-images/a/1.webp']),
+      manifest(entry('a/1.webp')),
+    )
+    expect(plan.upload).toHaveLength(1)
+    expect(plan.present).toBe(1)
   })
 })

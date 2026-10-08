@@ -1,10 +1,10 @@
 # Recipe Collection — Images, Security & Hardening Roadmap
 
-Follow-up to the build log in [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md). Its finished phases were cleared from that file (commit `c2232b1`); only the unscheduled **Phase 32 — Postgres Full-Text Search** remains there, and it stays deferred (see the end of this file). Numbering continues at **33**. Once this roadmap is approved it becomes the live tracker (update `CLAUDE.md` in Phase 33).
+Follow-up to the build log in the former `DEVELOPMENT_PLAN.md` (its finished phases were cleared in commit `c2232b1`; the file was removed in Phase 43 and its one open item, **Phase 32 — Postgres Full-Text Search**, moved to the end of this file, still deferred). Numbering continues at **33**. This file is the only tracker.
 
 The image pipeline reuses the one built for the diecast app (`../diecast-collection/scripts/images/` + `src/lib/image-resize.ts`). That code was written app-agnostic so it could be reused here (diecast ROADMAP Phase 21). Its README even uses "recipe photos" as the example job.
 
-**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08. Phase 35 done 2026-10-08. Phase 36 done 2026-10-08 (all images served as WebP). Phase 37 done 2026-10-08 (card thumbs re-done per Open decision 6). Phase 38 done 2026-10-08. Phase 39 done 2026-10-08 (owner shortened the wait): only WebP left, buckets 16.3 + 1.0 MB. Phase 40 done 2026-10-08 (mobile LCP gap accepted, Open decision 7). Phase 41 done 2026-10-08 (headers + CSP live, verified on production). Phase 42 code done 2026-10-08 (CI not yet run on GitHub; E2E 20/20 three runs in a row). ⚠ Org grace period ends 31 Oct 2026 (Storage 117 %): see Open decision 1.** Research done 2026-10-04 (findings below).
+**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08. Phase 35 done 2026-10-08. Phase 36 done 2026-10-08 (all images served as WebP). Phase 37 done 2026-10-08 (card thumbs re-done per Open decision 6). Phase 38 done 2026-10-08. Phase 39 done 2026-10-08 (owner shortened the wait): only WebP left, buckets 16.3 + 1.0 MB. Phase 40 done 2026-10-08 (mobile LCP gap accepted, Open decision 7). Phase 41 done 2026-10-08 (headers + CSP live, verified on production). Phase 42 done 2026-10-08 (first CI run failed on the unit tests, fixed in Phase 43; E2E 20/20 three runs in a row). Phase 43 code + docs done 2026-10-08; waiting on the owner's release check. ⚠ Org grace period ends 31 Oct 2026 (Storage 117 %): see Open decision 1.** Research done 2026-10-04 (findings below).
 
 ---
 
@@ -96,8 +96,8 @@ Existing files:    scripts/images (sharp) ─► WebP at new paths ─► verify
 | 39 | Retire Originals | ✅ Done 2026-10-08 | Confirm the second backup copy is still intact |
 | 40 | Data Layer & Performance | ✅ Done 2026-10-08 (mobile LCP 2.9–4.3 s accepted) | — |
 | 41 | Deployment Hardening | ✅ Done 2026-10-08 | — |
-| 42 | Quality Gates (CI & E2E) | 🟡 Code done 2026-10-08; CI runs on the first push | Push; make CI a required check (GitHub setting) |
-| 43 | Docs, Backup & Production Verification | ⬜ Not started | Go/no-go |
+| 42 | Quality Gates (CI & E2E) | 🟡 Code done 2026-10-08; first CI run red (fixed in 43) | Make CI a required check (GitHub setting) once it's green |
+| 43 | Docs, Backup & Production Verification | 🟡 Docs, `verify:prod`, restore + CI fix done 2026-10-08 | Push; preview/production check by hand; `images:backup -- --apply` (17 MB); go/no-go |
 
 ---
 
@@ -334,7 +334,8 @@ Stop regressions from reaching production automatically.
 - [x] E2E green 3 runs in a row (20/20 each, ~15 s, 2026-10-08)
 - [x] The tests can fail: with the tag filter switched to OR, the filter journey fails; with `š` dropped from the diacritics folding, the search journey fails (`"prsutom"`); a page `POST` to Supabase is blocked and fails its test
 - [x] CI's steps locally with CI's env (`lint`, `typecheck`, `test` 255/255, `build` incl. both postbuild checks)
-- [ ] CI blocks a deliberately broken commit (needs the first push; then make it a required check)
+- [x] CI blocks a broken commit: the first real run (`ac134e8`, 2026-10-08) **failed** at `npm test`: `storage.test.ts`, `RecipeCard.test.tsx` and `RecipeImage.test.tsx` import the real `supabaseClient`, which throws without `.env.local`, so they passed only locally. Fixed in Phase 43 (`test.env` placeholder in `vite.config.ts`; a clean clone with `TZ=UTC` and no `.env.local` passes 255/255). Not the deliberate break planned, but it proves the gate
+- [ ] CI green on GitHub after the Phase 43 push; then make it a required check
 
 ### Definition of Done
 Lint, tests and build gate every push; core public flows covered by E2E.
@@ -347,14 +348,20 @@ Lint, tests and build gate every push; core public flows covered by E2E.
 Docs describe the real app; the release is verified.
 
 ### Tasks
-- [ ] `CLAUDE.md`: add the ingredient catalog + nutrition (vitamins/minerals), meal plan, kitchen notes, subcategories, difficulties, favourites, JSON/AI import, the image variants + upload pipeline, the admin allow-list, the `images:*` / `verify:rls` scripts
-- [ ] `README.md` (2 lines today): what the app is, setup, env, migrations (manual SQL editor), seed, scripts, testing, deployment
-- [ ] `docs/backup.md` (from Phase 34): schedule + restore steps
-- [ ] `DEVELOPMENT_PLAN.md`: keep Phase 32 there or move it into this file's backlog; one tracker only
-- [ ] Release: preview deployment → owner check (sr/en, light/dark, desktop/mobile, admin CRUD signed in by hand) → `main`
+- [x] `CLAUDE.md`: what the app does; schema by area (recipes, ingredient catalog + vitamins/minerals and the client-side nutrition maths, notes, meal plan, `admin_users`), difficulties, subcategories, the `_sr` → `_en` fallback, favourites, JSON/AI import, an **Images** section (buckets, paths, variants, q85, upload/replace/read path), how migrations are applied, where every doc lives, `verify:prod`. Wrong table names fixed (`steps` → `recipe_steps` etc.)
+- [x] `README.md`: what the app is, stack, setup (Node 24), `.env.local` table, database from scratch (migrations by hand, the admin email placeholder, sign-ups off, seed, `verify:rls`), scripts, testing, deployment + CSP rules, release order, backups
+- [x] `docs/backup.md`: a schedule table (monthly `db:export` + `images:backup` + `--verify` + second copy; before every bulk step) and restore steps that fit the WebP-only buckets. **New: `images:backup -- --restore`** (dry run) / `--restore --apply`: re-uploads, from `backups/images/`, only files a row points at that Storage is missing (sha256-checked against the manifest, `upsert: false`, one-year cache), and names any that were never backed up. Pure planner `planRestore` in `scripts/lib/backup-plan.ts` (+ 4 tests). Dry run 2026-10-08: 196/196 referenced files present, 0 to upload
+- [x] Fresh DB export 2026-10-08 (`backups/db/2026-10-08T17-13-48-365Z`). **Found: the 196 WebP files in Storage (17.24 MB) aren't in the local backup yet**: it holds only the Phase 34 originals. `images:backup -- --apply` needs the owner's OK (Workflow rule 8)
+- [x] `DEVELOPMENT_PLAN.md` → Phase 32 moved to the end of this file; file deleted. One tracker
+- [x] **`npm run verify:prod`** (`scripts/verify-prod.mjs`, read-only, anon key only): sign-ups off, `admin_users` unreadable, neither bucket listable, every recipe photo has a card thumb, all image paths `.webp` and each serves 200 `image/webp` (HEAD). With `-- --url https://…`: `vercel.json`'s headers + CSP served verbatim, inline scripts' sha256 in `script-src`, `/assets/*` `immutable` (skipped on localhost: `npm run preview` leaves that rule to Vercel), deep link `/en/recepti` serves the app, `check-bundle-secrets.mjs --url`. A protected Vercel preview URL is reported as a 302
+- [x] CI fix (from Phase 42's first run): `test.env` in `vite.config.ts`
+- [ ] Release: push → CI green → Vercel production → owner check (sr/en, light/dark, desktop/mobile, the admin checklist in `e2e/README.md` signed in) → `npm run verify:prod -- --url https://<production>`. Phase 43 goes straight to `main` like 41/42 unless the owner wants a PR + preview first
 
 ### Verification
-- [ ] Production: sign-ups off, images WebP, headers present, private tables not readable as anon
+- [x] `verify:prod` against the live project (2026-10-08): **7/7**: sign-ups off, `admin_users` + both bucket listings refused as anon, 63 recipe photos with card thumbs + 70 ingredient photos = **196 paths, all `.webp`, all 200 `image/webp`**
+- [x] `verify:prod -- --url http://localhost:4173` (production build under `npm run preview`): **16/16**: all five headers and the CSP as committed, theme-script hash allowed, deep link, no secrets in 27 files
+- [ ] Production: `verify:prod -- --url https://<production domain>` (incl. `/assets` `immutable`). The production domain isn't recorded in the repo, and Vercel's generated deployment URLs are behind Deployment Protection (302 to Vercel SSO), so this run needs the owner's domain
+- [ ] Owner: sr/en, light/dark, desktop/mobile + the admin CRUD checklist on the deployed site (also closes Phase 33's and 37's open admin checks)
 
 ### Definition of Done
 Docs match the app; production verified by the owner.
@@ -363,7 +370,7 @@ Docs match the app; production verified by the owner.
 
 ## Backlog (not scheduled)
 
-- **Phase 32 — Postgres full-text search** (in `DEVELOPMENT_PLAN.md`): only when the trigger in Phase 40 fires (recipes > ~1,000 or the `/recepti` recipes GET > ~500 kB gzip).
+- **Phase 32 — Postgres full-text search** (below): only when the trigger in Phase 40 fires (recipes > ~1,000 or the `/recepti` recipes GET > ~500 kB gzip).
 - Recipe galleries with several photos per recipe (the schema already supports it; today every recipe has 1).
 - Shared image-pipeline package for diecast/games/recipes, only if the three copies start to diverge.
 
@@ -378,3 +385,25 @@ Docs match the app; production verified by the owner.
 | 5 | ~~Recipe thumb size 600 vs 400 px~~ **Decided 2026-10-08: 500 px** (q85: avg 49.5 KB, 3.0 MB for all 62) | Ph 36 ✅ |
 | 6 | ~~**Card thumbs are slightly soft on 2×/3× screens**~~ **Decided 2026-10-08: (b), done in Phase 37** (750×500 `card` variant, 5.6 MB for all 62). Was: thumbs fit inside 500×500, so landscape photos are 500×333 and the square card crops 333×333. Options: (a) keep as is (3.0 MB for all 62); (b) bound the *short* side instead (`fit: outside`, e.g. 750×500 → 500×500 crop, roughly +60–80 % thumb bytes, est. ~5 MB); (c) square-cropped 480×480 thumbs (sharp, ≈ today's bytes, but the admin table's 3:2 tiles lose the sides). Re-upload of 62 thumbs at new paths + a flip of `thumb_path` | Ph 37 ✅ |
 | 7 | ~~**Mobile LCP is 2.9–4.3 s on Slow 4G (budget 2.5 s; desktop ≤ 2.1 s).** It's bytes: JS 214 kB + font 47 kB + 4–6 on-screen card photos (~96 kB each). Options: (a) a phone card variant (510×340, measured avg 53 kB vs 96 kB) in a card `srcset`: est. −0.9 s, costs 62 new objects (~3.3 MB), a column/path rule, upload path + migration job; (b) accept it, as the diecast app did. See `docs/performance.md`~~ **Decided 2026-10-08: (b), accepted**; (a) stays an option if mobile matters more later | Ph 40 ✅ |
+
+---
+
+## Phase 32 — Postgres Full-Text Search (deferred)
+
+Moved here from `DEVELOPMENT_PLAN.md` in Phase 43. **Trigger:** recipes > ~1,000 or the `/recepti` recipes GET > ~500 kB gzip (Phase 40; 62 recipes / 17 kB on 2026-10-08).
+
+### Goal
+Recipe search moves from client-side filtering to server-side Postgres full-text search, once shipping the whole recipe list to the browser stops being practical.
+
+### Tasks
+- [ ] Migration: generated `tsvector` column on `recipes` (`name_en`/`name_sr`, `'simple'` config: Postgres has no Serbian dictionary) + GIN index. No RLS change (derived from public columns)
+- [ ] Ingredient-name matches (today's client search matches them): a trigger-maintained combined vector, or a join-based query
+- [ ] Diacritics: the client folds č ć š ž đ both ways (`src/lib/diacritics.ts`, covered by E2E); the server side must too (`unaccent` maps đ → d, the client đ → dj)
+- [ ] Replace `useAllRecipes` (whole table, via `createSharedQuery`) with a paginated, server-searched hook (`.textSearch()` + `.range()`), like `useAdminRecipes`
+- [ ] `AllRecipesPage`: category/subcategory/tag/favourite filters and the query become server-side conditions, with the admin list's debounce-then-refetch. Visitor favourites live in localStorage (`useFavorites().localIds`), so that filter sends ids
+
+### Verification
+- [ ] No regression in filter/sort/tag behaviour (`npm run test:e2e` journeys); `/recepti` no longer downloads the whole catalog; sr and en search behave sensibly with `'simple'`
+
+### Out of scope
+Stemming/relevance ranking beyond `'simple'`, typo-tolerant search.

@@ -1,6 +1,6 @@
 # Backups
 
-The Free plan has no downloadable automatic backups, so these exports are the backup. Everything lands in `backups/` (git-ignored): it holds every original photo and the full database, including kitchen notes and meal plans. Keep it on your machine and **one second place** (an external drive or your own private cloud folder). Never commit it.
+The Free plan has no downloadable automatic backups, so these exports are the backup. Everything lands in `backups/` (git-ignored): it holds every photo (the pre-WebP originals from Phase 34 plus the WebP files from every later run) and the full database, including kitchen notes and meal plans. Keep it on your machine and **one second place** (an external drive or your own private cloud folder). Never commit it.
 
 | Command | Writes | Network |
 | --- | --- | --- |
@@ -8,6 +8,8 @@ The Free plan has no downloadable automatic backups, so these exports are the ba
 | `npm run images:backup` | nothing; prints what would be downloaded and how many bytes | listings only |
 | `npm run images:backup -- --apply` | `backups/images/{bucket}/{path}` + `backups/images/manifest.json` (bytes, sha256, ETag, type, width × height per file) | downloads only what's new or changed; counts against the org's shared 5 GB/month egress |
 | `npm run images:backup -- --verify` | nothing; re-hashes every local file against the manifest | none |
+| `npm run images:backup -- --restore` | nothing; lists files rows point at that are missing from Storage | listings + a read of the image rows |
+| `npm run images:backup -- --restore --apply` | **Storage**: re-uploads exactly those files from `backups/images/` (sha256-checked, `upsert: false`, never overwrites) | uploads only |
 | `npm run db:export` | `backups/db/{timestamp}/{table}.json` + `manifest.json` (row counts, sha256 per file) | a few hundred KB |
 
 **Credentials** (`.env.local`, never `VITE_`-prefixed): `SUPABASE_SERVICE_ROLE_KEY` if present, otherwise the owner's login `RLS_ADMIN_EMAIL` / `RLS_ADMIN_PASSWORD`. The admin login is enough for everything except `admin_users`, which only the service role can read; without the key `db:export` skips it and says so in its manifest. That table holds one row: the owner's `auth.users` id.
@@ -18,10 +20,14 @@ The image backup is resumable: the manifest is saved after every file, files are
 
 ## Schedule
 
-- After a batch of edits in the admin, and at least monthly: `npm run db:export`.
-- Whenever photos were added or replaced: `npm run images:backup -- --apply`.
-- Before Phase 36 (WebP flip) and Phase 39 (deleting originals): both, then `npm run images:backup -- --verify`, then copy `backups/` to the second place and verify there too (`sha256sum` against `manifest.json`).
-- Old `backups/db/` folders can be kept; each one is ~2 MB.
+| When | Run |
+| --- | --- |
+| After a batch of admin edits, and **at least monthly** (first of the month) | `npm run db:export` |
+| After adding or replacing photos, and at least monthly | `npm run images:backup` (dry run: prints the bytes), then `-- --apply`. Today's buckets are ≈ 17 MB in total, so a full first run is cheap; later runs fetch only new files |
+| Monthly, after the two above | `npm run images:backup -- --verify`, then copy `backups/` to the second place |
+| Before any bulk or destructive step (a migration that rewrites rows, a bucket change, an `images:*` `--apply`) | all three of the above |
+
+Old `backups/db/` folders can be kept; each one is ~2 MB. Nothing runs automatically: the scripts need the owner's login in `.env.local`, which stays on this machine.
 
 ## Copying to the second place
 
@@ -38,8 +44,8 @@ There is deliberately no restore script: a wrong run against the live project wo
    select * from json_populate_recordset(null::public.<table>, '<contents of <table>.json>');
    ```
    Keep the ids, since child tables point at them. For a single table that already has rows, delete the affected rows first or add `on conflict (id) do update …`.
-3. **Photos:** `backups/images/` holds the **pre-WebP originals** (Phase 34). Since Phase 36 the rows point at WebP files, which aren't in that backup but can be regenerated from it with the same settings: run the `--restore` below first (it re-uploads the originals *and* sets `original_path` again, which `images:migrate` reads its sources from), then `npm run images:migrate -- --force --apply` rebuilds every WebP at the paths the rows use, and `npm run images:check -- --full` confirms. Photos uploaded after Phase 38 exist only in Storage: run `npm run images:backup -- --apply` from time to time to add them to the backup.
-4. **Check:** `npm run images:audit` (0 missing, 0 orphans) and `npm run verify:rls`.
+3. **Photos:** `npm run images:backup -- --restore` lists every file a row points at that Storage is missing, and whether the backup has it; `-- --restore --apply` uploads those (sniffed content type, one-year cache, nothing overwritten). A file reported `LOST` was never backed up (added after the last `images:backup -- --apply`): re-upload that photo in the admin. Recipe and ingredient photos migrated in Phase 36 can also be rebuilt from their pre-WebP originals (next section, then `npm run images:migrate -- --force --apply` and `npm run images:check -- --full`).
+4. **Check:** `npm run images:audit` (0 missing, 0 orphans), `npm run verify:rls` and `npm run verify:prod`.
 
 One wrong edit doesn't need any of this: fix it in the admin, using the JSON in `backups/db/` as the reference.
 

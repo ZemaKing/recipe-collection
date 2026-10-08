@@ -44,6 +44,12 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: './src/test/setup.ts',
+    // Tests that import the real supabaseClient (for getPublicUrl) need a valid-looking config.
+    // A fixed placeholder, so they pass without .env.local (CI) and never see the live project.
+    env: {
+      VITE_SUPABASE_URL: 'https://testtesttesttesttest.supabase.co',
+      VITE_SUPABASE_ANON_KEY: 'sb_publishable_test-placeholder',
+    },
     // e2e/ is Playwright's (npm run test:e2e).
     exclude: [...configDefaults.exclude, 'e2e/**'],
   },

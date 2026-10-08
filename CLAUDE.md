@@ -6,7 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A personal recipe collection web app (browse, search, admin-manage recipes with photos). Vite + React 19 + TypeScript, Supabase (Postgres + Storage + Auth) for the backend, deployed to Vercel.
 
-Work is tracked live in `ROADMAP.md` (Phases 33+: security, images, hardening) — check its Status table and Workflow rules before starting work; it runs one phase at a time with an explicit stop after each. `DEVELOPMENT_PLAN.md` holds only the deferred Phase 32 (full-text search). Original design/schema rationale is in `recepies-details/Recipes-Website-Context.txt`.
+Public side: home, all recipes with search/filters (`/recepti`), categories → subcategories, recipe detail (ingredients with servings scaling, steps, nutrition, tips, kitchen notes), favourites, recently added. Admin side (`/admin/*`, one owner): recipes, the ingredient catalog (with nutrition and photos), categories/subcategories/tags, kitchen notes and a weekly meal plan. Setup for humans is in `README.md`.
+
+Work is tracked in `ROADMAP.md` (the only tracker: Phases 33–43 plus the backlog, incl. the deferred Phase 32 full-text search) — check its Status table and Workflow rules before starting work; it runs one phase at a time with an explicit stop after each. Original design/schema rationale is in `recepies-details/Recipes-Website-Context.txt`. Other docs: `docs/backup.md` (backup schedule + restore), `docs/performance.md` (Web Vitals budget, image-loading decisions), `docs/images-audit.md` (generated), `scripts/images/README.md` (the image pipeline), `e2e/README.md` (E2E + the manual admin checklist).
 
 ## Commands
 
@@ -20,6 +22,7 @@ npm run typecheck # tsc -b (app, scripts/, e2e/)
 npm run test:e2e  # Playwright: fresh build on :4174, local Edge, desktop + mobile, READ-ONLY against the live project (e2e/README.md)
 npm run preview   # preview production build
 npm run verify:rls # checks live RLS/Storage policies as anon, a non-admin and the admin (RLS_* logins in .env.local)
+npm run verify:prod # read-only release check as anon: sign-ups off, admin_users/bucket listing refused, every image row → 200 image/webp; `-- --url https://…` adds the deployed headers/CSP/immutable assets/bundle secrets
 npm run images:audit   # rows vs Storage objects → docs/images-audit.md (read-only, HEADs only)
 npm run images:backup  # dry run; `-- --apply` downloads both buckets to git-ignored backups/images/, `-- --verify` re-hashes
 npm run db:export      # every table as JSON → git-ignored backups/db/{timestamp}/ (see docs/backup.md)
@@ -52,15 +55,27 @@ Favourites: the admin's hearts write `recipes.is_favorite`; every other viewer's
 
 ### Data layer
 
-Supabase schema: `recipes`, `ingredients`, `steps`, `categories`, `tags` (see `supabase/migrations/`, applied in order by filename timestamp). `src/types/recipe.ts` defines the shapes consumed by the UI (e.g. `RecipeSummary`, `SearchableRecipe`) — note the `_en`/`_sr` suffix convention for bilingual fields throughout the schema and types. Recipe images live in Supabase Storage; `src/lib/storage.ts` and `src/hooks/useRecipeImages.ts` handle upload/path resolution.
+Supabase schema (see `supabase/migrations/`, applied in order by filename timestamp; schema changes go in a new timestamped file that the owner runs in the dashboard SQL editor — there's no CLI link; `supabase/seed.sql` is sample data for an empty project):
+- Recipes: `recipes` (`difficulty` easy/medium/hard, `is_favorite`, servings/times), `recipe_ingredients` (optional `ingredient_id` → the catalog), `recipe_steps`, `recipe_tags`, `recipe_images`; `categories` → `subcategories` (a recipe has one category, optionally one subcategory), `tags`. `_en` columns are required, `_sr` ones optional.
+- Ingredient catalog: `ingredients` (macros per 100 g, `micronutrients` jsonb, `unit_conversions` jsonb = grams per unit, one photo), `ingredient_categories`, `vitamins`/`minerals` + `ingredient_vitamins`/`ingredient_minerals`. The recipe detail's nutrition panel is computed client-side (`src/lib/nutrition.ts`) from the linked ingredients × quantities; unlinked lines are counted, not guessed.
+- `kitchen_notes` (optionally tied to a recipe, shown on its public Notes tab; pinnable), `meal_plan_entries` (one per date + slot, admin meal-plan calendar). Both publicly readable by decision.
+- `admin_users` (see Auth model).
+
+`src/types/` defines the shapes consumed by the UI (e.g. `RecipeSummary`, `SearchableRecipe`, `Ingredient`) — note the `_en`/`_sr` suffix convention for bilingual fields throughout the schema and types (`pickLocalized` in `src/lib/localizedField.ts` falls back to English when the Serbian value is empty).
 
 Data fetching is done through small dedicated hooks in `src/hooks/` (`useAllRecipes`, `useRecipeBySlug`, `useRecipesByCategory`, `useAdminRecipes`, etc.) built on top of query helpers in `src/lib/recipeQueries.ts`, rather than a generic fetching abstraction — follow that pattern (one hook per query shape) when adding new data needs.
+
+### Images
+
+Two public buckets: `recipe-images` (`{recipe_id}/{uuid}.webp` full ≤ 1600 px + `{uuid}.card.webp` covering 500×500 for cards) and `ingredient-images` (`{ingredient_id}/{uuid}.webp`, ≤ 600×400, alpha kept). Everything is WebP q85 with a one-year `cacheControl`; a new photo gets a new UUID, never an overwrite. Rows carry the paths and dimensions (`recipe_images.storage_path`/`thumb_path`/`width`/`height`, `ingredients.image_storage_path`/`image_width`/`image_height`). Browser uploads go through `src/lib/image-resize.ts` (canvas → WebP, PNG fallback) and `src/lib/storage.ts` (variants exported as `RECIPE_IMAGE_VARIANTS`/`INGREDIENT_IMAGE_VARIANT`, which must match `scripts/migrate-images/`); `useRecipeImages`/`useIngredientImage` write the row and remove every file of a replaced photo. Reads: `RecipeImage variant="thumb"` (cards, admin lists, `thumb_path ?? storage_path`) vs `variant="full"` (detail hero, with a `srcset` incl. the card). Buckets accept only WebP + PNG, 5 MB.
 
 Unparameterised lookups shared across pages (categories, subcategories, tags, the full recipe list) go through `createSharedQuery` (`src/lib/sharedQuery.ts`) + `useSharedQuery`: one request for consumers that mount together, cached result shown at once and revalidated on mount. Card photos load via `useNearViewport` (on screen only until the first scroll); see `docs/performance.md` before changing image loading.
 
 ### Admin recipe form
 
-`RecipeForm` + `IngredientEditor`/`StepEditor`/`ImageManager` (`src/components/admin/`) drive create/edit. Form state normalization and the create/update payload shape are centralized in `src/lib/recipeFormState.ts` and validated with `src/lib/recipeFormSchema.ts` (Zod). `useSaveRecipe` performs the actual Supabase write.
+`RecipeForm` + `IngredientEditor`/`StepEditor`/`ImageManager` (`src/components/admin/`) drive create/edit. Form state normalization and the create/update payload shape are centralized in `src/lib/recipeFormState.ts` and validated with `src/lib/recipeFormSchema.ts` (Zod). `useSaveRecipe` performs the actual Supabase write. Ingredients mirror this (`IngredientForm`, `ingredientFormState.ts`/`ingredientFormSchema.ts`, `useSaveIngredient`, which also rewrites the vitamin/mineral link rows).
+
+JSON/AI import: the admin copies a prompt (`src/lib/aiRecipePrompt.ts` / `aiIngredientPrompt.ts`, which lists the live categories/subcategories/tags, or ingredient categories/vitamins/minerals) into any external AI, pastes the JSON back into `ImportRecipeJsonDialog`/`ImportIngredientJsonDialog`, and `recipeImport.ts`/`ingredientImport.ts` (Zod) map it onto the form state (matching ingredients to the catalog by diacritic-folded name). Nothing is saved until the form is; no images are imported.
 
 ### Styling
 

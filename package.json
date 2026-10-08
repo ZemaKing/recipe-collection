@@ -22,7 +22,8 @@
     "images:flip": "node scripts/migrate-images/flip.ts",
     "images:prune-originals": "node scripts/migrate-images/prune.ts",
     "perf:vitals": "node scripts/perf/vitals.mjs",
-    "postbuild": "node scripts/check-bundle-secrets.mjs && node scripts/check-csp.mjs"
+    "postbuild": "node scripts/check-bundle-secrets.mjs && node scripts/check-csp.mjs",
+    "verify:prod": "node scripts/verify-prod.mjs"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.23",

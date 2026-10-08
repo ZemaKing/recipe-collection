@@ -3,6 +3,8 @@
 //   npm run images:backup                 dry run: what would be downloaded, and how many bytes
 //   npm run images:backup -- --apply      download it (counts against the org's shared egress)
 //   npm run images:backup -- --verify     offline: re-hash every local file against the manifest
+//   npm run images:backup -- --restore    dry run: files rows point at that Storage has lost
+//   npm run images:backup -- --restore --apply   re-upload those from the local copy
 //
 // Files go to backups/images/{bucket}/{path} (git-ignored), with
 // backups/images/manifest.json holding bytes, sha256, ETag, sniffed type and
@@ -10,6 +12,10 @@
 // interrupted run resumes where it stopped; objects whose local copy still
 // matches are skipped. Nothing in Storage is ever written or deleted, and a
 // local copy is never deleted, even when its object is gone from the bucket.
+//
+// --restore is the only mode that writes to Storage, and only to paths that are both referenced
+// by a row and missing from the bucket (upsert: false, so nothing is overwritten). Each file is
+// re-hashed against the manifest before upload. See docs/backup.md → Restoring.
 
 import { createHash } from 'node:crypto'
 import { mkdir, readFile, rename, writeFile } from 'node:fs/promises'
@@ -17,6 +23,7 @@ import path from 'node:path'
 import {
   entryKey,
   planBackup,
+  planRestore,
   upsertEntry,
   type BackupManifest,
   type LocalFile,
@@ -27,6 +34,7 @@ import {
   connect,
   listBucket,
   publicObjectUrl,
+  readImageReferences,
   type StorageObject,
 } from './lib/supabase-script.ts'
 import { formatBytes } from './lib/util.ts'
@@ -35,6 +43,7 @@ const ROOT = path.join('backups', 'images')
 const MANIFEST = path.join(ROOT, 'manifest.json')
 const apply = process.argv.includes('--apply')
 const verifyOnly = process.argv.includes('--verify')
+const restore = process.argv.includes('--restore')
 
 function localPath(bucket: string, objectPath: string): string {
   if (objectPath.split('/').some((part) => part === '..' || part === '')) {
@@ -189,8 +198,51 @@ async function backup(): Promise<void> {
   console.log(`Done. Manifest: ${MANIFEST}`)
 }
 
+async function restoreMissing(): Promise<void> {
+  const { client, mode } = await connect()
+  console.log(`Connected (${mode}).`)
+  const inBucket = new Set<string>()
+  for (const bucket of BUCKETS) {
+    for (const object of await listBucket(client, bucket))
+      inBucket.add(entryKey(bucket, object.path))
+  }
+  const plan = planRestore(await readImageReferences(client), inBucket, await readManifest())
+  console.log(`${plan.present} referenced files are in Storage (left alone).`)
+  for (const { bucket, path: objectPath } of plan.lost) {
+    console.log(`LOST      ${bucket}/${objectPath} (missing from Storage and from the backup)`)
+  }
+  for (const entry of plan.upload) console.log(`restore   ${entry.bucket}/${entry.path}`)
+  const bytes = plan.upload.reduce((sum, entry) => sum + entry.bytes, 0)
+  console.log(`To upload: ${plan.upload.length} files, ${formatBytes(bytes)}.`)
+  if (plan.lost.length > 0) process.exitCode = 1
+  if (plan.upload.length === 0) return
+  if (!apply) {
+    console.log('Dry run. Re-run with `npm run images:backup -- --restore --apply` to upload.')
+    return
+  }
+
+  let done = 0
+  for (const entry of plan.upload) {
+    const bytes = await readFile(localPath(entry.bucket, entry.path))
+    if (bytes.byteLength !== entry.bytes || sha256(bytes) !== entry.sha256) {
+      throw new Error(`${entry.bucket}/${entry.path}: local copy doesn't match the manifest`)
+    }
+    const { error } = await client.storage.from(entry.bucket).upload(entry.path, bytes, {
+      contentType: entry.type ?? undefined,
+      // Same as every upload since Phase 36: paths are never reused.
+      cacheControl: '31536000',
+      upsert: false,
+    })
+    if (error) throw new Error(`upload ${entry.bucket}/${entry.path}: ${error.message}`)
+    done++
+    console.log(`[${done}/${plan.upload.length}] ${entry.bucket}/${entry.path}`)
+  }
+  console.log('Done. Check with `npm run images:audit` and `npm run verify:prod`.')
+}
+
 try {
   if (verifyOnly) await verifyLocal()
+  else if (restore) await restoreMissing()
   else await backup()
 } catch (error) {
   console.error(`✖ ${(error as Error).message}`)
