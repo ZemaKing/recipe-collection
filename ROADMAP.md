@@ -4,7 +4,7 @@ Follow-up to the build log in [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md). Its 
 
 The image pipeline reuses the one built for the diecast app (`../diecast-collection/scripts/images/` + `src/lib/image-resize.ts`). That code was written app-agnostic so it could be reused here (diecast ROADMAP Phase 21). Its README even uses "recipe photos" as the example job.
 
-**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08. Phase 35 done 2026-10-08. Phase 36 done 2026-10-08 (all images served as WebP). Phase 37 done 2026-10-08 (card thumbs re-done per Open decision 6). Phase 38 done 2026-10-08. Phase 39 done 2026-10-08 (owner shortened the wait): only WebP left, buckets 16.3 + 1.0 MB. Phase 40 done 2026-10-08 (mobile LCP gap accepted, Open decision 7). Phase 41 code done 2026-10-08 (headers + CSP checked locally; preview deployment pending). ⚠ Org grace period ends 31 Oct 2026 (Storage 117 %): see Open decision 1.** Research done 2026-10-04 (findings below).
+**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps. Phase 34 done 2026-10-08. Phase 35 done 2026-10-08. Phase 36 done 2026-10-08 (all images served as WebP). Phase 37 done 2026-10-08 (card thumbs re-done per Open decision 6). Phase 38 done 2026-10-08. Phase 39 done 2026-10-08 (owner shortened the wait): only WebP left, buckets 16.3 + 1.0 MB. Phase 40 done 2026-10-08 (mobile LCP gap accepted, Open decision 7). Phase 41 done 2026-10-08 (headers + CSP live, verified on production). ⚠ Org grace period ends 31 Oct 2026 (Storage 117 %): see Open decision 1.** Research done 2026-10-04 (findings below).
 
 ---
 
@@ -95,7 +95,7 @@ Existing files:    scripts/images (sharp) ─► WebP at new paths ─► verify
 | 38 | Upload Path: WebP in the Browser | ✅ Done 2026-10-08 | — |
 | 39 | Retire Originals | ✅ Done 2026-10-08 | Confirm the second backup copy is still intact |
 | 40 | Data Layer & Performance | ✅ Done 2026-10-08 (mobile LCP 2.9–4.3 s accepted) | — |
-| 41 | Deployment Hardening | 🟡 Code done 2026-10-08; checked under `npm run preview` | Push → preview deployment: headers check |
+| 41 | Deployment Hardening | ✅ Done 2026-10-08 | — |
 | 42 | Quality Gates (CI & E2E) | ⬜ Not started | Make CI a required check (GitHub setting) |
 | 43 | Docs, Backup & Production Verification | ⬜ Not started | Go/no-go |
 
@@ -310,10 +310,10 @@ Match the game app's Vercel setup.
 ### Verification
 - [x] A deliberate secret fails `postbuild`: a fake service_role JWT and an `sb_secret_` key as `VITE_SUPABASE_ANON_KEY` → exit 1. A changed theme script and a CSP without `data:` fonts each fail `check-csp`
 - [x] Headers + CSP under `npm run preview` (2026-10-08): no CSP violation on home, `/recepti` (scrolled), a recipe detail, categories, login and the 404; theme script runs (light/dark), Inter incl. the Serbian subset and Supabase photos load. 404 checked sr + en, desktop + mobile, dark + light
-- [ ] Response headers on a **preview deployment** (needs a push; Vercel's preview toolbar is blocked by the CSP there, expected) and `node scripts/check-bundle-secrets.mjs --url <deployment>`
+- [x] **Production** (2026-10-08, pushed straight to `main` as `c590b8a`, so checked there instead of a preview deployment): all headers + CSP served, `/assets/*` `immutable`; the inline theme script served with LF and the same sha256 as `vercel.json`; no CSP violation on `/recepti` and a recipe detail, both Inter files load, 404 + noindex on `/en/does-not-exist`. `check-bundle-secrets.mjs --url`: 25 files, no secrets (owner). Owner confirmed recipe photos render (900×600 WebP)
 
 ### Definition of Done
-Assets cached immutably, security headers on, secrets can't ship.
+Assets cached immutably, security headers on, secrets can't ship. ✅
 
 ---
 
