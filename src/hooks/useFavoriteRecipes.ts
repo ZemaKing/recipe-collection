@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react'
+import { favoriteIdsKey, idsFromKey } from '@/lib/localFavorites'
 import { mapRecipeSummaryRow, RECIPE_SUMMARY_SELECT, type RawImageRow } from '@/lib/recipeQueries'
 import { supabase } from '@/lib/supabaseClient'
 import type { RecipeSummary } from '@/types/recipe'
 
-export function useFavoriteRecipes() {
+// localIds: the visitor's favourites (see useFavorites); null for the admin,
+// whose favourites are the is_favorite column.
+export function useFavoriteRecipes(localIds: readonly string[] | null) {
+  const localIdsKey = favoriteIdsKey(localIds)
   const [recipes, setRecipes] = useState<RecipeSummary[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -13,11 +17,19 @@ export function useFavoriteRecipes() {
 
     async function load() {
       setIsLoading(true)
-      const { data, error } = await supabase
-        .from('recipes')
-        .select(RECIPE_SUMMARY_SELECT)
-        .eq('is_favorite', true)
-        .order('created_at', { ascending: false })
+      let query = supabase.from('recipes').select(RECIPE_SUMMARY_SELECT).order('created_at', { ascending: false })
+      if (localIdsKey === null) {
+        query = query.eq('is_favorite', true)
+      } else {
+        const ids = idsFromKey(localIdsKey)
+        if (ids.length === 0) {
+          setRecipes([])
+          setIsLoading(false)
+          return
+        }
+        query = query.in('id', ids)
+      }
+      const { data, error } = await query
 
       if (cancelled) return
       if (error) {
@@ -33,7 +45,7 @@ export function useFavoriteRecipes() {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [localIdsKey])
 
   async function toggleFavorite(recipeId: string) {
     const current = recipes.find((recipe) => recipe.id === recipeId)

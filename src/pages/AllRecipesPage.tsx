@@ -8,7 +8,7 @@ import SortFilterSelect from '@/components/recipes/SortFilterSelect'
 import SubcategoryFilterSelect from '@/components/recipes/SubcategoryFilterSelect'
 import EmptyState from '@/components/ui/EmptyState'
 import { useAllRecipes } from '@/hooks/useAllRecipes'
-import { useAuth } from '@/hooks/useAuth'
+import { useFavorites } from '@/hooks/useFavorites'
 import { useCategories } from '@/hooks/useCategories'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
 import { useSubcategories } from '@/hooks/useSubcategories'
@@ -31,8 +31,10 @@ import { cn } from '@/lib/utils'
 function AllRecipesPage() {
   const { t } = useTranslation()
   const lang = useCurrentLang()
-  const { session } = useAuth()
-  const { recipes, isLoading, toggleFavorite } = useAllRecipes()
+  const favorites = useFavorites()
+  const { recipes: loadedRecipes, isLoading, toggleFavorite } = useAllRecipes()
+  // Applied before filtering so the favourites-only filter sees the viewer's hearts.
+  const recipes = useMemo(() => loadedRecipes.map(favorites.apply), [loadedRecipes, favorites])
   const { categories } = useCategories()
   const { subcategories } = useSubcategories()
   const { tags } = useTags()
@@ -221,7 +223,7 @@ function AllRecipesPage() {
             <RecipeCard
               key={recipe.id}
               recipe={recipe}
-              onToggleFavorite={session ? () => void toggleFavorite(recipe.id) : undefined}
+              onToggleFavorite={() => favorites.toggle(recipe.id, () => toggleFavorite(recipe.id))}
             />
           ))}
         </div>

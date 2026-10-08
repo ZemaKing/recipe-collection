@@ -3,13 +3,13 @@ import { useTranslation } from 'react-i18next'
 import RecipeCard from '@/components/recipes/RecipeCard'
 import EmptyState from '@/components/ui/EmptyState'
 import { useAllRecipes } from '@/hooks/useAllRecipes'
-import { useAuth } from '@/hooks/useAuth'
+import { useFavorites } from '@/hooks/useFavorites'
 
 // useAllRecipes already fetches unfiltered, newest-first (created_at
 // descending) — exactly the shape this page needs, no variant required.
 function RecentlyAddedPage() {
   const { t } = useTranslation()
-  const { session } = useAuth()
+  const favorites = useFavorites()
   const { recipes, isLoading, toggleFavorite } = useAllRecipes()
 
   return (
@@ -28,8 +28,8 @@ function RecentlyAddedPage() {
           {recipes.map((recipe) => (
             <RecipeCard
               key={recipe.id}
-              recipe={recipe}
-              onToggleFavorite={session ? () => void toggleFavorite(recipe.id) : undefined}
+              recipe={favorites.apply(recipe)}
+              onToggleFavorite={() => favorites.toggle(recipe.id, () => toggleFavorite(recipe.id))}
             />
           ))}
         </div>

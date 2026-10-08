@@ -4,7 +4,7 @@ Follow-up to the build log in [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md). Its 
 
 The image pipeline reuses the one built for the diecast app (`../diecast-collection/scripts/images/` + `src/lib/image-resize.ts`). That code was written app-agnostic so it could be reused here (diecast ROADMAP Phase 21). Its README even uses "recipe photos" as the example job.
 
-**Status: nothing started.** Research done 2026-10-04 (findings below).
+**Status: Phase 33 code done 2026-10-08; waiting on the owner's dashboard steps.** Research done 2026-10-04 (findings below).
 
 ---
 
@@ -86,7 +86,7 @@ Existing files:    scripts/images (sharp) ─► WebP at new paths ─► verify
 
 | # | Phase | Status | Needs from owner |
 | --- | --- | --- | --- |
-| 33 | Security & Privacy Lockdown | ⬜ Not started | Disable sign-ups (1 min); decisions 2–3; apply migration |
+| 33 | Security & Privacy Lockdown | 🟡 DB locked down & verified; frontend not deployed | Deploy; admin CRUD check on the deployed site |
 | 34 | Image Audit & Local Backup | ⬜ Not started | Service-role key in `.env.local`; check the Usage page |
 | 35 | Image Pipeline Port & Schema | ⬜ Not started | Apply migration |
 | 36 | WebP Migration of Existing Images | ⬜ Not started | Run the scripts |
@@ -106,19 +106,23 @@ Existing files:    scripts/images (sharp) ─► WebP at new paths ─► verify
 Only the owner can write; only intended data is public. Comes first because today any registered user can change everything.
 
 ### Tasks
-- [ ] **Owner, now:** Dashboard → Authentication → turn off "Allow new users to sign up"; check the Users list for unknown accounts
-- [ ] Migration: `admin_users (user_id uuid primary key references auth.users)`, with RLS on and no API grants, plus `is_admin()` (`security definer`, `stable`, `search_path` pinned)
-- [ ] Migration: every `*_authenticated_write` policy → `using (is_admin()) with check (is_admin())`, on all 16 tables (recipes, steps, ingredients, recipe_ingredients, categories, subcategories, tags, recipe_tags, recipe_images, ingredient catalog + vitamins/minerals + link tables, ingredient_categories, kitchen_notes, meal_plan_entries)
-- [ ] Storage, both buckets: writes only for `is_admin()`; drop the public `SELECT` (listing) policies, which public URLs don't need. **Note:** `deleteRecipeImageFolder` / `deleteIngredientImageFolder` list the folder, so give the admin a `SELECT` policy. Set `file_size_limit` and `allowed_mime_types` on the buckets
-- [ ] Per Open decision 2: make `kitchen_notes` and `meal_plan_entries` admin-read-only (and check the public pages don't query them)
-- [ ] Per Open decision 3: favourites become either admin-only (button hidden for visitors) or a per-visitor localStorage preference
-- [ ] `scripts/verify-rls.mjs` (`npm run verify:rls`): checks as anon and as a signed-in non-admin (`RLS_*` logins in `.env.local`) that public reads work, private tables are refused, every write/upload/list is refused, and the admin can write (self-cleaning fixtures)
-- [ ] Point `CLAUDE.md` at this roadmap
+- [x] **Owner, now:** Dashboard → Authentication → turn off "Allow new users to sign up"; check the Users list for unknown accounts
+- [x] **Owner:** applied 2026-10-08 (run as `postgres`) `20261008120000_admin_lockdown.sql` in the SQL editor, after replacing `REPLACE_WITH_ADMIN_EMAIL` with the login email (editor only, not in git). It runs as one transaction and aborts if no user has that email. **Apply it before deploying this phase's frontend**, or the owner is shown "No admin access" (the `is_admin` RPC won't exist yet)
+- [x] **Owner:** Dashboard → Authentication → Add user: a test account that is *not* an admin, for `RLS_USER_*`
+- [x] Migration: `admin_users (user_id uuid primary key references auth.users)`, with RLS on and no API grants, plus `is_admin()` (`security definer`, `stable`, `search_path` pinned; executable by `authenticated` only)
+- [x] Migration: every `*_authenticated_write` policy → `*_admin_write` with `using ((select is_admin())) with check ((select is_admin()))`, on all 16 tables
+- [x] Storage, both buckets: one `*_bucket_admin_all` policy (incl. the `SELECT` that folder deletes and `remove()` need); public `SELECT` (listing) policies dropped. Buckets get `file_size_limit` 5 MB and `allowed_mime_types` JPEG/PNG/WebP (same as the client limits)
+- [x] Open decision 2 → **both stay public.** `kitchen_notes` are shown on public recipe pages (Notes tab) and counted in the home stats, so making them private would have removed a public feature. Only their writes are locked down
+- [x] Open decision 3 → **per-visitor localStorage.** The admin's hearts still write `recipes.is_favorite`; everyone else's go to localStorage (`src/lib/localFavorites.ts`, `useFavorites`), including the favourites page, the home "Favourites" chip/count and the `/recepti` favourites filter. A signed-in non-admin counts as a visitor
+- [x] `ProtectedRoute` gates `/admin` on `isAdmin` (signed-in non-admins get a "No admin access" panel with sign-out)
+- [x] `scripts/verify-rls.mjs` (`npm run verify:rls`): anon reads of all 16 tables, `admin_users` and bucket listing refused; with `RLS_ADMIN_*` set, creates one fixture per table + a PNG per bucket, attacks them as anon and as the non-admin (`RLS_USER_*`): insert/update/delete/upload/list/remove all refused; checks the fixtures survived, public URLs serve, buckets reject `text/plain`, the admin can update; then deletes everything (also on error)
+- [x] Point `CLAUDE.md` at this roadmap
 
 ### Verification
-- [ ] `/auth/v1/settings` → `disable_signup: true`
-- [ ] `verify:rls` green; the owner can still create/edit/delete a recipe, an ingredient, a photo, a note and a meal-plan entry
-- [ ] As a visitor, the favourite button does what decision 3 says (no silent revert)
+- [x] `/auth/v1/settings` → `disable_signup: true` (checked 2026-10-08)
+- [x] `verify:rls` green: **187 passed, 0 failed** (2026-10-08, anon + non-admin + admin)
+- [ ] The owner can still create/edit/delete a recipe, an ingredient, a photo, a note and a meal-plan entry (on the deployed site)
+- [x] As a visitor, the favourite button does what decision 3 says (no silent revert): checked on the dev server, sr + en, desktop; recheck on the deployed site
 
 ### Definition of Done
 Writes require `is_admin()`, sign-ups are off, private data isn't public, and a script proves it.
@@ -340,7 +344,7 @@ Docs match the app; production verified by the owner.
 | # | Question | Needed by |
 | --- | --- | --- |
 | 1 | **The org is over its Storage quota (≈ 2.1 GB of 1 GB), mostly because of the game app.** If uploads are blocked, the WebP variants can't be uploaded until space is freed. Recipes are small (~13 MB of WebP), so doing **this app first is a cheap pilot** of the pipeline, but it frees only ~70 MB. The real fix is the game app's Phase 37. Options while blocked: a month of Pro ($25), or delete originals before upload (relying on the local backup) | Ph 34 / 36 |
-| 2 | `kitchen_notes` and `meal_plan_entries`: private (admin-only), or meant to be public? | Ph 33 |
-| 3 | Favourites for visitors: hide the heart for visitors (owner's favourites stay public as a filter), or let each visitor keep their own favourites in localStorage? | Ph 33 |
+| 2 | ~~`kitchen_notes` and `meal_plan_entries`: private or public?~~ **Decided 2026-10-08: both stay publicly readable**; only writes are admin-only | Ph 33 ✅ |
+| 3 | ~~Favourites for visitors: hide or localStorage?~~ **Decided 2026-10-08: per-visitor localStorage**; the admin's hearts keep writing `is_favorite`. (The finding above was partly stale: visitors already saw a read-only heart; the silent revert hit only signed-in non-admins) | Ph 33 ✅ |
 | 4 | E2E: a separate Supabase test project (allows admin-flow E2E; this org's two free slots are used, so it would go in another org) or read-only E2E against production? | Ph 42 |
 | 5 | Recipe thumb size 600 px (sharp on 2× screens) vs 400 px (~24 KB measured, slightly soft) | Ph 35 |

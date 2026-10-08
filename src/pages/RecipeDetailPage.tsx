@@ -10,7 +10,7 @@ import StepList from '@/components/recipes/StepList'
 import TipsPanel from '@/components/recipes/TipsPanel'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import EmptyState from '@/components/ui/EmptyState'
-import { useAuth } from '@/hooks/useAuth'
+import { useFavorites } from '@/hooks/useFavorites'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useRecipeBySlug } from '@/hooks/useRecipeBySlug'
 import { useRecipeNotes } from '@/hooks/useRecipeNotes'
@@ -18,7 +18,7 @@ import { useRecipeNotes } from '@/hooks/useRecipeNotes'
 function RecipeDetailPage() {
   const { t } = useTranslation()
   const { slug = '' } = useParams<{ slug: string }>()
-  const { session } = useAuth()
+  const favorites = useFavorites()
   const { recipe, isLoading, notFound, toggleFavorite } = useRecipeBySlug(slug)
   const { notes } = useRecipeNotes(recipe?.id ?? null)
   // Tabs are a mobile/tablet space-saving device; desktop has room to show
@@ -45,8 +45,8 @@ function RecipeDetailPage() {
     <div className="flex flex-col gap-6">
       <RecipeDetailHero
         key={recipe.slug}
-        recipe={recipe}
-        onToggleFavorite={session ? () => void toggleFavorite() : undefined}
+        recipe={favorites.apply(recipe)}
+        onToggleFavorite={() => favorites.toggle(recipe.id, toggleFavorite)}
       />
       <RecipeMeta recipe={recipe} />
 

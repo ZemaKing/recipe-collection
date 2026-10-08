@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A personal recipe collection web app (browse, search, admin-manage recipes with photos). Vite + React 19 + TypeScript, Supabase (Postgres + Storage + Auth) for the backend, deployed to Vercel.
 
-Build progress is tracked live in `DEVELOPMENT_PLAN.md` — check "Current Phase" there before starting work to know what's already implemented vs. planned. Original design/schema rationale is in `recepies-details/Recipes-Website-Context.txt`.
+Work is tracked live in `ROADMAP.md` (Phases 33+: security, images, hardening) — check its Status table and Workflow rules before starting work; it runs one phase at a time with an explicit stop after each. `DEVELOPMENT_PLAN.md` holds only the deferred Phase 32 (full-text search). Original design/schema rationale is in `recepies-details/Recipes-Website-Context.txt`.
 
 ## Commands
 
@@ -17,6 +17,7 @@ npm run lint      # eslint .
 npm run format    # prettier --write .
 npm test          # vitest run (single run, not watch)
 npm run preview   # preview production build
+npm run verify:rls # checks live RLS/Storage policies as anon, a non-admin and the admin (RLS_* logins in .env.local)
 ```
 
 Run a single test file: `npx vitest run src/lib/recipeFilter.test.ts`. Tests use Vitest + Testing Library with jsdom (setup file: `src/test/setup.ts`); test files live next to the code they cover (`*.test.ts(x)`).
@@ -33,7 +34,9 @@ Two route trees share the `:lang` parent: the public `AppShell` tree (home, reci
 
 ### Auth model
 
-Single-admin auth via Supabase Auth (email/password), not a general user system. `AuthProvider` (`src/components/auth/AuthProvider.tsx`) wraps the whole app and exposes session state via `useAuth`; `ProtectedRoute` gates the `/admin/*` subtree client-side. Actual write authorization is enforced server-side through Postgres RLS policies (`supabase/migrations/20260910120200_rls_policies.sql`), not by the client route guard — public reads are open, writes require an authenticated session. Never introduce service-role Supabase keys into frontend code.
+Single-admin auth via Supabase Auth (email/password), not a general user system; sign-ups must stay disabled in the dashboard (Authentication → "Allow new users to sign up"). The admin is whoever is listed in the `admin_users` table (no API access to it), checked by the `is_admin()` security-definer function (`supabase/migrations/20261008120000_admin_lockdown.sql`). Every table's write policy and both Storage buckets' policies require `is_admin()`; a signed-in non-admin can write nothing. Public reads stay open on every table, including `kitchen_notes` and `meal_plan_entries`; bucket objects are public by URL but can't be listed. `AuthProvider` (`src/components/auth/AuthProvider.tsx`) wraps the whole app and exposes `session` and `isAdmin` (from `rpc('is_admin')`) via `useAuth`; `ProtectedRoute` gates the `/admin/*` subtree client-side on `isAdmin`, but the real enforcement is RLS. Never introduce service-role Supabase keys into frontend code.
+
+Favourites: the admin's hearts write `recipes.is_favorite`; every other viewer's hearts live in localStorage (`src/lib/localFavorites.ts`). Pages go through `useFavorites()` (`apply` a recipe, `toggle` a heart, `localIds` for queries) instead of reading `is_favorite` or the session directly.
 
 ### Data layer
 

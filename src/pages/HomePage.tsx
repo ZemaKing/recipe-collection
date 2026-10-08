@@ -6,7 +6,7 @@ import EmptyState from '@/components/ui/EmptyState'
 import QuickFilterChips, { type QuickFilter } from '@/components/recipes/QuickFilterChips'
 import RecipeCard from '@/components/recipes/RecipeCard'
 import StatsWidget from '@/components/recipes/StatsWidget'
-import { useAuth } from '@/hooks/useAuth'
+import { useFavorites } from '@/hooks/useFavorites'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
 import { useRecentRecipes } from '@/hooks/useRecentRecipes'
 import { useRecipeStats } from '@/hooks/useRecipeStats'
@@ -15,10 +15,10 @@ import { buildLocalizedPath } from '@/lib/localizedPath'
 function HomePage() {
   const { t } = useTranslation()
   const lang = useCurrentLang()
-  const { session } = useAuth()
+  const favorites = useFavorites()
   const [filter, setFilter] = useState<QuickFilter>('all')
-  const { recipes: visibleRecipes, isLoading, toggleFavorite } = useRecentRecipes(filter)
-  const { stats } = useRecipeStats()
+  const { recipes: visibleRecipes, isLoading, toggleFavorite } = useRecentRecipes(filter, favorites.localIds)
+  const { stats } = useRecipeStats(favorites.localIds)
 
   return (
     <div className="flex flex-col gap-6 lg:flex-row">
@@ -54,8 +54,8 @@ function HomePage() {
               {visibleRecipes.map((recipe) => (
                 <RecipeCard
                   key={recipe.id}
-                  recipe={recipe}
-                  onToggleFavorite={session ? () => void toggleFavorite(recipe.id) : undefined}
+                  recipe={favorites.apply(recipe)}
+                  onToggleFavorite={() => favorites.toggle(recipe.id, () => toggleFavorite(recipe.id))}
                 />
               ))}
             </div>

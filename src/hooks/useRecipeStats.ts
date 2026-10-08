@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { favoriteIdsKey, idsFromKey } from '@/lib/localFavorites'
 import { supabase } from '@/lib/supabaseClient'
 
 export interface RecipeStats {
@@ -15,8 +16,12 @@ const EMPTY_STATS: RecipeStats = {
   noteCount: 0,
 }
 
-export function useRecipeStats() {
+// localIds: the visitor's favourites (see useFavorites); null for the admin,
+// whose favourite count comes from the is_favorite column.
+export function useRecipeStats(localIds: readonly string[] | null) {
   const [stats, setStats] = useState<RecipeStats>(EMPTY_STATS)
+  const [localFavoriteCount, setLocalFavoriteCount] = useState(0)
+  const localIdsKey = favoriteIdsKey(localIds)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -47,5 +52,30 @@ export function useRecipeStats() {
     }
   }, [])
 
-  return { stats, isLoading }
+  // Counted against the table (not localIds.length) so ids of recipes that
+  // were deleted since the visitor saved them don't inflate the number.
+  useEffect(() => {
+    if (localIdsKey === null) return
+    let cancelled = false
+
+    async function load(key: string) {
+      const ids = idsFromKey(key)
+      let count = 0
+      if (ids.length > 0) {
+        const result = await supabase.from('recipes').select('*', { count: 'exact', head: true }).in('id', ids)
+        count = result.count ?? 0
+      }
+      if (!cancelled) setLocalFavoriteCount(count)
+    }
+
+    void load(localIdsKey)
+    return () => {
+      cancelled = true
+    }
+  }, [localIdsKey])
+
+  return {
+    stats: localIdsKey === null ? stats : { ...stats, favoriteCount: localFavoriteCount },
+    isLoading,
+  }
 }

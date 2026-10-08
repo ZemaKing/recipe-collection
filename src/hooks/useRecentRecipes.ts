@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import type { QuickFilter } from '@/components/recipes/QuickFilterChips'
+import { favoriteIdsKey, idsFromKey } from '@/lib/localFavorites'
 import { mapRecipeSummaryRow, RECIPE_SUMMARY_SELECT, type RawImageRow } from '@/lib/recipeQueries'
 import type { RecipeSummary } from '@/types/recipe'
 
@@ -11,7 +12,12 @@ const RECENT_LIMIT = 8
 // Each filter re-queries rather than filtering the already-limited "recent"
 // set client-side, otherwise e.g. a favorite outside the 8 most recent
 // recipes would silently disappear from the "Omiljeni" chip.
-export function useRecentRecipes(filter: QuickFilter) {
+// localIds: the visitor's favourites (see useFavorites); null for the admin,
+// whose "favorites" filter uses the is_favorite column.
+export function useRecentRecipes(filter: QuickFilter, localIds: readonly string[] | null) {
+  // Only the favorites filter depends on the ids, so toggling a heart under
+  // another filter doesn't refetch.
+  const localIdsKey = filter === 'favorites' ? favoriteIdsKey(localIds) : null
   const [recipes, setRecipes] = useState<RecipeSummary[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -29,7 +35,17 @@ export function useRecentRecipes(filter: QuickFilter) {
           : query.order('created_at', { ascending: false })
 
       if (filter === 'favorites') {
-        query = query.eq('is_favorite', true)
+        if (localIdsKey === null) {
+          query = query.eq('is_favorite', true)
+        } else {
+          const ids = idsFromKey(localIdsKey)
+          if (ids.length === 0) {
+            setRecipes([])
+            setIsLoading(false)
+            return
+          }
+          query = query.in('id', ids)
+        }
       }
 
       const { data, error } = await query
@@ -48,7 +64,7 @@ export function useRecentRecipes(filter: QuickFilter) {
     return () => {
       cancelled = true
     }
-  }, [filter])
+  }, [filter, localIdsKey])
 
   async function toggleFavorite(recipeId: string) {
     const current = recipes.find((recipe) => recipe.id === recipeId)

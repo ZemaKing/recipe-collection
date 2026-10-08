@@ -76,7 +76,8 @@
   },
   "favoritesPage": {
     "emptyTitle": "No favorites yet",
-    "emptyDescription": "Recipes you favorite will show up here."
+    "emptyDescription": "Recipes you favorite will show up here.",
+    "localHint": "Favorites are saved in this browser only."
   },
   "browse": {
     "categoryAll": "All categories",
@@ -163,7 +164,11 @@
     "submitting": "Signing in...",
     "error": "Invalid email or password.",
     "loggedInAs": "Logged in as {{email}}",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "notAdmin": {
+      "title": "No admin access",
+      "description": "{{email}} is signed in but is not an admin of this collection."
+    }
   },
   "admin": {
     "shellName": "Admin",

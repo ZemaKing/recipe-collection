@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Link, useParams } from 'react-router-dom'
 import RecipeCard from '@/components/recipes/RecipeCard'
 import EmptyState from '@/components/ui/EmptyState'
-import { useAuth } from '@/hooks/useAuth'
+import { useFavorites } from '@/hooks/useFavorites'
 import { useCurrentLang } from '@/hooks/useCurrentLang'
 import { useRecipesByCategory } from '@/hooks/useRecipesByCategory'
 import { useSubcategories } from '@/hooks/useSubcategories'
@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils'
 function CategoryRecipesPage() {
   const { t } = useTranslation()
   const lang = useCurrentLang()
-  const { session } = useAuth()
+  const favorites = useFavorites()
   const { slug = '', subcategorySlug } = useParams<{ slug: string; subcategorySlug?: string }>()
   const { category, recipes, isLoading, notFound, toggleFavorite } = useRecipesByCategory(slug, subcategorySlug)
   const { subcategories } = useSubcategories()
@@ -88,8 +88,8 @@ function CategoryRecipesPage() {
           {recipes.map((recipe) => (
             <RecipeCard
               key={recipe.id}
-              recipe={recipe}
-              onToggleFavorite={session ? () => void toggleFavorite(recipe.id) : undefined}
+              recipe={favorites.apply(recipe)}
+              onToggleFavorite={() => favorites.toggle(recipe.id, () => toggleFavorite(recipe.id))}
             />
           ))}
         </div>
