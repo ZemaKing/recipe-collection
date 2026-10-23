@@ -210,7 +210,8 @@ describe('local sources (recipes port)', () => {
   })
 })
 
-describe('runBatch', () => {
+// Several real sharp conversions per test: slow on shared CI runners, which hit the 5 s default.
+describe('runBatch', { timeout: 30_000 }, () => {
   it('dry run: downloads and converts, never uploads or touches the manifest', async () => {
     const net = fakeFetch(() => image(png))
     const storage = fakeStorage()
