@@ -55,6 +55,8 @@ Favourites: the admin's hearts write `recipes.is_favorite`; every other viewer's
 
 ### Data layer
 
+Since 2026-10-30 Supabase no longer auto-grants API access to new `public` tables, so the migration that creates a table must also grant it: `grant select on public.<t> to anon; grant select, insert, update, delete on public.<t> to authenticated, service_role;` (without it the API returns "permission denied"). The existing migrations predate this and don't, so replaying them into a new project needs those grants added afterwards.
+
 Supabase schema (see `supabase/migrations/`, applied in order by filename timestamp; schema changes go in a new timestamped file that the owner runs in the dashboard SQL editor — there's no CLI link; `supabase/seed.sql` is sample data for an empty project):
 - Recipes: `recipes` (`difficulty` easy/medium/hard, `is_favorite`, servings/times), `recipe_ingredients` (optional `ingredient_id` → the catalog), `recipe_steps`, `recipe_tags`, `recipe_images`; `categories` → `subcategories` (a recipe has one category, optionally one subcategory), `tags`. `_en` columns are required, `_sr` ones optional.
 - Ingredient catalog: `ingredients` (macros per 100 g, `micronutrients` jsonb, `unit_conversions` jsonb = grams per unit, one photo), `ingredient_categories`, `vitamins`/`minerals` + `ingredient_vitamins`/`ingredient_minerals`. The recipe detail's nutrition panel is computed client-side (`src/lib/nutrition.ts`) from the linked ingredients × quantities; unlinked lines are counted, not guessed.
@@ -82,5 +84,7 @@ JSON/AI import: the admin copies a prompt (`src/lib/aiRecipePrompt.ts` / `aiIngr
 Tailwind CSS v4 (via `@tailwindcss/vite`, no separate config file — tokens are defined in `src/index.css`). Radix primitives (`Dialog`, `DropdownMenu`, `Tabs`) are wrapped under `src/components/ui/`.
 
 ### Deployment
+
+`.github/workflows/supabase-keepalive.yml` pings the Supabase project daily (repo secrets `SUPABASE_URL`, `SUPABASE_ANON_KEY`) so the Free plan doesn't pause it after 7 idle days.
 
 Vercel, with `vercel.json` rewriting all paths to `index.html` (required for client-side routing on direct/refreshed navigation to non-root routes — see commit `861ec84`). `vercel.json` also sets the security headers and a CSP (Supabase URL in `connect-src`/`img-src`, the inline theme script in `index.html` allowed by its sha256), and `immutable` caching for `/assets/*`; `npm run preview` sends the same headers. `postbuild` fails the build if `dist/` contains a service-role/secret key (`scripts/check-bundle-secrets.mjs`) or the CSP no longer fits `dist/index.html` (`scripts/check-csp.mjs`): after editing the theme script, put the hash it prints into `vercel.json`. A new external origin (fonts, images, APIs) needs a CSP entry. `src/lib/env.ts` rejects a secret key in `VITE_SUPABASE_ANON_KEY` at startup.
